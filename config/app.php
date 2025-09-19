@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * CantalDestination - Application configuration
@@ -24,7 +24,7 @@ if (file_exists($envFile)) {
     }
 }
 
-// Inclure la configuration de base de données
+// Inclure la configuration de base de donnÃ©es
 require_once dirname(__DIR__) . '/database.php';
 
 // Chemins de base
@@ -97,15 +97,15 @@ if (DEBUG) {
     ini_set('display_errors', 1);
 }
 
-// Headers pour les API (CORS géré par .htaccess)
+// Headers pour les API (CORS gÃ©rÃ© par .htaccess)
 function setCorsHeaders() {
-    // Laisse .htaccess gérer CORS pour éviter les doublons
+    // Laisse .htaccess gÃ©rer CORS pour Ã©viter les doublons
     if (!headers_sent()) {
         header('Content-Type: application/json; charset=utf-8');
     }
 }
 
-// Fonction pour répondre en JSON
+// Fonction pour rÃ©pondre en JSON
 function jsonResponse($data, $status = 200) {
     http_response_code($status);
     setCorsHeaders();
@@ -113,27 +113,27 @@ function jsonResponse($data, $status = 200) {
     exit;
 }
 
-// Fonction pour gérer les erreurs API
+// Fonction pour gÃ©rer les erreurs API
 function apiError($message, $status = 400) {
     jsonResponse(['error' => $message], $status);
 }
 
-// Fonction slugify (équivalent de la fonction Python)
+// Fonction slugify (Ã©quivalent de la fonction Python)
 function slugify($value) {
     $value = (string)$value;
     // Supprime les accents
     $value = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value);
-    // Remplace les caractères non alphanumériques par des underscores
+    // Remplace les caractÃ¨res non alphanumÃ©riques par des underscores
     $value = preg_replace('/[^\w\-]+/', '_', $value);
     return strtolower($value);
 }
 
-// Fonction pour générer les URLs correctes
+// Fonction pour gÃ©nÃ©rer les URLs correctes
 function asset($path) {
-    // Détecter l'environnement
+    // DÃ©tecter l'environnement
     $basePath = '';
     
-    // Si on est en local (XAMPP ou développement)
+    // Si on est en local (XAMPP ou dÃ©veloppement)
     if (isset($_SERVER['HTTP_HOST']) && 
         (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || 
          strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false ||
@@ -144,27 +144,33 @@ function asset($path) {
             $basePath = '/fluxvision_fin';
         }
     }
-    // En production, pas de préfixe nécessaire si c'est à la racine du domaine
+    // En production, pas de prÃ©fixe nÃ©cessaire si c'est Ã  la racine du domaine
     // Ou adapter selon la structure du serveur de production
     
     return $basePath . $path;
 }
 
-// Fonction pour générer les URLs de routes
+// Fonction pour gÃ©nÃ©rer les URLs de routes
 function url($path) {
     return asset($path);
 }
 
-// Fonction pour mapper les périodes aux noms de fichiers
+function signed_url(string $path, array $params = [], int $ttlSeconds = 900): string
+{
+    $signedPath = SecureUrl::buildSignedPath($path, $params, $ttlSeconds);
+    return url($signedPath);
+}
+
+// Fonction pour mapper les pÃ©riodes aux noms de fichiers
 function mapPeriode($periode) {
-    // Décoder l'URL d'abord pour gérer les caractères encodés
+    // DÃ©coder l'URL d'abord pour gÃ©rer les caractÃ¨res encodÃ©s
     $periode = urldecode($periode);
     
     $periodeMap = [
-        'année' => 'annee',
+        'annÃ©e' => 'annee',
         'annee' => 'annee',
-        'week-end de pâques' => 'week-end_de_paques',
-        'week-end_de_pâques' => 'week-end_de_paques',
+        'week-end de pÃ¢ques' => 'week-end_de_paques',
+        'week-end_de_pÃ¢ques' => 'week-end_de_paques',
         'week-end_de_paques' => 'week-end_de_paques',
         'vacances d\'hiver' => 'vacances_d_hiver',
         "vacances d'hiver" => 'vacances_d_hiver',
@@ -174,10 +180,11 @@ function mapPeriode($periode) {
     
     $mapped = $periodeMap[strtolower($periode)] ?? slugify($periode);
     
-    // Debug en mode développement
+    // Debug en mode dÃ©veloppement
     if (DEBUG) {
         error_log("mapPeriode: '$periode' -> '$mapped'");
     }
     
     return $mapped;
 } 
+

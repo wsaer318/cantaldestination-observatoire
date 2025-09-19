@@ -8,6 +8,7 @@ class EncryptionManager {
     
     private static $masterKey = null;
     private static $config = [
+        'version_prefix' => 'FV2:',
         'cipher' => 'aes-256-gcm',
         'key_length' => 32, // 256 bits
         'iv_length' => 12,  // 96 bits pour GCM
@@ -75,53 +76,130 @@ class EncryptionManager {
      * Chiffre une donnée sensible
      */
     public static function encrypt(string $data, string $context = 'default'): string {
-        if (empty($data)) {
+        if ($data === '') {
             return '';
         }
-        
-        // Générer clé et IV
-        $key = hash('sha256', 'flux_key_' . $context . '_2024', true);
-        $iv = random_bytes(16);
-        
-        // Chiffrer
-        $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
-        
-        // Retourner IV + données chiffrées encodées
-        return base64_encode($iv . $encrypted);
+
+        try {
+            self::initializeMasterKey();
+
+            $salt = random_bytes(self::$config['salt_length']);
+            $key = self::deriveKey($context, $salt);
+
+            $iv = random_bytes(self::$config['iv_length']);
+            $tag = '';
+
+            $ciphertext = openssl_encrypt(
+                $data,
+                self::$config['cipher'],
+                $key,
+                OPENSSL_RAW_DATA,
+                $iv,
+                $tag,
+                '',
+                self::$config['tag_length']
+            );
+
+            if ($ciphertext === false) {
+                throw new RuntimeException('Encryption failed.');
+            }
+
+            $payload = self::$config['version_prefix'] . $salt . $iv . $tag . $ciphertext;
+
+            return base64_encode($payload);
+        } catch (Throwable $e) {
+            if (class_exists('SecurityManager')) {
+                SecurityManager::logSecurityEvent('ENCRYPTION_FAILURE', [
+                    'context' => $context,
+                    'error' => $e->getMessage()
+                ], 'ERROR');
+            }
+            return '';
+        }
     }
+
     
     /**
      * Déchiffre une donnée
      */
     public static function decrypt(string $encryptedData, string $context = 'default'): string {
-        if (empty($encryptedData)) {
+        if ($encryptedData === '') {
             return '';
         }
-        
-        // Décoder
-        $data = base64_decode($encryptedData);
-        
-        // Vérifier que les données sont suffisamment longues
-        if ($data === false || strlen($data) < 16) {
-            // Données corrompues ou invalides
+
+        try {
+            $decoded = base64_decode($encryptedData, true);
+            if ($decoded === false || $decoded === '') {
+                return '';
+            }
+
+            $prefix = self::$config['version_prefix'];
+            $prefixLength = strlen($prefix);
+
+            if (strncmp($decoded, $prefix, $prefixLength) === 0) {
+                self::initializeMasterKey();
+
+                $offset = $prefixLength;
+                $saltLength = self::$config['salt_length'];
+                $ivLength = self::$config['iv_length'];
+                $tagLength = self::$config['tag_length'];
+
+                if (strlen($decoded) < $offset + $saltLength + $ivLength + $tagLength) {
+                    return '';
+                }
+
+                $salt = substr($decoded, $offset, $saltLength);
+                $offset += $saltLength;
+
+                $iv = substr($decoded, $offset, $ivLength);
+                $offset += $ivLength;
+
+                $tag = substr($decoded, $offset, $tagLength);
+                $offset += $tagLength;
+
+                $ciphertext = substr($decoded, $offset);
+
+                if ($ciphertext === false || $ciphertext === '') {
+                    return '';
+                }
+
+                $key = self::deriveKey($context, $salt);
+
+                $decrypted = openssl_decrypt(
+                    $ciphertext,
+                    self::$config['cipher'],
+                    $key,
+                    OPENSSL_RAW_DATA,
+                    $iv,
+                    $tag
+                );
+
+                return $decrypted === false ? '' : $decrypted;
+            }
+
+            $legacyIvLength = 16;
+            if (strlen($decoded) <= $legacyIvLength) {
+                return '';
+            }
+
+            $iv = substr($decoded, 0, $legacyIvLength);
+            $ciphertext = substr($decoded, $legacyIvLength);
+
+            $key = hash('sha256', 'flux_key_' . $context . '_2024', true);
+            $decrypted = openssl_decrypt($ciphertext, 'aes-256-cbc', $key, 0, $iv);
+
+            return $decrypted === false ? '' : $decrypted;
+        } catch (Throwable $e) {
+            if (class_exists('SecurityManager')) {
+                SecurityManager::logSecurityEvent('DECRYPTION_FAILURE', [
+                    'context' => $context,
+                    'error' => $e->getMessage()
+                ], 'ERROR');
+            }
             return '';
         }
-        
-        $iv = substr($data, 0, 16);
-        $encrypted = substr($data, 16);
-        
-        // Vérifier que l'IV a bien 16 bytes
-        if (strlen($iv) !== 16) {
-            return '';
-        }
-        
-        // Déchiffrer
-        $key = hash('sha256', 'flux_key_' . $context . '_2024', true);
-        $decrypted = openssl_decrypt($encrypted, 'aes-256-cbc', $key, 0, $iv);
-        
-        // Si le déchiffrement échoue, retourner une chaîne vide
-        return $decrypted === false ? '' : $decrypted;
     }
+
     
     /**
      * Chiffre un email avec validation

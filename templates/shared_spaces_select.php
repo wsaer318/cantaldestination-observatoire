@@ -145,7 +145,7 @@
             <div class="preview-container">
                 <?php if ($infographicParams['preview_id']): ?>
                     <!-- Prévisualisation capturée -->
-                    <img src="<?= url('/api/infographie/preview.php?id=' . htmlspecialchars($infographicParams['preview_id'])) ?>" 
+                    <img src="<?= signed_url('/api/infographie/preview.php', ['id' => $infographicParams['preview_id']], 600) ?>" 
                          alt="Prévisualisation de l'infographie" 
                          class="infographic-preview-image">
                 <?php else: ?>
