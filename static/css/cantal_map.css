@@ -1,0 +1,344 @@
+/**
+ * Styles pour la carte interactive du Cantal
+ * Zones d'observation touristique FluxVision
+ */
+
+/* Container principal de la carte */
+.map-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    align-items: start;
+}
+
+/* Carte interactive */
+.cantal-interactive-map {
+    width: 100%;
+    height: 500px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    background: var(--surface);
+    position: relative;
+    z-index: 1;
+}
+
+/* Panneau d'informations à côté de la carte */
+.map-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: sticky;
+    top: 2rem;
+}
+
+/* Statistiques de la carte */
+.map-stats {
+    background: var(--surface-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary);
+}
+
+.stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.stat-item i {
+    font-size: 1.5rem;
+    color: var(--primary);
+    width: 24px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--on-surface);
+    font-family: var(--title-font);
+    min-width: 60px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Actions de la carte */
+.map-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Marqueurs personnalisés */
+.custom-marker {
+    border: none !important;
+    background: transparent !important;
+}
+
+.marker-content {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.marker-content:hover {
+    transform: scale(1.1);
+    animation: none;
+}
+
+/* Animation pulse pour les marqueurs */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* Marqueur spécial station de ski */
+.ski-marker .marker-content {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-5px);
+    }
+    60% {
+        transform: translateY(-3px);
+    }
+}
+
+/* Légende de la carte */
+.map-legend {
+    font-family: var(--body-font);
+}
+
+.map-legend h5 {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Popup des zones */
+.zone-popup {
+    font-family: var(--body-font);
+    min-width: 200px;
+}
+
+.zone-popup h4 {
+    font-family: var(--title-font);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.popup-btn {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.popup-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Tooltips des zones */
+.zone-tooltip {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    padding: 6px 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.zone-tooltip::before {
+    border-top-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Icône spéciale station de ski */
+.ski-zone-icon {
+    background: transparent !important;
+    border: none !important;
+    pointer-events: none;
+}
+
+/* Responsive design amélioré */
+@media (max-width: 1200px) {
+    .map-container {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 1.5rem;
+    }
+    
+    .cantal-interactive-map {
+        height: 450px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .map-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .cantal-interactive-map {
+        height: 400px;
+    }
+    
+    .map-info {
+        position: static;
+        grid-row: 2;
+    }
+    
+    .map-stats {
+        padding: 1rem;
+    }
+    
+    .stat-item {
+        flex-direction: row;
+        text-align: left;
+        gap: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.6rem;
+        min-width: 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cantal-interactive-map {
+        height: 350px;
+        border-radius: 8px;
+    }
+    
+    .map-container {
+        gap: 1rem;
+    }
+    
+    .map-stats {
+        padding: 0.75rem;
+    }
+    
+    .stat-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .stat-item i {
+        font-size: 1.2rem;
+    }
+    
+    .stat-number {
+        font-size: 1.4rem;
+        min-width: auto;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    .map-actions .btn {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cantal-interactive-map {
+        height: 300px;
+        border-radius: 6px;
+    }
+    
+    .map-container {
+        margin-top: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.2rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+    }
+    
+    .map-stats {
+        padding: 0.5rem;
+    }
+    
+    .stat-item {
+        padding: 0.375rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Styles pour les contrôles Leaflet */
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-control-zoom a {
+    background: var(--surface) !important;
+    color: var(--on-surface) !important;
+    border: 1px solid var(--border) !important;
+    font-weight: bold !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+/* Personalisation des popups Leaflet */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-popup-tip {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Introduction de la carte */
+.map-intro {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.map-intro .section-description {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}

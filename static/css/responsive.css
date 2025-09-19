@@ -1,0 +1,764 @@
+/* ==========================================================================
+   RESPONSIVE DESIGN - FLUXVISION
+   ========================================================================== */
+
+/* Variables breakpoints centralisées */
+:root {
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --breakpoint-xxl: 1400px;
+    
+    /* Espacements responsive */
+    --padding-xs: 10px;
+    --padding-sm: 15px;
+    --padding-md: 20px;
+    --padding-lg: 25px;
+    --padding-xl: 30px;
+    
+    /* Tailles de police responsive */
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-md: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.25rem;
+}
+
+/* ==========================================================================
+   NAVBAR RESPONSIVE
+   ========================================================================== */
+
+/* Desktop et tablettes en paysage */
+@media (max-width: var(--breakpoint-xl)) {
+    .main-navbar {
+        padding: 0 var(--padding-md);
+    }
+    
+    .navbar-menu {
+        gap: 6px;
+    }
+    
+    .nav-item {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+    }
+    
+    .dropdown-menu {
+        min-width: 260px;
+    }
+}
+
+/* Tablettes */
+@media (max-width: var(--breakpoint-lg)) {
+    .main-navbar {
+        padding: 0 var(--padding-md);
+        height: auto;
+        min-height: 72px;
+    }
+    
+    .navbar-menu {
+        gap: 4px;
+    }
+    
+    .nav-item {
+        padding: 8px 12px;
+        font-size: var(--font-sm);
+    }
+    
+    .dropdown-menu {
+        min-width: 240px;
+        padding: 6px;
+    }
+    
+    .dropdown-item {
+        padding: 10px 14px;
+        font-size: var(--font-sm);
+    }
+    
+    .brand-name {
+        font-size: 1.25rem;
+    }
+    
+    .brand-subtitle {
+        font-size: 0.7rem;
+    }
+}
+
+/* Tablettes verticales et mobiles large */
+@media (max-width: var(--breakpoint-md)) {
+    .main-navbar {
+        padding: var(--padding-sm);
+        flex-wrap: wrap;
+        height: auto;
+    }
+    
+    .navbar-brand {
+        order: 1;
+        flex: 1;
+    }
+    
+    .navbar-actions {
+        order: 2;
+        flex-shrink: 0;
+    }
+    
+    .navbar-menu {
+        order: 3;
+        width: 100%;
+        justify-content: space-around;
+        padding: var(--padding-sm) 0;
+        border-top: 1px solid var(--border);
+        margin-top: var(--padding-sm);
+        gap: 8px;
+    }
+    
+    .nav-item {
+        padding: 8px 10px;
+        font-size: var(--font-xs);
+        flex-grow: 1;
+        text-align: center;
+    }
+    
+    .nav-item span {
+        display: none;
+    }
+    
+    .nav-item i {
+        font-size: 1.1rem;
+    }
+    
+    .dropdown-menu {
+        position: fixed;
+        top: auto;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90vw;
+        max-width: 320px;
+        min-width: unset;
+    }
+    
+    .brand-name {
+        font-size: 1.1rem;
+    }
+    
+    .brand-subtitle {
+        display: none;
+    }
+    
+    .user-name {
+        display: none;
+    }
+    
+    .login-button span {
+        display: none;
+    }
+    
+    .login-button {
+        padding: 8px;
+        min-width: unset;
+    }
+}
+
+/* Mobiles */
+@media (max-width: var(--breakpoint-sm)) {
+    .main-navbar {
+        padding: 10px;
+    }
+    
+    .brand-logo {
+        width: auto;
+        height: auto;
+        background: transparent;
+        border-radius: 0;
+    }
+    
+    .brand-name {
+        font-size: 1rem;
+    }
+    
+    .nav-item {
+        padding: 6px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .nav-item i {
+        font-size: 1rem;
+    }
+}
+
+/* ==========================================================================
+   LAYOUT RESPONSIVE
+   ========================================================================== */
+
+/* Ajustement du padding-top pour le contenu */
+@media (max-width: var(--breakpoint-md)) {
+    body {
+        padding-top: 120px; /* Plus d'espace pour navbar wrappée */
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    body {
+        padding-top: 100px;
+    }
+}
+
+/* Container responsive */
+@media (max-width: var(--breakpoint-xl)) {
+    .container {
+        max-width: 1140px;
+        padding: 0 var(--padding-md);
+    }
+}
+
+@media (max-width: var(--breakpoint-lg)) {
+    .container {
+        max-width: 960px;
+        grid-template-columns: 1fr;
+        gap: var(--padding-md);
+        padding: 0 var(--padding-md);
+    }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .container {
+        max-width: 720px;
+        padding: 0 var(--padding-sm);
+        margin-bottom: var(--padding-sm);
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .container {
+        padding: 0 var(--padding-xs);
+        border-radius: 12px;
+    }
+}
+
+/* ==========================================================================
+   SIDEBAR RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: var(--breakpoint-lg)) {
+    .sidebar {
+        width: 100%;
+        margin-bottom: var(--padding-md);
+    }
+    
+    .sidebar-header {
+        text-align: center;
+        padding: var(--padding-md);
+    }
+    
+    #fiches-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        padding: var(--padding-md);
+    }
+    
+    #fiches-list li {
+        text-align: center;
+        padding: 12px;
+        font-size: var(--font-sm);
+    }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .sidebar {
+        border-radius: 12px;
+        margin-bottom: var(--padding-sm);
+    }
+    
+    .sidebar-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    #fiches-list {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        padding: var(--padding-sm);
+    }
+    
+    #fiches-list li {
+        font-size: var(--font-xs);
+        padding: 10px;
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    #fiches-list {
+        grid-template-columns: 1fr;
+    }
+    
+    #fiches-list li {
+        font-size: var(--font-sm);
+    }
+}
+
+/* ==========================================================================
+   TABLEAUX DE BORD RESPONSIVE
+   ========================================================================== */
+
+/* Dashboard Grid */
+@media (max-width: var(--breakpoint-xl)) {
+    .dashboard-grid {
+        gap: var(--padding-md);
+    }
+}
+
+@media (max-width: var(--breakpoint-lg)) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: var(--padding-md);
+    }
+    
+    .kpi-column {
+        order: 1;
+        min-width: unset;
+    }
+    
+    .viz-column {
+        order: 2;
+    }
+}
+
+/* Key Figures */
+@media (max-width: var(--breakpoint-lg)) {
+    .key-figures-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--padding-md);
+    }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .key-figures-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--padding-sm);
+    }
+    
+    .figure-card {
+        padding: var(--padding-sm);
+    }
+    
+    .figure-card .value {
+        font-size: 2.2rem;
+    }
+    
+    .figure-card .indicator-title {
+        font-size: var(--font-xs);
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .key-figures-grid {
+        grid-template-columns: 1fr;
+        gap: var(--padding-sm);
+    }
+    
+    .figure-card .value {
+        font-size: 2rem;
+    }
+}
+
+/* Charts Grid */
+@media (max-width: var(--breakpoint-lg)) {
+    .charts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--padding-md);
+    }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+        gap: var(--padding-sm);
+    }
+    /* Hauteur des charts gérée par les feuilles spécifiques de chaque dashboard */
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    /* Hauteur et typographies des charts gérées par les feuilles spécifiques */
+    .chart-card h3 { font-size: var(--font-md); }
+    .chart-summary { font-size: var(--font-sm); }
+}
+
+/* Profile Charts */
+@media (max-width: var(--breakpoint-md)) {
+    .profile-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   FILTRES RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: var(--breakpoint-lg)) {
+    .filters-container {
+        gap: var(--padding-md);
+        padding: var(--padding-md);
+    }
+    
+    .filter-select {
+        min-width: 180px;
+    }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .filters-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--padding-sm);
+        padding: var(--padding-sm);
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .filter-select {
+        width: 100%;
+        min-width: unset;
+        padding: 10px 12px;
+    }
+}
+
+/* ==========================================================================
+   ONGLETS RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: var(--breakpoint-md)) {
+    .tabs-navigation {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .tab-button {
+        width: 100%;
+        max-width: 300px;
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .tab-button {
+        padding: 10px 16px;
+        font-size: var(--font-sm);
+    }
+}
+
+/* ==========================================================================
+   COMPARAISON RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: var(--breakpoint-md)) {
+    .comparison-content {
+        flex-direction: column;
+        gap: var(--padding-md);
+        align-items: center;
+    }
+    
+    .comparison-divider {
+        width: 80%;
+        height: 1px;
+        background: var(--border);
+    }
+    
+    .comparison-value {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .comparison-value {
+        font-size: 1.5rem;
+    }
+}
+
+/* ==========================================================================
+   HEADERS ET TITRES RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: var(--breakpoint-lg)) {
+    .dataviz-header {
+        padding: 30px 0 40px;
+    }
+    
+    .dataviz-header h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        letter-spacing: 2px;
+    }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .dataviz-header {
+        padding: var(--padding-md) 0 var(--padding-lg);
+    }
+    
+    .dataviz-header h1 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        letter-spacing: 1px;
+    }
+    
+    .dataviz-header .subtitle {
+        font-size: var(--font-md);
+    }
+    
+    .section-title {
+        font-size: clamp(1.5rem, 4vw, 1.8rem);
+        margin-bottom: var(--padding-lg);
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .dataviz-header h1 {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+    
+    .section-title {
+        font-size: clamp(1.2rem, 5vw, 1.5rem);
+        margin-bottom: var(--padding-md);
+    }
+}
+
+/* ==========================================================================
+   TABLEAUX RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: var(--breakpoint-lg)) {
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .table-responsive {
+        margin: 0 -15px;
+        border-radius: 0;
+    }
+    
+    table {
+        font-size: var(--font-sm);
+        min-width: 800px; /* Assure une largeur minimum pour scroll horizontal */
+    }
+    
+    table th,
+    table td {
+        padding: 8px 6px;
+        min-width: 80px;
+    }
+    
+    table th {
+        font-size: var(--font-xs);
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+        z-index: 10;
+    }
+    
+    /* Style pour les premières colonnes importantes */
+    table th:first-child,
+    table td:first-child,
+    table th:nth-child(2),
+    table td:nth-child(2) {
+        position: sticky;
+        left: 0;
+        background: var(--surface);
+        z-index: 5;
+    }
+    
+    table th:nth-child(2),
+    table td:nth-child(2) {
+        left: 40px; /* Ajuster selon la largeur de la première colonne */
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    table {
+        min-width: 600px;
+    }
+    
+    table th,
+    table td {
+        padding: 6px 4px;
+        font-size: var(--font-xs);
+        min-width: 60px;
+    }
+    
+    /* Masquer certaines colonnes moins importantes sur mobile */
+    table .hide-mobile {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   FORMULAIRES RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: var(--breakpoint-md)) {
+    .form-group {
+        margin-bottom: var(--padding-sm);
+    }
+    
+    .form-group label {
+        font-size: var(--font-sm);
+        margin-bottom: 6px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: var(--font-sm);
+    }
+}
+
+/* ==========================================================================
+   BOUTONS RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: var(--breakpoint-md)) {
+    .btn {
+        padding: 10px 20px;
+        font-size: var(--font-sm);
+    }
+    
+    .btn--small {
+        padding: 6px 12px;
+        font-size: var(--font-xs);
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .btn {
+        padding: 8px 16px;
+        font-size: var(--font-sm);
+    }
+    
+    .btn i {
+        font-size: var(--font-sm);
+    }
+}
+
+/* ==========================================================================
+   UTILITAIRES RESPONSIVE
+   ========================================================================== */
+
+/* Classes d'aide pour cacher/montrer selon la taille d'écran */
+@media (max-width: var(--breakpoint-sm)) {
+    .hide-xs { display: none !important; }
+    .show-xs { display: block !important; }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .hide-sm { display: none !important; }
+    .show-sm { display: block !important; }
+}
+
+@media (max-width: var(--breakpoint-lg)) {
+    .hide-md { display: none !important; }
+    .show-md-down { display: block !important; }
+}
+
+@media (min-width: var(--breakpoint-md)) {
+    .show-md { display: block !important; }
+    .hide-md-up { display: none !important; }
+}
+
+@media (min-width: var(--breakpoint-lg)) {
+    .show-lg { display: block !important; }
+    .hide-lg-up { display: none !important; }
+}
+
+/* Classes flexbox responsive */
+.flex-column-sm {
+    display: flex;
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .flex-column-sm {
+        flex-direction: column;
+    }
+}
+
+.flex-column-md {
+    display: flex;
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .flex-column-md {
+        flex-direction: column;
+    }
+}
+
+/* Classes de largeur responsive */
+.w-100 { width: 100% !important; }
+.w-50 { width: 50% !important; }
+
+@media (max-width: var(--breakpoint-md)) {
+    .w-md-100 { width: 100% !important; }
+    .w-md-50 { width: 50% !important; }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .w-sm-100 { width: 100% !important; }
+}
+
+/* Espacement responsive */
+.p-responsive {
+    padding: var(--padding-md);
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .p-responsive {
+        padding: var(--padding-sm);
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .p-responsive {
+        padding: var(--padding-xs);
+    }
+}
+
+/* Texte responsive */
+.text-responsive {
+    font-size: var(--font-md);
+}
+
+@media (max-width: var(--breakpoint-md)) {
+    .text-responsive {
+        font-size: var(--font-sm);
+    }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+    .text-responsive {
+        font-size: var(--font-xs);
+    }
+}
+
+/* Mobile first responsive */
+@media (max-width: 768px) {
+    body {
+        padding-top: 120px;
+    }
+    
+    .main-navbar {
+        flex-wrap: wrap;
+        height: auto;
+    }
+    
+    .container {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+} 

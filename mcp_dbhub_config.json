@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "dbhub-mysql": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--transport",
+        "stdio",
+        "--dsn",
+        "mysql://root:@localhost:3307/fluxvision?sslmode=disable"
+      ]
+    },
+    "dbhub-postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--transport",
+        "stdio",
+        "--dsn",
+        "postgres://user:password@localhost:5432/database?sslmode=disable"
+      ]
+    },
+    "dbhub-sqlserver": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--transport",
+        "stdio",
+        "--dsn",
+        "sqlserver://user:password@localhost:1433/database?sslmode=disable"
+      ]
+    }
+  }
+} 

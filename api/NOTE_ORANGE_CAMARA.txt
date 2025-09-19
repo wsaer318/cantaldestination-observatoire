@@ -1,0 +1,21 @@
+📂 DOSSIER ORANGE_CAMARA
+========================
+
+Les fichiers de la nouvelle API Orange CAMARA ont été déplacés dans :
+→ api/orange_camara/
+
+Contenu :
+- Scripts Python pour la nouvelle API
+- Configuration OAuth 2.0
+- Documentation de migration
+- Outils de test et comparaison
+
+⚠️ IMPORTANT :
+L'API CAMARA est limitée au Grand Paris uniquement.
+Elle n'est PAS utilisable pour le département du Cantal.
+
+Pour plus d'informations :
+→ Lire api/orange_camara/README.md
+
+Créé le : 2025-01-08
+Statut : API non compatible avec le Cantal

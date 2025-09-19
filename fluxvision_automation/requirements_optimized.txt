@@ -1,0 +1,32 @@
+# FluxVision Automation - Dépendances optimisées mémoire
+# Installation: pip install -r requirements_optimized.txt
+
+# Core data processing (version optimisée mémoire)
+polars>=0.20.0,<1.0.0
+
+# System monitoring
+psutil>=5.9.0
+
+# Standard libraries (normalement incluses avec Python)
+# csv - built-in
+# json - built-in  
+# os - built-in
+# shutil - built-in
+# logging - built-in
+# re - built-in
+# hashlib - built-in
+# zipfile - built-in
+# datetime - built-in
+# concurrent.futures - built-in (Python 3.2+)
+# gc - built-in
+# sys - built-in
+
+# Windows-specific (inclus avec Python sur Windows)
+# msvcrt - built-in on Windows
+
+# Unix-specific (inclus avec Python sur Unix/Linux)  
+# fcntl - built-in on Unix/Linux
+
+# Optionnel pour de meilleures performances
+# numpy>=1.21.0  # Déjà inclus avec polars
+# pyarrow>=10.0.0  # Déjà inclus avec polars 

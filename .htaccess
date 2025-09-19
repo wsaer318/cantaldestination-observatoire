@@ -1,0 +1,106 @@
+RewriteEngine On
+
+# --- Forward du header Authorization vers PHP ---
+SetEnvIfNoCase Authorization "^(.*)$" HTTP_AUTHORIZATION=$1
+RewriteCond %{HTTP:Authorization} ^(.*)$
+RewriteRule ^ - [E=HTTP_AUTHORIZATION:%1]
+
+# ------------------------------
+# Base
+# ------------------------------
+Options -Indexes
+
+# Autoriser Let's Encrypt
+RewriteRule ^\.well-known/ - [L]
+
+# Bloquer méthodes dangereuses
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)$ [NC]
+RewriteRule ^ - [F]
+
+# Bloquer fichiers/dossiers cachés (.git, .env, etc.)
+RewriteRule "(^|/)\." - [F]
+
+# Bloquer dossiers sensibles (car <Files> ne gère pas les /)
+RewriteRule ^(config|classes|vendor|storage|backups)/ - [F,L]
+
+# Bloquer quelques fichiers sensibles à la racine
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(\.env|composer\.(json|lock)|package\.json|yarn\.lock|phpunit\.xml|\.htaccess|\.htpasswd)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "^(\.env|composer\.(json|lock)|package\.json|yarn\.lock|phpunit\.xml|\.htaccess|\.htpasswd)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+# ------------------------------
+# CORS (restreint aux origines connues)
+# ------------------------------
+<IfModule mod_headers.c>
+  # Adapter la liste aux origines autorisées (prod + dev)
+  SetEnvIfNoCase Origin "^https?://(localhost(:[0-9]+)?|127\.0\.0\.1(:[0-9]+)?|observatoire\.cantal-destination\.com)$" ACAO=$0
+
+  Header always set Vary "Origin"
+  Header always set Access-Control-Allow-Origin "%{ACAO}e" env=ACAO
+  Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+  Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, X-CSRF-Token, X-Api-Token"
+  # Header always set Access-Control-Allow-Credentials "true"
+
+  # Pour les preflights seulement
+  Header always set Access-Control-Max-Age "86400" "expr=%{REQUEST_METHOD} = 'OPTIONS'"
+
+  # En-têtes de sécurité
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always set Cross-Origin-Resource-Policy "same-site"
+</IfModule>
+
+# ------------------------------
+# Préflight OPTIONS : 204 sans redirection
+# ------------------------------
+RewriteCond %{REQUEST_METHOD} =OPTIONS
+RewriteRule ^api/ - [R=204,L]
+
+# ------------------------------
+# Routing APIs (patterns restreints)
+# ------------------------------
+RewriteRule ^api/shared-spaces/?$                         api/shared-spaces/router.php [L,QSA]
+RewriteRule ^api/shared-spaces/infographics/([A-Za-z0-9/_-]+)$ api/shared-spaces/infographics.php [L,QSA]
+RewriteRule ^api/shared-spaces/([A-Za-z0-9/_-]+)$         api/shared-spaces/router.php [L,QSA]
+
+RewriteRule ^api/users/available/?$                      api/users/available.php [L,QSA]
+# Interdit les points pour éviter ../ et fichiers cachés
+RewriteRule ^api/users/([A-Za-z0-9/_-]+)$                 api/users/$1 [L,QSA]
+
+# ------------------------------
+# Routing API Database (nouveau)
+# ------------------------------
+RewriteRule ^api/database/tables_info/?$                  api/database/tables_info.php [L,QSA]
+RewriteRule ^api/database/documentation/?$                api/database/documentation.php [L,QSA]
+
+# --- API Database (nouveaux endpoints) ---
+RewriteRule ^api/database/facts/upsert/?$    api/database/facts_upsert.php [L,QSA]
+RewriteRule ^api/database/dim/?$             api/database/dim.php          [L,QSA]
+RewriteRule ^api/database/schema/ensure/?$   api/database/schema_ensure.php [L,QSA]
+RewriteRule ^api/database/schema/drop_test/?$ api/database/schema_drop_test.php [L,QSA]
+
+# --- API de mobilité ---
+RewriteRule ^api/communes_excursion/?$              api/communes_excursion.php [L,QSA]
+RewriteRule ^api/departements_excursion/?$           api/departements_excursion.php [L,QSA]
+RewriteRule ^api/regions_excursion/?$               api/regions_excursion.php [L,QSA]
+
+# --- API Infographie Communes Excursion ---
+RewriteRule ^api/infographie/communes_excursion/?$  api/infographie/infographie_communes_excursion.php [L,QSA]
+
+# ------------------------------
+# Routing principal (hors /api)
+# ------------------------------
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]

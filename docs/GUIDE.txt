@@ -1,0 +1,37 @@
+
+🚀 GUIDE SIMPLE POUR COPIER VOTRE BASE DE DONNÉES
+
+ÉTAPE 1: Aller sur phpMyAdmin
+============================
+• Ouvrez votre navigateur web
+• Allez à: https://srv.cantal-destination.com/phpmonadmin/
+• Utilisateur: observatoire
+• Mot de passe: Sf4d8gsfsdGsg59sqq54g
+
+ÉTAPE 2: Exporter la base
+=========================
+• Cliquez sur "observatoire" dans le menu de gauche
+• Cliquez sur "Exporter" en haut
+• Dans "Format personnalisé":
+  - Format: SQL
+  - ✅ Cochez "Structure"
+  - ✅ Cochez "Données"
+  - ✅ Cochez "Transmettre"
+• Cliquez sur "Exécuter"
+
+ÉTAPE 3: Sauvegarder le fichier
+==============================
+• Le navigateur télécharge un fichier SQL
+• Sauvegardez-le dans: C:\xampp\htdocs\fluxvision_fin\
+• Nommez-le: observatoire_export.sql
+
+ÉTAPE 4: Importer automatiquement
+=================================
+• Revenez à ce dossier
+• Double-cliquez sur: import_auto.bat
+• C'est tout ! La base sera copiée automatiquement
+
+⏱️ TEMPS ESTIMÉ: 45 minutes pour 10 Go
+💾 ESPACE NÉCESSAIRE: 20 Go
+
+C'EST TOUT ! 😊

@@ -1,0 +1,80 @@
+﻿# ------------------------------
+# Secrets et configuration locale
+# ------------------------------
+.env
+.env.*
+!.env.example
+config/passwords.php
+config/local.php
+database.local.php
+
+# ------------------------------
+# Dépendances et environnements
+# ------------------------------
+node_modules/
+vendor/
+.venv/
+.pnp.cjs
+.pnp.loader.mjs
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ------------------------------
+# Logs et fichiers générés
+# ------------------------------
+logs/
+api/database/storage/logs/
+*.log
+*.log.*
+etl_fluxvision_*.log
+security.log
+
+# ------------------------------
+# Données, caches et temporaires
+# ------------------------------
+data/
+cache/
+temp/
+ftp_downloads/
+downloads/
+cache_test/
+logs_test/
+cache/tableau_bord/
+etl_checkpoint.json
+saisons_data.php
+
+# FluxVision automation (gros jeux de données)
+fluxvision_automation/data/
+fluxvision_automation/logs/
+fluxvision_automation/exports/
+fluxvision_automation/**/data/
+fluxvision_automation/**/logs/
+fluxvision_automation/**/output/
+fluxvision_automation/**/*.csv
+fluxvision_automation/**/*.zip
+
+# ------------------------------
+# Sauvegardes / archives
+# ------------------------------
+*.bak
+*.backup
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# ------------------------------
+# Fichiers d’éditeur / système
+# ------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,2040 @@
+{
+  "hashes": {
+    "B1 2019 nouveauFormat_14429248.zip": "10b4115bcd5610352e8810f1878df1473369f938dee81f43986f2aac0085626d",
+    "B1 2020 nouveauFormat_14444651.zip": "dd3f32b7decae5cda711981df22deb7ef51a66839275a91a9bd37f581a3e238b",
+    "B1 2021_14511851.zip": "6a8788d5f82002c50534ae31f12d4642e00e3c15c1b2056a331ddaedd021dbaf",
+    "B1 2022_14529204.zip": "8118f638f3b2fdd10fe94c2f7689f3163ccb43c078c9bdf500b45a1e671b1197",
+    "B1 2023_14541977.zip": "b62b5b65808466a5b2d662fddff5687ad40d62b1e09332abfe8d4af7651da85c",
+    "B1 2024_1461529.zip": "4cbf53b5b2610af46746aa62b904d6dd10148782b694950d538d76a0d8a939ec",
+    "B1 2025_1461554.zip": "7ee826799a97f835421c4ac49b1d0ec0f302407afd502c2e783341d4054d220f",
+    "B2 2019 nouveauFormat_14654256.zip": "0a2a1ecb4c7923063837de2dbafc8ad131ad452c29adeed253f3bfe2693fe4fd",
+    "B2 2020 nouveauFormat_1483651.zip": "4be74a8bd9f6634fe6d9a18d5d2cea7f0e596ff353d6f96a1a8726128dd649db",
+    "B2 2021_14817971.zip": "ba93bea77804cc27d38750c64a60e31c42cd41708dce3ece41bba9e7be471021",
+    "B2 2022_1483086.zip": "2fc42148ca042f66b608ad4579e5b452f994b7b05e04560c4f9330f0593548c9",
+    "B2 2023_14846787.zip": "86d75e60ec43a48d3cf5c6a6cceac147f91037ed3d066f188ebaa0bcc546cabf",
+    "B2 2024_1494383.zip": "25845295d5fbc72174515dfcf0a17d2786f0e2067649c31594dc6670c27189e8",
+    "B2 2025_14924670.zip": "df28e6f52fcabeee78ca920807d1b39265078315e2a1636bfee67712abdd226c",
+    "B3 2019 nouveauFormat_14946305.zip": "39dc8f97a09f65f1fe6c414c06f5146c620756aaa97609706646806d2a867c59",
+    "B3 2020_15015473.zip": "87e4e5946c0e5586c517906f9176891e3cf8fce08c57c17d63bee3df0c77d691",
+    "B3 2021_15030143.zip": "34bedeb79d955054d92ffd1e94bb53d8bd1426ea4970ef9ce752ae1159d36f13",
+    "B3 2022_15046617.zip": "11b276827ccb9a0168c9f5fb730650a5e54e238b7aaed5dffa681fb05e2cf77e",
+    "B3 2023_15058245.zip": "504b64bafe0bb64d8d64e29352571975d5a902205c80f327c22f5dff64c62cd5",
+    "B3 2024_15110220.zip": "1c680ea111359a96e5d23899aa3bf9d753e7893e011043361383f01e283aa3e1",
+    "B3 2025_15129499.zip": "face530e1ccebe25e278f705eb026341a09ac7a1bb321dd7959e3910cebbc775",
+    "B4 2019 nouveauFormat_15141489.zip": "d6751b505c88fddd7aa6f6bc5b3774a1dbd3f4263677e31367b8e63e871291d7",
+    "B4 2020_15154902.zip": "619a6f0ea65f9ced8a17f1cb6aeec141790cbab2d490213fef0d48b2124e80a4",
+    "B4 2021_1525684.zip": "015a9c57b456b205a057af0559d552ba787896a7a624094c088e12fe7596b75e",
+    "B4 2022_15221770.zip": "d840541d4d99c7291070ae6956097b221790b6c27403ec46e9f424177719987b",
+    "B4 2023_1537712.zip": "6f9c77a01aae8eb8ba80d2ceaeae787435ab82c379e3bc8e9ef227acaf79ef67",
+    "B4 2024_15321506.zip": "78d63d372d531a905e5331812aeed9d50365aafd8d5b27ecdc5e0a5d1bcade50",
+    "B5 2019 nouveauFormat_15330338.zip": "ffca77e14fa4228f58e4bf60a7c8410950918d1770edaaca1cb35a48985b204e",
+    "B5 2020_15337634.zip": "8243f435345ad12da9043cc1b4db05ac7eda77403fe165dbb4bd294825a1822f",
+    "B5 2021_15349524.zip": "b0d2439f9abce6d2ec70b7c02b3f80b93913ef2f7b10b425b7c1e593fddc7e62",
+    "B5 2022_15356994.zip": "13c8b5f4c3fe13007e712d3d4cc3d1e020c08202cbd9024162ba4c4d1bf00586",
+    "B5 2023_1544368.zip": "c6d9415da81721da8aff7f2c377ec5fff7b04bfc332c7a878b15e954c1f6a660",
+    "B5 2024_15412124.zip": "007da1b26e9518cc57ed63cce22239d091f444fb80c4afbad56c7b0a31484c67",
+    "B6 2019 nouveauFormat_15423234.zip": "080aa43f27c24a8c68bcc132fb746584d94852f8d653d3ad43ab35e16cb62586",
+    "B6 2020_15431388.zip": "670e9a8cd3160ca8f56993a844e17e7362f2ba419ebda435027936e1f7af34be",
+    "B6 2021_15448210.zip": "ec99c6533aca4098a28a0809ac12b28f9894fa5cdbcbe4a6a8fb654fdfee0f35",
+    "B6 2022_15458297.zip": "b63fe7b0e1086eef03a01ff8ddff7485ac8e3ff476bcafbbc08e857b747af603",
+    "B6 2023_1557958.zip": "71001d547857177abce6da81e334ae894e9b46c02619c38003591d5499b5b327",
+    "B6 2024_1551866.zip": "553a949f07d85f91ec2292842974f7220d6d1c0c569757c1dd071cd60f981137"
+  },
+  "history": {
+    "B1_CA du bassin dAurillac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CA du Bassin dAurillac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CA du Bassin dAurillac_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CA du Bassin dAurillac_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CABA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CABA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CABA_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Cantal": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Cantal_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Cantal_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Cantal_003": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Cantal_004": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Cantal_005": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Cantal_006": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Carlades": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Carlades_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Carlades_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC du Carlade": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC du Carlade_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC du Carlade_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC du Pays de Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC du Pays de Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC du Pays de Salers_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC du Pays de Salers_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC Sumene Artense": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CC Sumene Artense_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CCSA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CCSA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_CCSA_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Chataigneraie": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Chataigneraie_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Chataigneraie_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Gentiane": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Gentiane_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Gentiane_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Hautes Terres Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Hautes Terres Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Hautes Terres Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Hautes Terres Communaute_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_HTC": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_HTC_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_HTC_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays de Mauriac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays de Mauriac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays de Mauriac_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays Saint Flour": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays Saint Flour_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays Saint Flour_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Pays Salers_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Reste Departement": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Saint Flour Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_St Flour Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_St Flour Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_St Flour Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Station de Ski": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Station de Ski_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Station de Ski_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Station Thermale de Chaudes-Aigues": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Station": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Station_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Station_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Val Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Val Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Val Truyere_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1_Vallee de la Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CA du bassin dAurillac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CA du Bassin dAurillac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CA du Bassin dAurillac_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CA du Bassin dAurillac_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CABA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CABA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CABA_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Cantal": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Cantal_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Cantal_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Cantal_003": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Cantal_004": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Cantal_005": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Cantal_006": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Carlades": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Carlades_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Carlades_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC du Carlade": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC du Carlade_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC du Carlade_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC du Pays de Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC du Pays de Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC du Pays de Salers_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC du Pays de Salers_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC Sumene Artense": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CC Sumene Artense_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CCSA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_CCSA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Chataigneraie": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Chataigneraie_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Chataigneraie_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Gentiane": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Gentiane_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Gentiane_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Hautes Terres Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Hautes Terres Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Hautes Terres Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Hautes Terres Communaute_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_HTC": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_HTC_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_HTC_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays de Mauriac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays de Mauriac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays de Mauriac_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays Saint Flour": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays Saint Flour_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays Saint Flour_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Pays Salers_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Reste Departement": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Saint Flour Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_St Flour Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_St Flour Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_St Flour Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Station de Ski": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Station de Ski_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Station de Ski_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Station Thermale de Chaudes-Aigues": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Station": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Station_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Station_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Val Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Val Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Val Truyere_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2_Vallee de la Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2025_185232977": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_2023B3": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_2023B4": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CA du Bassin dAurillac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CA du Bassin dAurillac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CA du Bassin dAurillac_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CA du Bassin dAurillac_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CABA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CABA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Cantal": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Cantal_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Cantal_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Cantal_003": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Cantal_004": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Cantal_005": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Carlades": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Carlades_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC du Carlade": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC du Carlade_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC du Carlade_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC du Carlade_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC du Pays de Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC du Pays de Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC du Pays de Salers_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC du Pays de Salers_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC Sumene Artense": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CC Sumene Artense_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CCSA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_CCSA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Chataigneraie": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Chataigneraie_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Gentiane": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Gentiane_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Hautes Terres Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Hautes Terres Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Hautes Terres Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Hautes Terres Communaute_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_HTC": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_HTC_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Pays de Mauriac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Pays de Mauriac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Pays Saint Flour": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Pays Saint Flour_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Pays Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Pays Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_St Flour Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_St Flour Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_St Flour Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_St Flour Communaute_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Station de Ski": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Station de Ski_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Station de Ski_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Station de Ski_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Station": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Station_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Val Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Val Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3_Vallee de la Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CA du Bassin dAurillac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CA du Bassin dAurillac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CA du Bassin dAurillac_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CA du Bassin dAurillac_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CABA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CABA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Cantal": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Cantal_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Cantal_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Cantal_003": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Cantal_004": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Cantal_005": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Carlades": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Carlades_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC du Carlade": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC du Carlade_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC du Carlade_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC du Carlade_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC du Pays de Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC du Pays de Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC du Pays de Salers_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC du Pays de Salers_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC Sumene Artense": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CC Sumene Artense_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CCSA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_CCSA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Chataigneraie": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Chataigneraie_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Gentiane": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Gentiane_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Hautes Terres Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Hautes Terres Communaute_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Hautes Terres Communaute_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Hautes Terres Communaute_003": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_HTC": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_HTC_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Pays de Mauriac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Pays de Mauriac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Pays Saint Flour": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Pays Saint Flour_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Pays Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Pays Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_St Flour Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_St Flour Communaute_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_St Flour Communaute_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_St Flour Communaute_003": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Station de Ski": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Station de Ski_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Station de Ski_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Station de Ski_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Station": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Station_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Val Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Val Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Vallee de la Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4_Vallee de la Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CA du Bassin dAurillac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CA du Bassin dAurillac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CA du Bassin dAurillac_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CA du Bassin dAurillac_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CABA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CABA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Cantal": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Cantal_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Cantal_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Cantal_003": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Cantal_004": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Cantal_005": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Carlades": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Carlades_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC du Carlade": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC du Carlade_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC du Carlade_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC du Carlade_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC du Pays de Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC du Pays de Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC du Pays de Salers_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC du Pays de Salers_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC Sumene Artense": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CC Sumene Artense_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CCSA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_CCSA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Chataigneraie": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Chataigneraie_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Gentiane": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Gentiane_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Hautes Terres Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Hautes Terres Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Hautes Terres Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Hautes Terres Communaute_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_HTC": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_HTC_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Pays de Mauriac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Pays de Mauriac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Pays Saint Flour": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Pays Saint Flour_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Pays Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Pays Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_St Flour Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_St Flour Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_St Flour Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_St Flour Communaute_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Station de Ski": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Station de Ski_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Station de Ski_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Station de Ski_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Station": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Station_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Val Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Val Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Vallee de la Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5_Vallee de la Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CA du Bassin dAurillac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CA du Bassin dAurillac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CA du Bassin dAurillac_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CA du Bassin dAurillac_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CABA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CABA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Cantal": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Cantal_001": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Cantal_002": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Cantal_003": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Cantal_004": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Cantal_005": {
+      "processed_at": "2025-08-15T21:14:23.871290+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Carlades": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Carlades_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC du Carlade": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC du Carlade_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC du Carlade_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC du Carlade_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC du Pays de Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC du Pays de Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC du Pays de Salers_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC du Pays de Salers_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC Sumene Artense": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CC Sumene Artense_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CCSA": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_CCSA_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Chataigneraie": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Chataigneraie_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Gentiane": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Gentiane_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Hautes Terres Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Hautes Terres Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Hautes Terres Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Hautes Terres Communaute_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_HTC": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_HTC_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Pays de Mauriac": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Pays de Mauriac_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Pays Saint Flour": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Pays Saint Flour_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Pays Salers": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Pays Salers_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_St Flour Communaute": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_St Flour Communaute_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_St Flour Communaute_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_St Flour Communaute_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Station de Ski": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Station de Ski_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Station de Ski_002": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Station de Ski_003": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Station": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Station_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Val Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Val Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Vallee de la Truyere": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6_Vallee de la Truyere_001": {
+      "processed_at": "2025-09-02T05:59:28.827614+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2025_74251369": {
+      "processed_at": "2025-09-02T05:51:21.457460+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1 2019 nouveauFormat_14429248": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1 2020 nouveauFormat_14444651": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1 2021_14511851": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1 2022_14529204": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1 2023_14541977": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1 2024_1461529": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B1 2025_1461554": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2 2019 nouveauFormat_14654256": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2 2020 nouveauFormat_1483651": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2 2021_14817971": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2 2022_1483086": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2 2023_14846787": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2 2024_1494383": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B2 2025_14924670": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2019 nouveauFormat_14946305": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2020_15015473": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2021_15030143": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2022_15046617": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2023_15058245": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2024_15110220": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B3 2025_15129499": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4 2019 nouveauFormat_15141489": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4 2020_15154902": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4 2021_1525684": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4 2022_15221770": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4 2023_1537712": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B4 2024_15321506": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5 2019 nouveauFormat_15330338": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5 2020_15337634": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5 2021_15349524": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5 2022_15356994": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5 2023_1544368": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B5 2024_15412124": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6 2019 nouveauFormat_15423234": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6 2020_15431388": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6 2021_15448210": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6 2022_15458297": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6 2023_1557958": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    },
+    "B6 2024_1551866": {
+      "processed_at": "2025-09-10T23:58:19.298076+00:00",
+      "status": "extracted",
+      "extracted_to": "C:\\xampp\\htdocs\\fluxvision_fin\\fluxvision_automation\\data\\data_extracted"
+    }
+  }
+}

@@ -1,0 +1,283 @@
+<?php
+/**
+ * API Bloc D1 avec Cache - Départements  
+ * Version avec mise en cache pour améliorer drastiquement les performances
+ */
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Inclure le nouveau gestionnaire de cache organisé
+require_once __DIR__ . '/CacheManager.php';
+
+// Récupération directe des paramètres
+$annee = $_GET['annee'] ?? null;
+$periode = $_GET['periode'] ?? null;
+$zone = $_GET['zone'] ?? null;
+$debutOverride = $_GET['debut'] ?? null;
+$finOverride = $_GET['fin'] ?? null;
+$debug = isset($_GET['debug']) && $_GET['debug'] === '1';
+$limit = (int)($_GET['limit'] ?? 15);
+
+if (!$annee || !$periode || !$zone) {
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Paramètres manquants: annee, periode, zone requis']);
+    exit;
+}
+
+// Inclure le gestionnaire intelligent des périodes
+require_once __DIR__ . '/periodes_manager_db.php';
+require_once __DIR__ . '/../../classes/ZoneMapper.php';
+
+/**
+ * Calcule les plages de dates selon la période - VERSION INTELLIGENTE
+ * Utilise les vraies dates depuis la base de données
+ * FONCTION SUPPRIMÉE : Déjà déclarée dans infographie_indicateurs_cles.php
+ */
+// // function calculateWorkingDateRanges($annee, $periode) {
+// //     return PeriodesManagerDB::calculateDateRanges($annee, $periode);
+// // }
+
+try {
+    // Initialiser le nouveau gestionnaire de cache
+    $cacheManager = new CantalDestinationCacheManager();
+    
+    // Paramètres de cache
+    $cacheParams = [
+        'annee' => $annee,
+        'periode' => $periode,
+        'zone' => $zone,
+        'limit' => $limit
+    ];
+    
+    // Vérifier le cache d'abord
+    $cachedData = $cacheManager->get('infographie_departements', $cacheParams);
+    if ($cachedData !== null) {
+        header('Content-Type: application/json');
+        header('X-Cache-Status: HIT');
+        header('X-Cache-Category: infographie_departements');
+        echo json_encode($cachedData, JSON_PRETTY_PRINT);
+        exit;
+    }
+    
+    // Cache miss - calculer les données
+    
+    // Connexion directe à la base
+    // Utiliser notre système de configuration de base de données
+    require_once dirname(dirname(__DIR__)) . '/database.php';
+    $pdo = DatabaseConfig::getConnection();
+    
+    // Tables temporaires supprimées - utilisation directe des tables principales
+    
+    // Normalisation des paramètres
+    $zoneMapped = ZoneMapper::displayToBase($zone);
+
+    // Gestion spéciale pour HAUTES TERRES : inclure les données historiques
+    $zoneIds = [$pdo->query("SELECT id_zone FROM dim_zones_observation WHERE nom_zone = '$zoneMapped'")->fetch()['id_zone']];
+    if ($zoneMapped === 'HAUTES TERRES') {
+        // Récupérer l'ID de HAUTES TERRES COMMUNAUTE pour l'historique 2019-2022
+        $historiqueZone = $pdo->query("SELECT id_zone FROM dim_zones_observation WHERE nom_zone = 'HAUTES TERRES COMMUNAUTE'")->fetch();
+        if ($historiqueZone) {
+            $zoneIds[] = $historiqueZone['id_zone'];
+        }
+    }
+
+    // Calcul des plages de dates (support override début/fin)
+    if ($debutOverride && $finOverride) {
+        $start = new DateTime($debutOverride . ' 00:00:00');
+        $end = new DateTime($finOverride . ' 23:59:59');
+        $dateRanges = [ 'start' => $start->format('Y-m-d H:i:s'), 'end' => $end->format('Y-m-d H:i:s') ];
+        $s1 = (clone $start)->modify('-1 year');
+        $e1 = (clone $end)->modify('-1 year');
+        $prevDateRanges = [ 'start' => $s1->format('Y-m-d H:i:s'), 'end' => $e1->format('Y-m-d H:i:s') ];
+    } else {
+        // Calcul des plages de dates selon la période
+        $dateRanges = PeriodesManagerDB::calculateDateRanges($annee, $periode);
+        $prevYear = (int)$annee - 1;
+        $prevDateRanges = PeriodesManagerDB::calculateDateRanges($prevYear, $periode);
+    }
+    
+    // Vérification que la table existe
+    $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
+    if (!in_array('fact_nuitees_departements', $tables)) {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Table fact_nuitees_departements non disponible']);
+        exit;
+    }
+    
+    // Pré-résoudre les IDs des dimensions
+    $dimensionIds = getDimensionIds($pdo, $zoneIds);
+    
+    // Requête optimisée avec agrégation directe pour de meilleures performances
+    $sql = "
+        SELECT 
+            d.nom_departement,
+            d.nom_region,
+            d.nom_nouvelle_region,
+            COALESCE(current_data.n_nuitees, 0) as n_nuitees,
+            COALESCE(prev_data.n_nuitees_n1, 0) as n_nuitees_n1
+        FROM dim_departements d
+        LEFT JOIN (
+            SELECT 
+                id_departement,
+                SUM(volume) as n_nuitees
+            FROM fact_nuitees_departements 
+            WHERE date BETWEEN ? AND ?
+            AND id_zone IN (" . implode(',', array_fill(0, count($zoneIds), '?')) . ")
+            AND id_categorie = ?
+            AND id_provenance = ?
+            GROUP BY id_departement
+        ) current_data ON d.id_departement = current_data.id_departement
+        LEFT JOIN (
+            SELECT 
+                id_departement,
+                SUM(volume) as n_nuitees_n1
+            FROM fact_nuitees_departements 
+            WHERE date BETWEEN ? AND ?
+            AND id_zone IN (" . implode(',', array_fill(0, count($zoneIds), '?')) . ")
+            AND id_categorie = ?
+            AND id_provenance = ?
+            GROUP BY id_departement
+        ) prev_data ON d.id_departement = prev_data.id_departement
+        WHERE d.nom_departement NOT IN ('CUMUL')
+        AND (COALESCE(current_data.n_nuitees, 0) > 0 OR COALESCE(prev_data.n_nuitees_n1, 0) > 0)
+        ORDER BY COALESCE(current_data.n_nuitees, 0) DESC
+        LIMIT ?
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+
+    // Construction des paramètres avec tous les IDs de zone
+    $params = [
+        // Periode actuelle
+        $dateRanges['start'], $dateRanges['end']
+    ];
+    // Ajouter tous les IDs de zone pour la période actuelle
+    $params = array_merge($params, $zoneIds);
+    $params[] = $dimensionIds['id_categorie'];
+    $params[] = $dimensionIds['id_provenance'];
+
+    // Periode precedente
+    $params[] = $prevDateRanges['start'];
+    $params[] = $prevDateRanges['end'];
+    // Ajouter tous les IDs de zone pour la période précédente
+    $params = array_merge($params, $zoneIds);
+    $params[] = $dimensionIds['id_categorie'];
+    $params[] = $dimensionIds['id_provenance'];
+
+    // Limite
+    $params[] = $limit;
+
+    $stmt->execute($params);
+    
+    $rawData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Calcul du total pour les pourcentages
+    $totalNuitees = calculateTotal($pdo, $dateRanges, $dimensionIds, $zoneIds);
+    
+    // Transformation des données
+    $result = [];
+    
+    foreach ($rawData as $row) {
+        $nuitees = (int)$row['n_nuitees'];
+        $nuiteesN1 = (int)$row['n_nuitees_n1'];
+        
+        // Calculs des évolutions et pourcentages
+        $deltaPct = 0;
+        if ($nuiteesN1 > 0) {
+            $deltaPct = round((($nuitees - $nuiteesN1) / $nuiteesN1) * 100, 1);
+        } elseif ($nuitees > 0) {
+            $deltaPct = 100;
+        }
+        
+        $partPct = $totalNuitees > 0 ? round(($nuitees / $totalNuitees) * 100, 2) : 0;
+        
+        $result[] = [
+            'nom_departement' => $row['nom_departement'],
+            'nom_region' => $row['nom_region'], 
+            'nom_nouvelle_region' => $row['nom_nouvelle_region'],
+            'n_nuitees' => $nuitees,
+            'n_nuitees_n1' => $nuiteesN1,
+            'delta_pct' => $deltaPct,
+            'part_pct' => $partPct
+        ];
+    }
+    
+    // Mettre en cache le résultat avec le gestionnaire unifié
+    $cacheManager->set('infographie_departements', $cacheParams, $result);
+    
+    header('Content-Type: application/json');
+    header('X-Cache-Status: MISS');
+    header('X-Cache-Category: infographie_departements');
+    echo json_encode($result, JSON_PRETTY_PRINT);
+    
+} catch (Exception $e) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'error' => 'Erreur API D1 Cachée',
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine()
+    ]);
+}
+
+/**
+ * Pré-résoudre les IDs des dimensions pour éviter les JOINs
+ * MODIFICATION: Support multi-zones pour HAUTES TERRES
+ */
+function getDimensionIds($pdo, $zoneIds) {
+    // Utiliser le premier ID de zone (zone principale)
+    $id_zone = $zoneIds[0];
+    
+    $stmt = $pdo->prepare("SELECT id_categorie FROM dim_categories_visiteur WHERE nom_categorie = 'TOURISTE'");
+    $stmt->execute();
+    $id_categorie = $stmt->fetch()['id_categorie'] ?? null;
+    
+    $stmt = $pdo->prepare("SELECT id_provenance FROM dim_provenances WHERE nom_provenance = 'NONLOCAL'");
+    $stmt->execute();
+    $id_provenance = $stmt->fetch()['id_provenance'] ?? null;
+    
+    if (!$id_zone || !$id_categorie || !$id_provenance) {
+        throw new Exception('Impossible de résoudre les IDs des dimensions');
+    }
+    
+    return [
+        'id_zone' => $id_zone,
+        'id_categorie' => $id_categorie,
+        'id_provenance' => $id_provenance
+    ];
+}
+
+/**
+ * Calcul efficace du total séparé
+ */
+function calculateTotal($pdo, $dateRanges, $dimensionIds, $zoneIds = null) {
+    // Support multi-zones pour HAUTES TERRES
+    if ($zoneIds === null) {
+        $zoneIds = [$dimensionIds['id_zone']];
+    }
+
+    $zonePlaceholders = implode(',', array_fill(0, count($zoneIds), '?'));
+
+    $sql = "
+        SELECT SUM(volume) as total
+        FROM fact_nuitees_departements
+        WHERE date BETWEEN ? AND ?
+        AND id_zone IN ($zonePlaceholders)
+        AND id_categorie = ?
+        AND id_provenance = ?
+    ";
+
+    $params = [
+        $dateRanges['start'], $dateRanges['end']
+    ];
+    $params = array_merge($params, $zoneIds);
+    $params[] = $dimensionIds['id_categorie'];
+    $params[] = $dimensionIds['id_provenance'];
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    
+    return (int)($stmt->fetch()['total'] ?? 0);
+}
+?> 

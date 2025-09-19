@@ -1,0 +1,1146 @@
+/* static/css/tdb.css */
+
+/* ==========================================================================
+   1. Variables Globales & Configuration de Base
+   ========================================================================== */
+
+:root {
+    /* Couleurs */
+    --bg-deep-space: #0f121a;
+    --bg-component: #1a1f2c;
+    --text-bright: #f0f5ff;
+    --text-muted: #a0a8b8;
+    --accent-cyan: #00f2ea;
+    --accent-magenta: #f800ff;
+    --accent-purple: #a35fff;
+    --accent-lime: #7eff8b;
+    --accent-orange: #ff964f;
+    --positive: var(--accent-lime);
+    --negative: var(--accent-orange);
+    --border-glow: rgba(0, 242, 234, 0.3); /* Lueur cyan */
+    --border-subtle: rgba(160, 168, 184, 0.2);
+    --surface-glass: rgba(20, 22, 37, 0.7); /* Pour navbar */
+    --on-surface: white; /* Pour navbar */
+    --border: rgba(255, 255, 255, 0.1); /* Pour navbar */
+    --primary: var(--accent-cyan); /* Pour active nav link */
+
+    /* Typographie */
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Roboto', sans-serif;
+
+    /* Layout & Dimensions */
+    --container-width: 1200px;
+    --navbar-height: 60px;
+
+    /* Bordures & Ombres */
+    --border-radius: 8px;
+    --border-radius-sm: 4px;
+
+    /* Typographie Spécifique */
+    --title-font: 'Orbitron', sans-serif; /* Pour navbar brand */
+    --letter-spacing-title: 1px; /* Pour navbar brand */
+}
+
+/* Réinitialisation et styles de base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-deep-space);
+    color: var(--text-bright);
+    line-height: 1.7;
+    font-size: 16px;
+    overflow-x: hidden;
+    padding-top: var(--navbar-height); /* Espace pour la navbar fixe */
+    background-image: linear-gradient(to bottom, rgba(15, 18, 26, 0.9), rgba(15, 18, 26, 1)),
+                      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%231a1f2c' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM10 40l1.41-1.41 2.83 2.83L11.41 40H10zM17.17 40l2.83-2.83 1.41 1.41L18.59 40h-1.42zM20 40l1.41-1.41 2.83 2.83L21.41 40H20zM27.17 40l2.83-2.83 1.41 1.41L28.59 40h-1.42zM30 40l1.41-1.41 2.83 2.83L31.41 40H30zM37.17 40l2.83-2.83 1.41 1.41L38.59 40h-1.42zM40 38.59l-1.41-1.41 2.83-2.83L40 37.17V38.59zM40 30l-1.41-1.41 2.83-2.83L40 27.17V30zM37.17 20l2.83-2.83 1.41 1.41L38.59 20h-1.42zM40 10l-1.41-1.41 2.83-2.83L40 7.17V10zM40 0l-1.41 1.41 2.83 2.83L40 2.83V0zM30 0l-1.41 1.41 2.83 2.83L31.41 0H30zM20 0l-1.41 1.41 2.83 2.83L21.41 0H20zM10 0l-1.41 1.41 2.83 2.83L11.41 0H10zM0 0l1.41 1.41 2.83 2.83L2.83 0H0zM0 10l1.41-1.41 2.83-2.83L2.83 10H0zM0 20l1.41-1.41 2.83-2.83L2.83 20H0zM0 30l1.41-1.41 2.83-2.83L2.83 30H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); /* Motif de fond subtil */
+    background-attachment: fixed;
+}
+
+/* Ajout d'un dégradé radial subtil en arrière-plan */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at top right, rgba(0, 242, 234, 0.03), transparent 70%),
+                radial-gradient(circle at bottom left, rgba(163, 95, 255, 0.03), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+/* ==========================================================================
+   2. Structure du Layout (Header, Navbar, Main, Footer, Grids)
+   ========================================================================== */
+
+/* --- Barre de navigation --- */
+.main-navbar {
+    background: var(--surface-glass);
+    backdrop-filter: blur(15px);
+    color: var(--on-surface);
+    padding: 10px 20px;
+    height: var(--navbar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    border-bottom: 1px solid var(--border);
+}
+.navbar-left, .navbar-right {
+    display: flex;
+    align-items: center;
+}
+.navbar-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+.nav-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--on-surface);
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+.nav-brand img {
+    margin-right: 12px;
+    /* Ajouter height/width si nécessaire */
+}
+.nav-brand span {
+    font-family: var(--title-font);
+    letter-spacing: var(--letter-spacing-title);
+}
+.nav-link {
+    color: var(--on-surface);
+    text-decoration: none;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: 500;
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    overflow: hidden; /* Pour micro-interaction */
+}
+.nav-link i {
+    margin-right: 6px;
+    font-size: 0.9em;
+}
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+/* Ligne sous le lien actif */
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 16px;
+    right: 16px;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 3px 3px 0 0;
+    /* Pas de transition ici pour l'instant, on la met ailleurs si besoin */
+}
+
+/* --- Header Principal --- */
+.dataviz-header {
+    padding: 50px 0 60px;
+    position: relative;
+    text-align: center;
+    background: linear-gradient(160deg, rgba(42, 47, 65, 0.8), rgba(26, 31, 44, 0.9) 70%);
+    overflow: hidden; /* Pour la décoration */
+}
+.dataviz-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 3.8rem);
+    color: var(--text-bright);
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px var(--accent-cyan), 0 0 20px var(--accent-purple);
+    margin-bottom: 8px;
+}
+.dataviz-header .subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+.dataviz-header .subtitle span {
+    color: var(--accent-magenta);
+}
+.dataviz-header .period-info {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+}
+.dataviz-header .period-info i {
+    color: var(--accent-cyan);
+    margin-right: 8px;
+}
+/* Ligne décorative animée en bas du header */
+.header-decoration {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-magenta), var(--accent-purple), transparent);
+    background-size: 300% 100%; /* Augmenté pour une animation plus fluide */
+    animation: gradient-flow 8s linear infinite;
+    box-shadow: 0 0 10px var(--accent-cyan), 0 0 5px var(--accent-magenta);
+}
+
+/* --- Contenu Principal & Sections --- */
+.main-content {
+    padding: 25px 0 50px;
+}
+.section {
+    margin-bottom: 70px;
+}
+.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    color: var(--text-bright);
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 1.5px;
+    position: relative;
+    padding-bottom: 15px;
+}
+.section-title span { /* Potentiellement pour une icône ou un mot clé */
+    color: var(--accent-purple);
+    margin-right: 10px;
+}
+/* Ligne sous le titre de section */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+    border-radius: 2px;
+    box-shadow: 0 0 8px var(--accent-purple), 0 0 4px var(--accent-cyan);
+}
+
+/* --- Grille de Dashboard --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* Colonne KPI fixe, Colonne viz flexible */
+    gap: 25px;
+}
+.dashboard-column {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Espace entre les panels dans une colonne */
+}
+.kpi-column {
+    min-width: 300px; /* Assure une largeur minimale même si vide */
+}
+/* Styles spécifiques pour la grille des KPIs et des graphiques */
+.key-figures-section {
+    margin-bottom: 3rem; /* Espace sous la section KPIs */
+}
+.key-figures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    min-height: 400px;
+    padding: 0;
+}
+
+.thematic-group {
+    display: contents; /* Permet aux enfants de participer directement à la grille parent */
+}
+
+/* Style spécifique pour correspondre à la structure de tdb.js */
+.key-figures-grid .key-figure-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+}
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px; /* Ajouté pour espacer du panel parent */
+}
+
+/* --- Footer --- */
+.dataviz-footer {
+    background: var(--bg-component);
+    padding: 25px 0;
+    margin-top: 50px;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.dataviz-footer p {
+    margin: 3px 0;
+}
+
+/* ==========================================================================
+   3. Composants UI (Filtres, Cartes, Tabs, Dropdowns, Tooltips, Panels)
+   ========================================================================== */
+
+/* --- Filtres --- */
+.filters-section {
+    margin-bottom: 40px;
+}
+.filters-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    background: rgba(26, 31, 44, 0.6);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-subtle);
+    backdrop-filter: blur(10px);
+}
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.filter-group label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.filter-select {
+    background: rgba(42, 47, 65, 0.8);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-bright);
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    min-width: 200px;
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+    position: relative; /* Pour micro-interaction */
+    overflow: hidden;   /* Pour micro-interaction */
+}
+.filter-select:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(0, 242, 234, 0.1);
+    transform: translateY(-2px);
+}
+.filter-select:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 15px rgba(163, 95, 255, 0.2);
+    transform: translateY(-2px);
+}
+.filter-select option {
+    background: var(--bg-deep-space);
+    color: var(--text-bright);
+    padding: 8px;
+}
+
+/* --- Cartes Indicateurs (Key Figure Card / KPI) - Style conforme à tdb.js --- */
+.key-figure-card, .figure-card {
+    background: linear-gradient(145deg, rgba(42, 47, 65, 0.7), rgba(26, 31, 44, 0.8));
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    padding: 25px 20px;
+    border: 1px solid var(--border-subtle);
+    border-top-color: var(--border-glow);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    will-change: opacity, transform;
+    opacity: 0; /* Pour animation d'entrée */
+    animation: fade-in-up 0.6s ease-out forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.key-figure-card:hover, .figure-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 242, 234, 0.15);
+    background: linear-gradient(145deg, rgba(42, 47, 65, 0.8), rgba(26, 31, 44, 0.9));
+}
+
+/* Animation d'entrée décalée */
+.key-figure-card:nth-child(odd), .figure-card:nth-child(odd) { animation-delay: 0.1s; }
+.key-figure-card:nth-child(even), .figure-card:nth-child(even) { animation-delay: 0.2s; }
+
+/* Header avec icône et titre */
+.key-figure-card .card-header, .figure-card .card-header {
+    display: flex; 
+    align-items: baseline; 
+    gap: 10px; 
+    margin-bottom: 15px;
+}
+
+.key-figure-card .key-figure-icon, .figure-card .icon {
+    font-size: 1.6rem;
+    color: var(--accent-cyan);
+    flex-shrink: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.key-figure-card:hover .key-figure-icon, .figure-card:hover .icon {
+    transform: scale(1.2);
+    color: var(--accent-magenta);
+}
+
+.key-figure-card .indicator-title, .figure-card .indicator-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+/* Contenu principal */
+.key-figure-card .key-figure-content, .figure-card .card-body {
+    margin-bottom: 15px;
+}
+
+.key-figure-card .key-figure-value, .figure-card .value {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 2px;
+    line-height: 1.1;
+    transition: color 0.3s ease;
+}
+
+.key-figure-card:hover .key-figure-value, .figure-card:hover .value {
+    color: var(--accent-cyan);
+}
+
+.key-figure-card .key-figure-label, .figure-card .indicator-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.key-figure-card .key-figure-subtitle, .figure-card .value-prev-year {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 5px;
+    margin-bottom: 7px;
+    font-weight: 500;
+    display: block;
+}
+
+.key-figure-card .unit, .figure-card .unit {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Footer avec comparaison */
+.key-figure-card .card-footer, .figure-card .card-footer {
+    margin-top: auto;
+}
+
+.key-figure-card .comparison, .figure-card .comparison {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.key-figure-card .comparison.positive, .figure-card .comparison.positive {
+    color: var(--positive);
+    animation: pulse-positive 2s ease-in-out infinite;
+}
+
+.key-figure-card .comparison.negative, .figure-card .comparison.negative {
+    color: var(--negative);
+    animation: pulse-negative 2s ease-in-out infinite;
+}
+
+.key-figure-card .comparison.neutral, .figure-card .comparison.neutral {
+    color: var(--text-muted);
+}
+
+/* Styles spécifiques pour la disposition exacte de l'image */
+.key-figure-card .key-figure-content .value-prev-year {
+    font-size: 0.9rem;
+    color: var(--text-bright);
+    margin: 8px 0 5px 0;
+    font-weight: 600;
+}
+
+.key-figure-card .key-figure-content .unit {
+    margin: 5px 0;
+    font-size: 0.85rem;
+}
+
+.key-figure-card .key-figure-content .comparison {
+    margin: 8px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.key-figure-card .key-figure-content .remark {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.3;
+}
+
+.key-figure-card .remark, .figure-card .remark {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-style: italic;
+    display: block;
+}
+/* Messages d'état dans la grille KPI (si la grille est directement utilisée) */
+.key-figures-grid .loading,
+.key-figures-grid .error,
+.key-figures-grid .info {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    font-style: italic;
+    background: rgba(15, 18, 26, 0.3);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 242, 234, 0.1);
+    grid-column: 1 / -1; /* S'étend sur toute la largeur si dans une grille */
+}
+.key-figures-grid .error { color: var(--negative); font-weight: bold; }
+
+/* --- Cartes Graphiques (Chart Card) --- */
+.chart-card {
+    /* Hérite du style .panel maintenant */
+    position: relative;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    will-change: opacity, transform; /* Performance animation */
+    opacity: 0; /* Pour animation d'entrée */
+    animation: fade-in-up 0.6s ease-out forwards;
+}
+.chart-card:hover {
+    /* Effet 3D subtil + ombre */
+    transform: scale(1.02); /* Remplacé l'effet 3D complexe par un scale simple */
+    box-shadow: 0 10px 25px rgba(0, 242, 234, 0.2);
+}
+/* Animation d'entrée décalée */
+.chart-card:nth-child(odd) { animation-delay: 0.1s; }
+.chart-card:nth-child(even) { animation-delay: 0.2s; }
+
+.chart-container {
+    position: relative;
+    height: 300px; /* Hauteur par défaut du graphique */
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 15px; /* Espace intérieur pour le graphique */
+}
+/* Résumé ou information sous le graphique */
+.chart-summary, .highlight-info {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin: 15px 20px 20px; /* Ajusté margin */
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-subtle);
+}
+.highlight-info strong {
+    color: var(--accent-cyan);
+    font-weight: 700;
+}
+
+/* --- Panneaux Génériques (utilisés pour Chart Cards, etc.) --- */
+.panel {
+    background: rgba(26, 31, 44, 0.6);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    display: flex; /* Permet au contenu de s'étirer */
+    flex-direction: column; /* Titre en haut, contenu en bas */
+}
+.panel-title {
+    background: var(--bg-component);
+    color: var(--text-bright);
+    padding: 15px 20px;
+    margin: 0;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* Empêche le titre de rétrécir */
+}
+.panel-title i {
+    margin-right: 10px;
+    color: var(--accent-cyan);
+}
+/* Le contenu du panel s'étire */
+.panel > *:not(.panel-title) {
+   flex-grow: 1;
+}
+
+/* --- Système d'Onglets --- */
+.tabs-container {
+    margin-bottom: 40px;
+}
+.tabs-navigation {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 15px;
+    flex-wrap: wrap; /* Permet aux onglets de passer à la ligne */
+    gap: 10px; /* Espace entre les onglets */
+}
+.tab-button {
+    background: var(--bg-component);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius);
+    color: var(--text-muted);
+    padding: 12px 25px;
+    /* margin: 0 8px; Supprimé au profit de gap */
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    min-width: 160px;
+    justify-content: center;
+    position: relative; /* Pour indicateur et micro-interaction */
+    overflow: hidden; /* Pour indicateur et micro-interaction */
+}
+.tab-button i {
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+.tab-button:hover {
+    border-color: var(--accent-cyan);
+    color: var(--text-bright);
+    background-color: rgba(255, 255, 255, 0.1); /* Effet hover subtil */
+    /* box-shadow: 0 0 10px rgba(0, 242, 234, 0.1); */ /* Optionnel */
+}
+/* Indicateur sous l'onglet actif (simplifié) */
+.tab-button.active {
+    background: linear-gradient(145deg, rgba(0, 242, 234, 0.1), rgba(163, 95, 255, 0.1));
+    color: var(--text-bright);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 15px rgba(163, 95, 255, 0.2);
+}
+.tab-button.active::before { /* Utilise ::before pour l'indicateur */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%; /* Largeur de l'indicateur */
+    height: 3px;
+    background: var(--accent-purple);
+    border-radius: 3px 3px 0 0;
+    transition: width 0.3s ease; /* Transition optionnelle */
+}
+/* Contenu des onglets */
+.tab-content {
+    min-height: 300px; /* Assure une hauteur minimale */
+    position: relative; /* Pour l'animation */
+}
+.tab-pane {
+    display: none;
+    /* Animation gérée par JS ou via classe active */
+    animation: fadeIn 0.4s ease-in-out forwards;
+}
+.tab-pane.active {
+    display: block;
+}
+
+/* --- Carte de Comparaison --- */
+.comparison-card {
+    background: var(--bg-component);
+    border-radius: var(--border-radius);
+    padding: 20px; /* Augmenté */
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+.comparison-title {
+    font-size: 1.1rem; /* Légèrement plus grand */
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 20px; /* Augmenté */
+    text-align: center;
+}
+.comparison-title i {
+    color: var(--accent-cyan);
+    margin-right: 8px; /* Augmenté */
+}
+.comparison-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px; /* Ajout d'un gap */
+}
+.comparison-item {
+    text-align: center;
+    flex: 1;
+}
+.comparison-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+.comparison-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 2px;
+    line-height: 1.1;
+}
+.comparison-unit {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+/* Séparateur vertical */
+.comparison-divider {
+    width: 1px;
+    height: 60px;
+    background: var(--border-subtle);
+    align-self: center; /* Assure l'alignement vertical */
+}
+
+/* --- Dropdown Menu (pour Navbar) --- */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+.dropdown > span { /* La partie visible qui déclenche */
+    cursor: default;
+    display: inline-flex;
+    align-items: center;
+    /* Hérite des styles .nav-link si utilisé dedans */
+}
+.dropdown > span .fa-caret-down {
+    margin-left: 5px;
+    font-size: 0.8em;
+    transition: transform 0.2s ease; /* Animation flèche */
+}
+.dropdown:hover > span .fa-caret-down {
+    transform: rotate(180deg);
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: var(--bg-component);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+    z-index: 1001; /* Au-dessus de la navbar */
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    border-radius: var(--border-radius-sm);
+    top: 100%; /* Positionné directement sous le trigger */
+    left: 0;
+    border-top: 1px solid var(--accent-purple);
+    opacity: 0; /* Pour animation */
+    visibility: hidden; /* Pour accessibilité */
+    transform: translateY(10px); /* Pour animation */
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+.dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.dropdown-menu li a {
+    color: var(--text-muted);
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.dropdown-menu li a:hover {
+    background-color: var(--accent-cyan);
+    color: var(--bg-deep-space); /* Contraste */
+}
+
+/* --- Infobulles (Tooltips) --- */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+[data-tooltip]::after { /* Le contenu de l'infobulle */
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px) scale(0.8); /* Départ animation */
+  background-color: var(--bg-component);
+  color: var(--text-bright);
+  padding: 8px 12px;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 1010; /* Au-dessus de presque tout */
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-subtle);
+  transform-origin: bottom center; /* Point d'origine pour scale */
+}
+[data-tooltip]::before { /* La petite flèche */
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(0px) scale(0.8); /* Départ animation */
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--bg-component) transparent transparent transparent;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 1011; /* Au-dessus du contenu */
+  pointer-events: none;
+  transform-origin: bottom center; /* Point d'origine pour scale */
+}
+/* Affichage au survol */
+[data-tooltip]:hover::after,
+[data-tooltip]:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1); /* Animation d'apparition */
+}
+/* Pour infobulles plus larges */
+[data-tooltip-wide]::after {
+    white-space: normal;
+    width: 250px;
+    text-align: left;
+}
+
+/* --- Loader de Dashboard (si utilisé lors des changements de filtre) --- */
+.dashboard-loader {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(15, 18, 26, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    pointer-events: none; /* N'intercepte pas les clics si invisible */
+}
+.dashboard-loader.is-active { /* Classe à ajouter/retirer via JS */
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.loader-content {
+    text-align: center;
+    color: var(--text-bright);
+}
+.loader-spinner {
+    margin: 0 auto 15px;
+    width: 40px;
+    height: 40px;
+    border: 3px solid transparent;
+    border-top-color: var(--accent-cyan);
+    border-right-color: var(--accent-magenta);
+    border-radius: 50%;
+    animation: spinner-rotate 1s linear infinite;
+}
+.loader-text {
+    font-size: 1rem;
+    letter-spacing: 1px;
+    animation: text-pulse 1.5s ease-in-out infinite;
+}
+
+
+/* ==========================================================================
+   4. Animations & Effets Visuels
+   ========================================================================== */
+
+/* --- Keyframes --- */
+@keyframes gradient-flow {
+    0% { background-position: 200% 0; } /* Ajusté pour background-size: 300% */
+    100% { background-position: -100% 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-positive {
+    0% { text-shadow: 0 0 3px rgba(126, 255, 139, 0.3); }
+    50% { text-shadow: 0 0 10px rgba(126, 255, 139, 0.7); }
+    100% { text-shadow: 0 0 3px rgba(126, 255, 139, 0.3); }
+}
+
+@keyframes pulse-negative {
+    0% { text-shadow: 0 0 3px rgba(255, 150, 79, 0.3); }
+    50% { text-shadow: 0 0 10px rgba(255, 150, 79, 0.7); }
+    100% { text-shadow: 0 0 3px rgba(255, 150, 79, 0.3); }
+}
+
+@keyframes spinner-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes text-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Animation pour mettre en valeur une valeur */
+@keyframes highlight-glow {
+    0% { text-shadow: 0 0 5px rgba(0, 242, 234, 0.3); }
+    50% { text-shadow: 0 0 15px rgba(0, 242, 234, 0.7), 0 0 25px rgba(0, 242, 234, 0.5); }
+    100% { text-shadow: 0 0 5px rgba(0, 242, 234, 0.3); }
+}
+/* Classe à appliquer dynamiquement via JS */
+.value-highlight {
+    animation: highlight-glow 3s ease-in-out infinite;
+    color: var(--accent-cyan) !important; /* Force la couleur */
+}
+
+/* --- Micro-interactions --- */
+/* Effet "ripple" ou flash sur clic */
+.filter-select::after,
+.tab-button::after,
+.nav-link::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 5px; height: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    border-radius: 50%;
+    transform: scale(1) translate(-50%, -50%);
+    transform-origin: center;
+    pointer-events: none;
+}
+.filter-select:active::after,
+.tab-button:active::after,
+.nav-link:active::after {
+    transition: transform 0.3s ease-out, opacity 0.4s ease-out;
+    opacity: 1;
+    transform: scale(50) translate(-50%, -50%); /* Ajuster scale si besoin */
+}
+
+
+/* ==========================================================================
+   5. Responsive Design
+   ========================================================================== */
+
+/* --- Desktop spécifique (layout 3 colonnes pour graphiques) --- */
+@media (min-width: 900px) {
+  /* Appliquer seulement à la grille principale de charts, pas aux profils */
+  .charts-grid:not(.profile-charts-grid) {
+    grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+  }
+  /* Le premier graphique (souvent principal) prend toute la largeur */
+  .charts-grid:not(.profile-charts-grid) > .chart-card:first-child {
+    grid-column: 1 / -1; /* S'étend sur les 2 colonnes */
+  }
+}
+
+/* --- Tablette & Petits Desktops --- */
+@media (max-width: 1200px) {
+    /* La grille dashboard passe en une seule colonne */
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .kpi-column {
+        order: 2; /* KPIs en dessous des visualisations */
+        min-width: unset; /* Largeur min plus nécessaire */
+    }
+    .viz-column {
+        order: 1;
+    }
+}
+
+@media (max-width: 992px) {
+    /* Ajustements mineurs pour les cartes et filtres */
+    .key-figures-grid {
+        /* Si c'est une grille, sinon ajuster .figure-card width/min-width */
+         /* grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); */
+    }
+    .charts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .filter-group {
+        min-width: 180px; /* Filtres un peu moins larges */
+    }
+}
+
+/* --- Mobile & Tablettes Verticales --- */
+@media (max-width: 768px) {
+    body {
+        padding-top: 100px; /* Plus d'espace pour la navbar multilignes */
+        font-size: 15px; /* Taille de police de base légèrement réduite */
+    }
+    .container {
+        padding: 0 15px; /* Moins de padding horizontal */
+    }
+
+    /* Navbar passe en mode mobile */
+    .main-navbar {
+        height: auto; /* Hauteur auto pour s'adapter au contenu */
+        flex-wrap: wrap; /* Permet le passage à la ligne */
+        padding: 10px 15px; /* Ajustement padding */
+    }
+    .navbar-center {
+        order: 3; /* Liens de navigation en dernier */
+        width: 100%;
+        justify-content: space-around;
+        padding: 10px 0 5px; /* Espacement vertical */
+        border-top: 1px solid var(--border); /* Séparateur */
+        margin-top: 5px; /* Marge */
+    }
+    .navbar-left, .navbar-right {
+        padding: 5px 0;
+        flex-basis: 50%; /* Occupe la moitié de la largeur */
+    }
+    .navbar-right {
+        justify-content: flex-end; /* Aligner à droite */
+    }
+    .nav-link {
+        padding: 8px 10px; /* Padding réduit */
+        font-size: 0.8rem; /* Texte plus petit */
+    }
+     .nav-link.active::after { /* Ajustement indicateur actif */
+        left: 10px; right: 10px;
+     }
+
+    /* Filtres en colonne */
+    .filters-container {
+        flex-direction: column;
+        align-items: stretch; /* Étire les éléments */
+        gap: 15px;
+    }
+    .filter-select {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* Grilles en une seule colonne */
+    .key-figures-grid {
+       /* Si c'est une grille : grid-template-columns: 1fr; */
+       /* Sinon, les figure-card s'empileront naturellement */
+       gap: 20px; /* Espace entre les cartes empilées */
+    }
+    .charts-grid, .profile-charts-grid {
+        grid-template-columns: 1fr; /* Toujours une colonne */
+        gap: 25px;
+        padding: 10px; /* Moins de padding */
+    }
+    .chart-container {
+        height: 250px; /* Graphiques moins hauts */
+    }
+
+    /* Comparaison en colonne */
+    .comparison-content {
+        flex-direction: column;
+        gap: 20px; /* Plus d'espace vertical */
+        align-items: center; /* Centrer les items */
+    }
+    .comparison-divider {
+        width: 80%; /* Séparateur horizontal */
+        height: 1px;
+    }
+    
+    /* Onglets en colonne */
+    .tabs-navigation {
+        flex-direction: column;
+        align-items: center; /* Centre les boutons */
+        gap: 10px;
+        padding-bottom: 10px;
+    }
+    .tab-button {
+        width: 100%;
+        max-width: 300px; /* Limite la largeur max */
+    }
+
+    /* Titres un peu plus petits */
+    .dataviz-header h1 {
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+    .section-title {
+         font-size: clamp(1.5rem, 5vw, 1.8rem);
+    }
+}
+
+/* --- Très Petits Mobiles --- */
+@media (max-width: 480px) {
+    /* Ajustements fins si nécessaire */
+    body {
+        padding-top: 90px; /* Peut-être ajuster encore */
+    }
+     .figure-card .value {
+        font-size: 2.4rem; /* Valeurs KPI un peu plus petites */
+    }
+    .comparison-value {
+        font-size: 1.8rem; /* Valeurs comparaison plus petites */
+    }
+    .panel-title {
+        font-size: 1.1rem;
+    }
+}
+
+
+/* ==========================================================================
+   6. Utilitaires (Classes d'aide, etc.) - Optionnel
+   ========================================================================== */
+
+/* Exemple: classe pour masquer visuellement mais garder pour lecteurs d'écran */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "scraper-saisons-astronomiques",
+  "version": "1.0.0",
+  "description": "scraper evolutif pour recuperer les dates d'equinoxes et solstices",
+  "main": "scrap_date.js",
+  "scripts": {
+    "start": "node scrap_date.js",
+    "test": "node scrap_date.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "keywords": [
+    "scraper",
+    "astronomie",
+    "saisons",
+    "equinoxes",
+    "solstices"
+  ],
+  "author": "",
+  "license": "MIT"
+}

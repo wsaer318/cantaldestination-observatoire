@@ -1,0 +1,316 @@
+/* Advanced Period Picker – Dark theme aligned with comparison dashboard */
+
+.pp-panel {
+	/* Theme tokens */
+	--pp-bg: #0f1422;
+	--pp-surface: #0b1020;
+	--pp-text: #e6edf3;
+	--pp-muted: #93a1b6;
+	--pp-stroke: #1f2a44;
+	--pp-accent: #29d3c2;
+	--pp-danger: #ef4444;
+	--pp-radius: .75rem;
+	--pp-shadow: 0 12px 40px rgba(0,0,0,.35);
+
+	position: absolute;
+	min-width: 680px;
+	padding: 14px;
+	background: var(--pp-bg);
+	color: var(--pp-text);
+	border: 1px solid var(--pp-stroke);
+	border-radius: var(--pp-radius);
+	box-shadow: var(--pp-shadow);
+	display: none;
+	z-index: 9999;
+	display: none;
+	/* layout */
+	display: none;
+	flex-direction: row;
+}
+
+.pp-panel.floating {
+	position: absolute;
+}
+
+.pp-panel.open {
+	display: flex;
+	animation: pp-fade-in 150ms ease-out;
+	transform-origin: top left;
+}
+
+@keyframes pp-fade-in {
+	0% { opacity: 0; transform: translateY(8px); }
+	100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Backdrop overlay (portal) */
+.pp-backdrop {
+	position: fixed;
+	inset: 0;
+	background: rgba(0,0,0,.25);
+	z-index: 9998;
+}
+.pp-backdrop[hidden] { display: none; }
+
+/* Open button */
+.period-picker-input {
+	background: var(--pp-surface);
+	color: var(--pp-text);
+	border: 1px solid var(--pp-stroke);
+	padding: .5rem .8rem;
+	border-radius: .6rem;
+	display: inline-flex;
+	align-items: center;
+	gap: .5rem;
+	cursor: pointer;
+	transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+.period-picker-input:hover {
+	background-color: #111833;
+	border-color: #2a3658;
+}
+.period-picker-input:focus-visible {
+	outline: 2px solid var(--pp-accent);
+	outline-offset: -2px;
+}
+
+/* Close button */
+.pp-close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	background: rgba(255, 255, 255, 0.1);
+	color: var(--pp-muted);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	font-weight: bold;
+	z-index: 1000;
+	transition: all 0.2s ease;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.pp-close:hover { 
+	color: #fff; 
+	background: rgba(255, 255, 255, 0.2); 
+	border-color: rgba(255, 255, 255, 0.4);
+	transform: scale(1.1);
+}
+
+.pp-close:active { 
+	background: rgba(255, 255, 255, 0.3); 
+	transform: scale(0.95);
+}
+
+.pp-close:focus-visible { 
+	outline: 2px solid var(--pp-accent); 
+	outline-offset: 2px; 
+}
+
+/* Columns */
+.pp-left {
+	width: 240px;
+	padding: 10px;
+	border-right: 1px solid var(--pp-stroke);
+	min-height: 300px;
+}
+.pp-right { flex: 1; padding: 10px; min-height: 300px; }
+
+.pp-title {
+	font-weight: 600;
+	color: var(--pp-text);
+	font-size: 1rem;
+	margin: 4px 0 8px 0;
+	position: relative;
+	padding-bottom: 6px;
+}
+.pp-title::after {
+	content: "";
+	position: absolute;
+	left: 0; right: auto; bottom: 0;
+	width: 44px; height: 2px;
+	background: var(--pp-accent);
+	border-radius: 1px;
+}
+
+/* Presets list */
+#pp-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-height: 320px;
+	overflow: auto;
+}
+#pp-list::-webkit-scrollbar { width: 8px; }
+#pp-list::-webkit-scrollbar-track { background: transparent; }
+#pp-list::-webkit-scrollbar-thumb { background: #344162; border-radius: 6px; }
+#pp-list::-webkit-scrollbar-thumb:hover { background: #3f4d75; }
+
+#pp-list .item {
+	width: 100%;
+	padding: .55rem .65rem;
+	border-radius: .5rem;
+	background: var(--pp-surface);
+	border: 1px solid var(--pp-stroke);
+	color: var(--pp-text);
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+	position: relative;
+}
+#pp-list .item:hover { background: rgba(255,255,255,.04); }
+#pp-list .item:active { background: rgba(255,255,255,.06); }
+#pp-list .item.active {
+	background: rgba(41,211,194,.12);
+	border-color: var(--pp-accent);
+}
+#pp-list .item.active::before {
+	content: "";
+	position: absolute;
+	left: -1px; top: -1px; bottom: -1px; width: 3px;
+	background: var(--pp-accent);
+	border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;
+}
+
+/* Controls row */
+.pp-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.pp-muted { color: var(--pp-muted); font-size: .85rem; }
+
+.pp-controls select {
+	background: var(--pp-surface);
+	color: var(--pp-text);
+	border: 1px solid var(--pp-stroke);
+	border-radius: .45rem;
+	padding: .35rem .6rem;
+}
+
+.pp-nav { margin-left: auto; display: flex; gap: 4px; }
+.pp-btn { width: 32px; height: 32px; background: var(--pp-surface); color: var(--pp-text); border: 1px solid var(--pp-stroke); border-radius: .45rem; cursor: pointer; }
+.pp-btn:hover { background: rgba(255,255,255,.06); }
+.pp-btn:active { background: rgba(255,255,255,.10); }
+.pp-btn:focus-visible { outline: 2px solid var(--pp-accent); outline-offset: 2px; }
+
+/* Calendar grid */
+.pp-cal { width: 100%; border-collapse: separate; border-spacing: 6px; }
+.pp-cal thead th { text-transform: uppercase; font-size: .78rem; letter-spacing: .04em; color: var(--pp-muted); font-weight: 600; }
+.pp-cal tbody td { width: 42px; height: 42px; text-align: center; border-radius: .6rem; user-select: none; color: var(--pp-text); cursor: pointer; transition: background-color 120ms ease; }
+.pp-cal tbody td.empty { background: transparent; cursor: default; pointer-events: none; border: none; }
+.pp-cal tbody td.today { outline: 2px solid var(--pp-accent); outline-offset: -2px; color: #fff; }
+
+/* Selection states (support both legacy and new classnames) */
+.pp-cal tbody td.selected-start,
+.pp-cal tbody td.pp-start { background: var(--pp-accent); color: #0b1020; font-weight: 700; }
+.pp-cal tbody td.selected-end,
+.pp-cal tbody td.pp-end { background: var(--pp-accent); color: #0b1020; font-weight: 700; }
+.pp-cal tbody td.in-range,
+.pp-cal tbody td.pp-inrange { background: rgba(41,211,194,.18); color: var(--pp-text); }
+.pp-cal tbody td:not(.empty):hover { background: rgba(255,255,255,.06); }
+
+/* Footer */
+.pp-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+#pp-hint { color: var(--pp-muted); }
+
+/* Today button like nav buttons but auto width */
+#pp-today.pp-btn, .pp-footer .pp-btn { 
+    height: auto; 
+    min-width: auto; 
+    width: auto;
+    padding: .4rem .7rem; 
+    white-space: nowrap;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Specific styling for Today button to ensure proper sizing */
+#pp-today {
+    min-width: 100px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Wrapper alignment (kept minimal; any layout handled by page CSS) */
+.period-picker-wrap { position: relative; }
+
+/* Responsive */
+@media (max-width: 768px) {
+	.pp-panel { 
+		min-width: 320px; 
+		max-width: 90vw; 
+		width: auto !important;
+	}
+	
+	.pp-panel .pp-left,
+	.pp-panel .pp-right {
+		flex: 1;
+		min-width: 0;
+	}
+	
+	.pp-controls {
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	
+	.pp-controls select {
+		font-size: 14px;
+		padding: 0.3rem 0.5rem;
+	}
+}
+
+/* Améliorations pour le positionnement intelligent */
+.pp-panel.floating {
+	position: fixed !important;
+	z-index: 9999;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+	border: 1px solid rgba(0, 242, 234, 0.2);
+}
+
+/* S'assurer que le panneau et ses éléments sont bien positionnés */
+.pp-panel {
+	position: relative;
+	overflow: visible;
+}
+
+/* S'assurer que le bouton de fermeture est toujours cliquable */
+.pp-panel .pp-close {
+	position: absolute !important;
+	z-index: 10000 !important;
+	pointer-events: auto !important;
+}
+
+/* Assurer que le panneau reste dans les limites de la fenêtre */
+.pp-panel {
+	max-height: 90vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+/* Amélioration de la scrollbar pour le panneau */
+.pp-panel::-webkit-scrollbar {
+	width: 6px;
+}
+
+.pp-panel::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.05);
+	border-radius: 3px;
+}
+
+.pp-panel::-webkit-scrollbar-thumb {
+	background: rgba(0, 242, 234, 0.3);
+	border-radius: 3px;
+}
+
+.pp-panel::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 242, 234, 0.5);
+}
+
+

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect fill="#333F48" x="0" y="0" width="512" height="512"/>
+  <rect fill="#2D7DD2" x="50" y="200" width="80" height="312"/>
+  <rect fill="#2D7DD2" x="350" y="100" width="100" height="412"/>
+  <rect fill="#97C8EB" x="160" y="150" width="160" height="362"/>
+  <rect fill="#FF6B35" x="200" y="170" width="80" height="342"/>
+  <path fill="#45B69C" d="M0 480 L512 480 L512 512 L0 512 Z"/>
+  
+  <!-- Fenêtres -->
+  <rect fill="#FFDB6E" x="65" y="230" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="95" y="230" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="65" y="270" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="95" y="270" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="65" y="310" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="95" y="310" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="65" y="350" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="95" y="350" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="65" y="390" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="95" y="390" width="20" height="20"/>
+  
+  <rect fill="#FFDB6E" x="175" y="180" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="215" y="180" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="255" y="180" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="175" y="220" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="215" y="220" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="255" y="220" width="20" height="20"/>
+  
+  <rect fill="#FFDB6E" x="370" y="130" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="410" y="130" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="370" y="170" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="410" y="170" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="370" y="210" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="410" y="210" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="370" y="250" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="410" y="250" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="370" y="290" width="20" height="20"/>
+  <rect fill="#FFDB6E" x="410" y="290" width="20" height="20"/>
+</svg> 

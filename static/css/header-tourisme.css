@@ -1,0 +1,109 @@
+:root {
+	--ht-red: #E30613;
+	--ht-text-dark: #111827;
+	--ht-muted: #374151;
+	--ht-height-desktop: 180px;
+	--ht-side-gap: 28px;
+	--ht-col-gap: 24px;
+	--ht-row-gap: 10px;
+}
+
+.header-tourisme {
+	background: #ffffff;
+	color: var(--ht-text-dark);
+	margin: -2rem -2rem 3rem -2rem;
+	padding: 0 var(--ht-side-gap);
+	min-height: var(--ht-height-desktop);
+	height: auto;
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	grid-template-rows: auto auto;
+	grid-template-areas:
+		"left-top center right-top"
+		"left-bottom center right-bottom";
+	align-items: center;
+	column-gap: var(--ht-col-gap);
+	row-gap: var(--ht-row-gap);
+	border-bottom: 3px solid var(--ht-red);
+	border-radius: 12px 12px 0 0;
+}
+
+.ht-left-top { grid-area: left-top; }
+.ht-left-bottom { grid-area: left-bottom; }
+.ht-right-top { grid-area: right-top; }
+.ht-right-bottom { 
+	grid-area: right-bottom;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.ht-left-top img,
+.ht-right-top img {
+	height: 56px;
+	max-width: 260px;
+	object-fit: contain;
+	display: block;
+	background: transparent;
+}
+
+.ht-left-bottom img,
+.ht-right-bottom img {
+	height: 20px;
+	max-width: 160px;
+	object-fit: contain;
+	display: block;
+	background: transparent;
+}
+
+.ht-right-bottom .ht-eu-logo {
+	height: 100px;
+	max-height: 100px;
+	object-fit: contain;
+}
+
+.ht-center {
+	grid-area: center;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.ht-center .ht-title-line {
+	font-family: Inter, Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--ht-red);
+	line-height: 1.05;
+	margin: 0;
+}
+
+.ht-center .ht-title-line.line1 { font-size: 26px; margin-bottom: 6px; }
+.ht-center .ht-title-line.line2 { font-size: 24px; margin-bottom: 4px; }
+.ht-center .ht-title-line.line3 { font-size: 24px; }
+
+.ht-left-top, .ht-right-top,
+.ht-left-bottom, .ht-right-bottom { justify-self: center; }
+
+@media (max-width: 768px) {
+	:root { --ht-height-desktop: auto; }
+	.header-tourisme {
+		grid-template-columns: 1fr;
+		grid-template-rows: auto auto auto auto;
+		grid-template-areas:
+			"left-top"
+			"center"
+			"right-top"
+			"right-bottom";
+		height: auto;
+		padding-top: 14px;
+		padding-bottom: 16px;
+		row-gap: 10px;
+	}
+	.ht-left-top img { height: 48px; }
+	.ht-center .ht-title-line.line1 { font-size: 22px; }
+	.ht-center .ht-title-line.line2,
+	.ht-center .ht-title-line.line3 { font-size: 20px; }
+	.ht-right-top img { height: 48px; }
+	.ht-left-bottom img,
+	.ht-right-bottom img { height: 27px; }
+}
