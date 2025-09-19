@@ -35,6 +35,17 @@ RewriteRule ^(config|classes|vendor|storage|backups)/ - [F,L]
     Deny from all
   </FilesMatch>
 </IfModule>
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(map|md|log|sql|sqlite|bak)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "\.(map|md|log|sql|sqlite|bak)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
 
 # ------------------------------
 # CORS (restreint aux origines connues)

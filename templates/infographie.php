@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="<?= asset('/static/css/infographie.css') ?>">
     <link rel="stylesheet" href="<?= asset('/static/css/period-picker-dark.css') ?>">
     <link rel="stylesheet" href="<?= asset('/static/css/header-tourisme.css') ?>">
-    <script src="<?= asset('/static/js/utils.js') ?>"></script>
-    <script src="<?= asset('/static/js/config.js') ?>"></script>
 </head>
 <body class="<?= $isEmbed ? 'embedded' : '' ?>">
     <?php if (!$isEmbed) include '_navbar.php'; ?>
@@ -389,11 +387,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <!-- html2canvas pour capturer l'infographie -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <!-- Configuration dynamique FluxVision -->
-    <script src="<?= asset('/static/js/flux-vision-config.js') ?>"></script>
-    <!-- Chargeur de filtres (même logique que le tableau de bord) -->
-    <script src="<?= asset('/static/js/filters_loader.js') ?>"></script>
-    <!-- Script JS pour l'infographie -->
-    <script src="<?= asset('/static/js/infographie.js') ?>"></script>
+    <!-- Scripts regroupés -->
+    <script src="<?= asset('/static/dist/infographie.bundle.js?v=' . APP_VERSION) ?>" defer></script>
 </body>
 </html> 

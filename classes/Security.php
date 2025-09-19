@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Classe de sécurité complète pour FluxVision
- * Gère la protection contre les attaques courantes et la sécurisation de l'application
+ * Classe de sÃ©curitÃ© complÃ¨te pour FluxVision
+ * GÃ¨re la protection contre les attaques courantes et la sÃ©curisation de l'application
  */
 class Security {
     
-    // Configuration des limites de sécurité
+    // Configuration des limites de sÃ©curitÃ©
     private static $config = [
         'max_login_attempts' => 5,
         'lockout_duration' => 900, // 15 minutes
@@ -19,13 +19,13 @@ class Security {
     ];
     
     /**
-     * Initialise les protections de sécurité de base
+     * Initialise les protections de sÃ©curitÃ© de base
      */
     public static function initialize() {
-        // Configuration de session sécurisée
+        // Configuration de session sÃ©curisÃ©e
         self::configureSecureSession();
         
-        // Headers de sécurité
+        // Headers de sÃ©curitÃ©
         self::setSecurityHeaders();
         
         // Protection CSRF
@@ -34,12 +34,12 @@ class Security {
         // Nettoyage automatique des tentatives de connexion
         self::cleanupOldAttempts();
         
-        // Vérification du timeout de session
+        // VÃ©rification du timeout de session
         self::checkSessionTimeout();
     }
     
     /**
-     * Configuration sécurisée des sessions PHP
+     * Configuration sÃ©curisÃ©e des sessions PHP
      */
     private static function configureSecureSession() {
         // Ne pas configurer les sessions en mode CLI
@@ -47,7 +47,7 @@ class Security {
             return;
         }
         
-        // Configuration sécurisée de session
+        // Configuration sÃ©curisÃ©e de session
         if (session_status() === PHP_SESSION_NONE) {
             ini_set('session.cookie_httponly', 1);
             ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) ? 1 : 0);
@@ -55,12 +55,12 @@ class Security {
             ini_set('session.use_strict_mode', 1);
             ini_set('session.gc_maxlifetime', self::$config['session_timeout']);
             
-            // Nom de session aléatoire
+            // Nom de session alÃ©atoire
             session_name('CANTALDESTINATION_' . substr(md5(__DIR__), 0, 8));
             
             session_start();
             
-            // Régénération périodique de l'ID de session
+            // RÃ©gÃ©nÃ©ration pÃ©riodique de l'ID de session
             if (!isset($_SESSION['last_regeneration'])) {
                 $_SESSION['last_regeneration'] = time();
             } elseif (time() - $_SESSION['last_regeneration'] > 300) { // 5 minutes
@@ -71,16 +71,16 @@ class Security {
     }
     
     /**
-     * Définit les headers de sécurité HTTP
+     * DÃ©finit les headers de sÃ©curitÃ© HTTP
      */
     private static function setSecurityHeaders() {
-        // Vérifier si nous sommes dans un contexte web
+        // VÃ©rifier si nous sommes dans un contexte web
         if (php_sapi_name() === 'cli' || headers_sent()) {
             return;
         }
         
         // Protection contre le clickjacking
-        // Permettre l'iframe en mode embed pour les prévisualisations
+        // Permettre l'iframe en mode embed pour les prÃ©visualisations
         if (isset($_GET['embed']) && $_GET['embed'] === '1') {
             header('X-Frame-Options: SAMEORIGIN');
         } else {
@@ -93,7 +93,7 @@ class Security {
         // Protection XSS basique
         header('X-XSS-Protection: 1; mode=block');
         
-        // Référence politique stricte
+        // RÃ©fÃ©rence politique stricte
         header('Referrer-Policy: strict-origin-when-cross-origin');
         
         // Content Security Policy
@@ -134,7 +134,7 @@ class Security {
             !isset($_SESSION['csrf_token_time']) || 
             time() - $_SESSION['csrf_token_time'] > self::$config['csrf_token_lifetime']) {
             
-            // Conserver l'ancien pour une courte période de grâce
+            // Conserver l'ancien pour une courte pÃ©riode de grÃ¢ce
             if (!empty($_SESSION['csrf_token'])) {
                 $_SESSION['csrf_token_prev'] = $_SESSION['csrf_token'];
                 $_SESSION['csrf_token_prev_time'] = $_SESSION['csrf_token_time'] ?? (time()-1);
@@ -145,20 +145,20 @@ class Security {
     }
     
     /**
-     * Génère un token CSRF pour les formulaires
+     * GÃ©nÃ¨re un token CSRF pour les formulaires
      */
     public static function getCSRFToken() {
         return $_SESSION['csrf_token'] ?? '';
     }
     
     /**
-     * Vérifie la validité d'un token CSRF
+     * VÃ©rifie la validitÃ© d'un token CSRF
      */
     public static function validateCSRFToken($token) {
         if (empty($token)) return false;
         $current = $_SESSION['csrf_token'] ?? '';
         if ($current && hash_equals($current, $token)) return true;
-        // Grâce si le token vient juste d'être régénéré
+        // GrÃ¢ce si le token vient juste d'Ãªtre rÃ©gÃ©nÃ©rÃ©
         $prev   = $_SESSION['csrf_token_prev'] ?? '';
         $prevAt = $_SESSION['csrf_token_prev_time'] ?? 0;
         if ($prev && (time() - (int)$prevAt) <= self::$config['csrf_token_lifetime']) {
@@ -174,10 +174,10 @@ class Security {
         $db = Database::getInstance();
         $connection = $db->getConnection();
         
-        // Créer la table des tentatives si elle n'existe pas
+        // CrÃ©er la table des tentatives si elle n'existe pas
         self::createSecurityTables();
         
-        // Vérifier les tentatives récentes
+        // VÃ©rifier les tentatives rÃ©centes
         $stmt = $connection->prepare(
             "SELECT COUNT(*) as attempts, MAX(created_at) as last_attempt 
              FROM security_attempts 
@@ -188,14 +188,14 @@ class Security {
         
         if ($result['attempts'] >= self::$config['max_login_attempts']) {
             $timeLeft = self::$config['lockout_duration'] - (time() - strtotime($result['last_attempt']));
-            throw new SecurityException("Trop de tentatives. Veuillez réessayer dans " . ceil($timeLeft/60) . " minutes.");
+            throw new SecurityException("Trop de tentatives. Veuillez rÃ©essayer dans " . ceil($timeLeft/60) . " minutes.");
         }
         
         return true;
     }
     
     /**
-     * Enregistre une tentative échouée
+     * Enregistre une tentative Ã©chouÃ©e
      */
     public static function recordFailedAttempt($identifier, $type = 'login') {
         $db = Database::getInstance();
@@ -227,12 +227,12 @@ class Security {
             );
             $stmt->execute([self::$config['lockout_duration'] * 2]);
         } catch (Exception $e) {
-            // Table n'existe pas encore, sera créée à la première tentative
+            // Table n'existe pas encore, sera crÃ©Ã©e Ã  la premiÃ¨re tentative
         }
     }
     
     /**
-     * Vérification du timeout de session
+     * VÃ©rification du timeout de session
      */
     private static function checkSessionTimeout() {
         if (isset($_SESSION['last_activity'])) {
@@ -246,7 +246,7 @@ class Security {
     }
     
     /**
-     * Sanitise les données d'entrée
+     * Sanitise les donnÃ©es d'entrÃ©e
      */
     public static function sanitizeInput($input, $type = 'string') {
         if (is_array($input)) {
@@ -279,7 +279,7 @@ class Security {
         $errors = [];
         
         if (strlen($password) < self::$config['password_min_length']) {
-            $errors[] = "Le mot de passe doit contenir au moins " . self::$config['password_min_length'] . " caractères.";
+            $errors[] = "Le mot de passe doit contenir au moins " . self::$config['password_min_length'] . " caractÃ¨res.";
         }
         
         if (!preg_match('/[A-Z]/', $password)) {
@@ -295,10 +295,10 @@ class Security {
         }
         
         if (self::$config['password_require_special'] && !preg_match('/[^A-Za-z0-9]/', $password)) {
-            $errors[] = "Le mot de passe doit contenir au moins un caractère spécial.";
+            $errors[] = "Le mot de passe doit contenir au moins un caractÃ¨re spÃ©cial.";
         }
         
-        // Vérifier les mots de passe communs
+        // VÃ©rifier les mots de passe communs
         $commonPasswords = ['password', '123456', 'admin', 'root', 'user', 'test', 'guest'];
         if (in_array(strtolower($password), $commonPasswords)) {
             $errors[] = "Ce mot de passe est trop commun.";
@@ -308,23 +308,23 @@ class Security {
     }
     
     /**
-     * Validation sécurisée des fichiers uploadés
+     * Validation sÃ©curisÃ©e des fichiers uploadÃ©s
      */
     public static function validateFileUpload($file) {
         $errors = [];
         
-        // Vérifier la taille
+        // VÃ©rifier la taille
         if ($file['size'] > self::$config['max_file_upload_size']) {
             $errors[] = "Le fichier est trop volumineux.";
         }
         
-        // Vérifier l'extension
+        // VÃ©rifier l'extension
         $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (!in_array($extension, self::$config['allowed_file_extensions'])) {
-            $errors[] = "Type de fichier non autorisé.";
+            $errors[] = "Type de fichier non autorisÃ©.";
         }
         
-        // Vérifier le type MIME
+        // VÃ©rifier le type MIME
         $allowedMimes = [
             'pdf' => 'application/pdf',
             'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -340,7 +340,7 @@ class Security {
             finfo_close($finfo);
             
             if ($mimeType !== $allowedMimes[$extension]) {
-                $errors[] = "Le contenu du fichier ne correspond pas à son extension.";
+                $errors[] = "Le contenu du fichier ne correspond pas Ã  son extension.";
             }
         }
         
@@ -348,7 +348,7 @@ class Security {
     }
     
     /**
-     * Obtient l'adresse IP réelle du client
+     * Obtient l'adresse IP rÃ©elle du client
      */
     public static function getClientIP() {
         $ipKeys = ['HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP', 'HTTP_CLIENT_IP', 'REMOTE_ADDR'];
@@ -368,23 +368,24 @@ class Security {
     }
     
     /**
-     * Journalisation des événements de sécurité
+     * Journalisation des Ã©vÃ©nements de sÃ©curitÃ©
      */
     public static function logSecurityEvent($event, $details = [], $level = 'INFO') {
-        // Créer le dossier logs s'il n'existe pas
+        // CrÃ©er le dossier logs s'il n'existe pas
         $logDir = __DIR__ . '/../logs';
         if (!is_dir($logDir)) {
             mkdir($logDir, 0755, true);
         }
         
+        $sessionId = session_id();
         $logEntry = [
             'timestamp' => date('Y-m-d H:i:s'),
             'level' => $level,
             'event' => $event,
             'ip' => self::getClientIP(),
             'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown',
-            'session_id' => session_id(),
-            'user_id' => Auth::isAuthenticated() ? Auth::getUser()['id'] ?? null : null,
+            'session_hash' => $sessionId ? hash('sha256', $sessionId) : null,
+            'user_id' => Auth::isAuthenticated() ? (Auth::getUser()['id'] ?? null) : null,
             'details' => $details
         ];
         
@@ -393,7 +394,7 @@ class Security {
     }
     
     /**
-     * Crée les tables de sécurité nécessaires
+     * CrÃ©e les tables de sÃ©curitÃ© nÃ©cessaires
      */
     private static function createSecurityTables() {
         $db = Database::getInstance();
@@ -413,7 +414,7 @@ class Security {
         
         $connection->exec($sql);
         
-        // Table des événements de sécurité
+        // Table des Ã©vÃ©nements de sÃ©curitÃ©
         $sql = "CREATE TABLE IF NOT EXISTS security_logs (
             id INT AUTO_INCREMENT PRIMARY KEY,
             event_type VARCHAR(100) NOT NULL,
@@ -433,10 +434,10 @@ class Security {
     }
     
     /**
-     * Valide une URL pour éviter les redirections malveillantes
+     * Valide une URL pour Ã©viter les redirections malveillantes
      */
     public static function validateRedirectURL($url) {
-        // Accepter seulement les URLs relatives ou de même domaine
+        // Accepter seulement les URLs relatives ou de mÃªme domaine
         if (empty($url) || $url[0] === '/') {
             return true;
         }
@@ -451,7 +452,7 @@ class Security {
     }
     
     /**
-     * Génère un nonce pour CSP
+     * GÃ©nÃ¨re un nonce pour CSP
      */
     public static function generateNonce() {
         if (!isset($_SESSION['csp_nonce'])) {
@@ -461,7 +462,7 @@ class Security {
     }
     
     /**
-     * Vérifie si l'utilisateur actuel a les permissions requises
+     * VÃ©rifie si l'utilisateur actuel a les permissions requises
      */
     public static function checkPermission($required_role = 'user') {
         if (!Auth::isAuthenticated()) {
@@ -478,13 +479,13 @@ class Security {
 }
 
 /**
- * Exception de sécurité personnalisée
+ * Exception de sÃ©curitÃ© personnalisÃ©e
  */
 class SecurityException extends Exception {
     public function __construct($message = "", $code = 0, Exception $previous = null) {
         parent::__construct($message, $code, $previous);
         
-        // Journaliser automatiquement les exceptions de sécurité
+        // Journaliser automatiquement les exceptions de sÃ©curitÃ©
         Security::logSecurityEvent('SECURITY_EXCEPTION', [
             'message' => $message,
             'code' => $code,
@@ -492,3 +493,4 @@ class SecurityException extends Exception {
         ], 'ERROR');
     }
 } 
+

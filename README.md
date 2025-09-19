@@ -38,7 +38,8 @@ CantalDestination Observatoire est la plateforme web et data de l'Observatoire t
 5. Creer la base MySQL `fluxvision` puis provisionner le schema minimal via `php tools/migration/migrate_temp_to_main.php` (mode test possible avec `--test`).
 6. Installer les dependances Node : `npm install`, puis executer `npm run start` pour regenir `saisons_data.php` si necessaire.
 7. Creer un environnement Python (`python -m venv .venv`, activation) et installer les dependances ETL : `pip install -r requirements_etl.txt` ou `pip install polars mysql-connector-python requests urllib3 python-dotenv`.
-8. Lancer Apache et MySQL, ensuite ouvrir `http://localhost/fluxvision_fin/login` pour verifier l'interface.
+8. Generer les bundles front-end : `python tools/build_front_assets.py` (regroupe les scripts critiques en production).
+9. Lancer Apache et MySQL, ensuite ouvrir `http://localhost/fluxvision_fin/login` pour verifier l'interface.
 
 ## Configuration cle
 | Fichier / dossier           | Sujet principal                                                                |
@@ -51,6 +52,14 @@ CantalDestination Observatoire est la plateforme web et data de l'Observatoire t
 | `logs/` et `data/`          | Journaux applicatifs et fichiers temporaires pour les traitements              |
 | `etl_checkpoint.json`       | Etat de progression ETL, utile pour les relances                              |
 
+
+## Variables d'environnement
+- `APP_ENV` : `local`, `production`, etc. Contrôle la configuration chargée (affichage d'erreurs désactivé en production).
+- `DB_HOST_PROD`, `DB_PORT_PROD`, `DB_NAME_PROD`, `DB_USER_PROD`, `DB_PASSWORD_PROD` : informations de connexion MySQL pour la production (obligatoires, aucune valeur par défaut dans le code).
+- `DB_HOST_LOCAL`, `DB_PORT_LOCAL`, `DB_NAME_LOCAL`, `DB_USER_LOCAL`, `DB_PASSWORD_LOCAL` : overrides facultatifs pour un environnement de développement.
+- `DB_TIMEOUT_PROD` (optionnel) : délai de connexion PDO en secondes (défaut 30).
+- `FORCE_SECURE_COOKIE` : fixer à `1` pour forcer `session.cookie_secure` si l’application tourne derrière un proxy TLS.
+- `API_TOKENS`, `ADMIN_API_TOKENS`, `API_RATE_LIMIT`, `API_IP_ALLOWLIST`, `API_AUDIT_LOG` : paramètres de sécurisation des endpoints API (voir `docs/api_guide.md`).
 ## Lancement et flux principaux
 - Import complet : suivre le runbook `docs/operations.md` (outils `tools/import`, `tools/migration`, diagnostics).
 - ETL Python : scripts `tools/etl/populate_facts_*` alimentent MySQL via `api/database/facts_upsert.php`.
@@ -105,4 +114,6 @@ Les scripts Python de `tools/etl/` orchestrent la transformation des fichiers CS
 - [Reference API](docs/api_guide.md)
 - [Chaine ETL FluxVision](docs/etl_pipeline.md)
 - [Liste des outils CLI](tools/README.md)
+
+
 

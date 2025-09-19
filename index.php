@@ -1,14 +1,20 @@
-<?php
+﻿<?php
 // Gestion d'erreurs
 error_reporting(E_ALL);
-ini_set('display_errors', 1); // Afficher les erreurs temporairement pour debug
+ini_set('display_errors', 0); // Masqué par défaut, activé après chargement config
 ini_set('log_errors', 1);
 
 try {
-    // Configuration sécurisée des sessions
+    // Configuration sÃ©curisÃ©e des sessions
     require_once 'config/session_config.php';
     
     require_once 'config/app.php';
+
+    if (defined('DEBUG') && DEBUG) {
+        ini_set('display_errors', 1);
+    } else {
+        ini_set('display_errors', 0);
+    }
     require_once 'classes/Database.php';
     require_once 'classes/Auth.php';
     require_once 'classes/Security.php';
@@ -16,7 +22,7 @@ try {
     require_once 'classes/AuthenticationEnhancer.php';
     require_once 'classes/FormValidator.php';
     
-    // Initialiser les protections de sécurité avancées
+    // Initialiser les protections de sÃ©curitÃ© avancÃ©es
     SecurityManager::initialize();
     Security::initialize();
     
@@ -24,7 +30,7 @@ try {
     try {
         AuthenticationEnhancer::initializeTables();
     } catch (Exception $e) {
-        // Si l'initialisation échoue, continuer sans (mode dégradé)
+        // Si l'initialisation Ã©choue, continuer sans (mode dÃ©gradÃ©)
         error_log("Erreur initialisation AuthenticationEnhancer: " . $e->getMessage());
     }
 } catch (Exception $e) {
@@ -34,7 +40,7 @@ try {
     echo "<h1>Erreur de chargement</h1>";
     echo "<p>Une erreur s'est produite lors du chargement de l'application.</p>";
     if (defined('DEBUG') && DEBUG) {
-        echo "<p>Détails: " . htmlspecialchars($e->getMessage()) . "</p>";
+        echo "<p>DÃ©tails: " . htmlspecialchars($e->getMessage()) . "</p>";
     }
     echo "</body></html>";
     exit;
@@ -46,7 +52,7 @@ function renderTemplate($template, $variables = []) {
     $templatePath = TEMPLATES_PATH . '/' . $template;
     
     if (!file_exists($templatePath)) {
-        throw new Exception("Template non trouvé : " . $template);
+        throw new Exception("Template non trouvÃ© : " . $template);
     }
     
     ob_start();
@@ -68,7 +74,7 @@ function serveTemplate($template, $variables = []) {
 $request = $_SERVER['REQUEST_URI'] ?? '/';
 $path = parse_url($request, PHP_URL_PATH) ?? '/';
 
-// Retirer le préfixe du dossier si présent (pour XAMPP)
+// Retirer le prÃ©fixe du dossier si prÃ©sent (pour XAMPP)
 $basePath = '';
 if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/fluxvision_fin/') === 0) {
     $basePath = '/fluxvision_fin';
@@ -79,19 +85,19 @@ if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/fluxvisi
 $path = rtrim($path, '/');
 if (empty($path)) $path = '/';
 
-// Debug temporaire (à supprimer en production)
+// Debug temporaire (Ã  supprimer en production)
 if (DEBUG) {
     error_log("DEBUG ROUTE - Request URI: " . $_SERVER['REQUEST_URI']);
     error_log("DEBUG ROUTE - Parsed path: $path");
     if ($path === '/infographie') {
-        error_log("Route infographie détectée. Path: $path");
+        error_log("Route infographie dÃ©tectÃ©e. Path: $path");
     }
 }
 
 // Routes principales
 switch ($path) {
     case '/':
-        // Rediriger vers login si pas connecté, sinon vers la page d'accueil
+        // Rediriger vers login si pas connectÃ©, sinon vers la page d'accueil
         if (!Auth::isAuthenticated()) {
             header('Location: ' . url('/login'));
             exit;
@@ -157,7 +163,7 @@ switch ($path) {
         $userDataManager = new UserDataManager();
         $user = Auth::getUser();
         
-        // Récupérer les paramètres de l'infographie depuis l'URL
+        // RÃ©cupÃ©rer les paramÃ¨tres de l'infographie depuis l'URL
         $infographicParams = [
             'year' => $_GET['year'] ?? '',
             'period' => $_GET['period'] ?? '',
@@ -168,7 +174,7 @@ switch ($path) {
             'preview_id' => $_GET['preview_id'] ?? null
         ];
         
-        // Récupérer les espaces de l'utilisateur
+        // RÃ©cupÃ©rer les espaces de l'utilisateur
         $userSpaces = $spaceManager->getUserSpaces($user['id']);
         
         // Ajouter les statistiques pour chaque espace
@@ -188,7 +194,7 @@ switch ($path) {
         Auth::requireAuth();
         $user = Auth::getUser();
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
@@ -202,7 +208,7 @@ switch ($path) {
         Auth::requireAuth();
         $user = Auth::getUser();
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
@@ -216,7 +222,7 @@ switch ($path) {
         Auth::requireAuth();
         $user = Auth::getUser();
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
@@ -229,7 +235,7 @@ switch ($path) {
         $error = null;
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Vérification CSRF
+            // VÃ©rification CSRF
             if (!Security::validateCSRFToken($_POST['csrf_token'] ?? '')) {
                 http_response_code(403);
                 serveTemplate('403.php');
@@ -255,9 +261,9 @@ switch ($path) {
                     );
                     
                     if ($success) {
-                        $message = ['type' => 'success', 'text' => 'Email de test envoyé avec succès !'];
+                        $message = ['type' => 'success', 'text' => 'Email de test envoyÃ© avec succÃ¨s !'];
                     } else {
-                        $error = 'Échec de l\'envoi du test email';
+                        $error = 'Ã‰chec de l\'envoi du test email';
                     }
                 } catch (Exception $e) {
                     $error = 'Erreur : ' . $e->getMessage();
@@ -272,7 +278,7 @@ switch ($path) {
         Auth::requireAuth();
         $user = Auth::getUser();
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
@@ -286,7 +292,7 @@ switch ($path) {
         Auth::requireAuth();
         $user = Auth::getUser();
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
@@ -300,7 +306,7 @@ switch ($path) {
         Auth::requireAuth();
         $user = Auth::getUser();
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
@@ -319,7 +325,7 @@ switch ($path) {
             exit;
         } else {
             http_response_code(404);
-            echo "Fichier de log non trouvé";
+            echo "Fichier de log non trouvÃ©";
         }
         break;
         
@@ -327,16 +333,16 @@ switch ($path) {
         Auth::requireAuth();
         $user = Auth::getUser();
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
             break;
         }
         
-        // Gérer les actions POST
+        // GÃ©rer les actions POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Vérification CSRF
+            // VÃ©rification CSRF
             if (!Security::validateCSRFToken($_POST['csrf_token'] ?? '')) {
                 http_response_code(403);
                 Security::logSecurityEvent('CSRF_TOKEN_INVALID', ['action' => $_POST['action'] ?? 'unknown'], 'HIGH');
@@ -358,9 +364,9 @@ switch ($path) {
                             $validatedData['role'], 
                             $validatedData['email'] ?? null
                         )) {
-                            $success = "Utilisateur '{$validatedData['username']}' créé avec succès.";
+                            $success = "Utilisateur '{$validatedData['username']}' crÃ©Ã© avec succÃ¨s.";
                         } else {
-                            $error = "Erreur lors de la création de l'utilisateur. Le nom d'utilisateur existe peut-être déjà.";
+                            $error = "Erreur lors de la crÃ©ation de l'utilisateur. Le nom d'utilisateur existe peut-Ãªtre dÃ©jÃ .";
                         }
                     } catch (InvalidArgumentException $e) {
                         $error = $e->getMessage();
@@ -373,9 +379,9 @@ switch ($path) {
                     $userId = $_POST['user_id'] ?? '';
                     if (!empty($userId)) {
                         if (Auth::deactivateUser($userId)) {
-                            $success = "Utilisateur désactivé avec succès.";
+                            $success = "Utilisateur dÃ©sactivÃ© avec succÃ¨s.";
                         } else {
-                            $error = "Erreur lors de la désactivation de l'utilisateur.";
+                            $error = "Erreur lors de la dÃ©sactivation de l'utilisateur.";
                         }
                     }
                     break;
@@ -385,7 +391,7 @@ switch ($path) {
                         $userId = $_POST['user_id'] ?? '';
                         if (!empty($userId)) {
                             if (Auth::deleteUser($userId)) {
-                                $success = "Utilisateur supprimé définitivement avec succès.";
+                                $success = "Utilisateur supprimÃ© dÃ©finitivement avec succÃ¨s.";
                             } else {
                                 $error = "Erreur lors de la suppression de l'utilisateur.";
                             }
@@ -401,7 +407,7 @@ switch ($path) {
             }
         }
         
-        // Récupérer tous les utilisateurs avec déchiffrement automatique
+        // RÃ©cupÃ©rer tous les utilisateurs avec dÃ©chiffrement automatique
         require_once 'classes/UserDataManager.php';
         $users = UserDataManager::getAllUsers();
         
@@ -415,21 +421,21 @@ switch ($path) {
     case '/login':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
-                // Vérifier le rate limiting AVANT tout traitement
+                // VÃ©rifier le rate limiting AVANT tout traitement
                 if (!SecurityManager::checkLoginRateLimit()) {
                     SecurityManager::logSecurityEvent('LOGIN_RATE_LIMITED', ['ip' => $_SERVER['REMOTE_ADDR']], 'HIGH');
-                    serveTemplate('login.php', ['error' => 'Trop de tentatives de connexion. Veuillez réessayer dans 15 minutes.']);
+                    serveTemplate('login.php', ['error' => 'Trop de tentatives de connexion. Veuillez rÃ©essayer dans 15 minutes.']);
                     break;
                 }
                 
-                // Vérification CSRF
+                // VÃ©rification CSRF
                 if (!Security::validateCSRFToken($_POST['csrf_token'] ?? '')) {
                     Security::logSecurityEvent('CSRF_TOKEN_INVALID', ['action' => 'login'], 'HIGH');
-                    serveTemplate('login.php', ['error' => 'Token de sécurité invalide']);
+                    serveTemplate('login.php', ['error' => 'Token de sÃ©curitÃ© invalide']);
                     break;
                 }
                 
-                // Valider les données du formulaire
+                // Valider les donnÃ©es du formulaire
                 $validatedData = FormValidator::validateLogin($_POST);
                 
                 // Enregistrer la tentative de connexion
@@ -438,7 +444,7 @@ switch ($path) {
                 if (Auth::login($validatedData['username'], $validatedData['password'])) {
                     SecurityManager::logSecurityEvent('LOGIN_SUCCESS', ['username' => $validatedData['username']], 'INFO');
                     
-                    // Vérifier si une URL de redirection sécurisée a été fournie
+                    // VÃ©rifier si une URL de redirection sÃ©curisÃ©e a Ã©tÃ© fournie
                     $redirect = $_POST['redirect'] ?? $_GET['redirect'] ?? '/';
                     if (!Security::validateRedirectURL($redirect)) {
                         $redirect = '/';
@@ -457,7 +463,7 @@ switch ($path) {
                 serveTemplate('login.php', ['error' => $e->getMessage()]);
             }
         } else {
-            // Rediriger si déjà connecté
+            // Rediriger si dÃ©jÃ  connectÃ©
             Auth::redirectIfAuthenticated();
             serveTemplate('login.php');
         }
@@ -469,7 +475,7 @@ switch ($path) {
         exit;
         break;
     
-    // Routes API (toutes protégées par authentification)
+    // Routes API (toutes protÃ©gÃ©es par authentification)
     case '/api/filters':
         Auth::requireAuth();
         include 'api/filters.php';
@@ -555,19 +561,19 @@ switch ($path) {
         include 'api/fiches.php';
         break;
     
-    // Gestion des espaces partagés
+    // Gestion des espaces partagÃ©s
     case '/admin/shared-spaces':
         Auth::requireAuth();
         $user = Auth::getUser();
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
             break;
         }
         
-        // Inclure les classes nécessaires
+        // Inclure les classes nÃ©cessaires
         require_once 'classes/SharedSpaceManager.php';
         require_once 'classes/UserDataManager.php';
         
@@ -575,9 +581,9 @@ switch ($path) {
         $success = null;
         $error = null;
         
-        // Gérer les actions POST
+        // GÃ©rer les actions POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Vérification CSRF
+            // VÃ©rification CSRF
             if (!Security::validateCSRFToken($_POST['csrf_token'] ?? '')) {
                 http_response_code(403);
                 serveTemplate('403.php');
@@ -596,7 +602,7 @@ switch ($path) {
                         throw new Exception('Le nom de l\'espace est requis');
                     }
                     
-                    // Préparer les membres initiaux
+                    // PrÃ©parer les membres initiaux
                     $initialMembers = [];
                     foreach ($members as $memberId) {
                         $role = $_POST['member_role_' . $memberId] ?? 'reader';
@@ -606,9 +612,9 @@ switch ($path) {
                         ];
                     }
                     
-                    // Créer l'espace
+                    // CrÃ©er l'espace
                     $spaceId = $spaceManager->createSpace($spaceName, $spaceDescription, $user['id'], $initialMembers);
-                    $success = "Espace '$spaceName' créé avec succès !";
+                    $success = "Espace '$spaceName' crÃ©Ã© avec succÃ¨s !";
                     
                 } catch (Exception $e) {
                     $error = $e->getMessage();
@@ -616,8 +622,8 @@ switch ($path) {
             }
         }
         
-        // Récupérer les données pour l'affichage (inclure les espaces désactivés pour l'admin)
-        $userSpaces = $spaceManager->getUserSpaces($user['id'], true); // true = inclure les désactivés
+        // RÃ©cupÃ©rer les donnÃ©es pour l'affichage (inclure les espaces dÃ©sactivÃ©s pour l'admin)
+        $userSpaces = $spaceManager->getUserSpaces($user['id'], true); // true = inclure les dÃ©sactivÃ©s
         $availableUsers = UserDataManager::getAllUsers();
         
         // Calculer les statistiques
@@ -640,20 +646,20 @@ switch ($path) {
         serveTemplate('admin_shared_spaces.php', compact('userSpaces', 'availableUsers', 'stats', 'spaceStats', 'success', 'error'));
         break;
 
-    // Gestion d'un espace spécifique
+    // Gestion d'un espace spÃ©cifique
     case (preg_match('/^\/admin\/shared-spaces\/(\d+)\/manage$/', $path, $matches) ? true : false):
         Auth::requireAuth();
         $user = Auth::getUser();
         $spaceId = (int)$matches[1];
         
-        // Vérifier que l'utilisateur est administrateur
+        // VÃ©rifier que l'utilisateur est administrateur
         if ($user['role'] !== 'admin') {
             http_response_code(403);
             serveTemplate('403.php');
             break;
         }
         
-        // Inclure les classes nécessaires
+        // Inclure les classes nÃ©cessaires
         require_once 'classes/SharedSpaceManager.php';
         require_once 'classes/UserDataManager.php';
         
@@ -661,7 +667,7 @@ switch ($path) {
         $success = null;
         $error = null;
         
-        // Récupérer l'espace
+        // RÃ©cupÃ©rer l'espace
         $space = $spaceManager->getSpace($spaceId, $user['id']);
         if (!$space) {
             http_response_code(404);
@@ -669,9 +675,9 @@ switch ($path) {
             break;
         }
         
-        // Gérer les actions POST
+        // GÃ©rer les actions POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Vérification CSRF
+            // VÃ©rification CSRF
             if (!Security::validateCSRFToken($_POST['csrf_token'] ?? '')) {
                 http_response_code(403);
                 serveTemplate('403.php');
@@ -691,9 +697,9 @@ switch ($path) {
                         }
                         
                         $spaceManager->updateSpace($spaceId, $spaceName, $spaceDescription, $user['id']);
-                        $success = "Espace mis à jour avec succès !";
+                        $success = "Espace mis Ã  jour avec succÃ¨s !";
                         
-                        // Mettre à jour les données de l'espace
+                        // Mettre Ã  jour les donnÃ©es de l'espace
                         $space = $spaceManager->getSpace($spaceId, $user['id']);
                         
                     } catch (Exception $e) {
@@ -711,7 +717,7 @@ switch ($path) {
                         }
                         
                         $spaceManager->addMember($spaceId, $memberId, $role);
-                        $success = "Membre ajouté avec succès !";
+                        $success = "Membre ajoutÃ© avec succÃ¨s !";
                         
                     } catch (Exception $e) {
                         $error = $e->getMessage();
@@ -728,7 +734,7 @@ switch ($path) {
                         }
                         
                         $spaceManager->updateMemberRole($spaceId, $memberId, $newRole, $user['id']);
-                        $success = "Rôle mis à jour avec succès !";
+                        $success = "RÃ´le mis Ã  jour avec succÃ¨s !";
                         
                     } catch (Exception $e) {
                         $error = $e->getMessage();
@@ -744,7 +750,7 @@ switch ($path) {
                         }
                         
                         $spaceManager->removeMember($spaceId, $memberId, $user['id']);
-                        $success = "Membre retiré avec succès !";
+                        $success = "Membre retirÃ© avec succÃ¨s !";
                         
                     } catch (Exception $e) {
                         $error = $e->getMessage();
@@ -753,7 +759,7 @@ switch ($path) {
                     
                 case 'delete':
                     try {
-                        $spaceManager->deleteSpace($spaceId, $user['id'], true); // Suppression définitive
+                        $spaceManager->deleteSpace($spaceId, $user['id'], true); // Suppression dÃ©finitive
                         header('Location: ' . url('/admin/shared-spaces'));
                         exit;
                         
@@ -775,7 +781,7 @@ switch ($path) {
                     
                 case 'disable':
                     try {
-                        $spaceManager->deleteSpace($spaceId, $user['id'], false); // Désactivation (soft delete)
+                        $spaceManager->deleteSpace($spaceId, $user['id'], false); // DÃ©sactivation (soft delete)
                         header('Location: ' . url('/admin/shared-spaces'));
                         exit;
                         
@@ -790,7 +796,7 @@ switch ($path) {
                         $defaultRole = $_POST['default_role'] ?? 'reader';
                         
                         if (empty($users)) {
-                            throw new Exception('Aucun utilisateur sélectionné');
+                            throw new Exception('Aucun utilisateur sÃ©lectionnÃ©');
                         }
                         
                         $addedCount = 0;
@@ -801,16 +807,16 @@ switch ($path) {
                                     $spaceManager->addMember($spaceId, $userId, $defaultRole);
                                     $addedCount++;
                                 } catch (Exception $e) {
-                                    // Continuer avec les autres utilisateurs même si un échoue
+                                    // Continuer avec les autres utilisateurs mÃªme si un Ã©choue
                                     error_log("Erreur ajout membre $userId: " . $e->getMessage());
                                 }
                             }
                         }
                         
                         if ($addedCount > 0) {
-                            $success = "$addedCount membre" . ($addedCount > 1 ? 's' : '') . " ajouté" . ($addedCount > 1 ? 's' : '') . " avec succès !";
+                            $success = "$addedCount membre" . ($addedCount > 1 ? 's' : '') . " ajoutÃ©" . ($addedCount > 1 ? 's' : '') . " avec succÃ¨s !";
                         } else {
-                            throw new Exception('Aucun membre n\'a pu être ajouté');
+                            throw new Exception('Aucun membre n\'a pu Ãªtre ajoutÃ©');
                         }
                         
                     } catch (Exception $e) {
@@ -824,11 +830,11 @@ switch ($path) {
                         $newRole = $_POST['new_role'] ?? '';
                         
                         if (empty($membersToUpdate)) {
-                            throw new Exception('Aucun membre sélectionné');
+                            throw new Exception('Aucun membre sÃ©lectionnÃ©');
                         }
                         
                         if (empty($newRole)) {
-                            throw new Exception('Nouveau rôle requis');
+                            throw new Exception('Nouveau rÃ´le requis');
                         }
                         
                         $updatedCount = 0;
@@ -839,16 +845,16 @@ switch ($path) {
                                     $spaceManager->updateMemberRole($spaceId, $memberId, $newRole, $user['id']);
                                     $updatedCount++;
                                 } catch (Exception $e) {
-                                    // Continuer avec les autres membres même si un échoue
-                                    error_log("Erreur mise à jour rôle membre $memberId: " . $e->getMessage());
+                                    // Continuer avec les autres membres mÃªme si un Ã©choue
+                                    error_log("Erreur mise Ã  jour rÃ´le membre $memberId: " . $e->getMessage());
                                 }
                             }
                         }
                         
                         if ($updatedCount > 0) {
-                            $success = "$updatedCount rôle" . ($updatedCount > 1 ? 's' : '') . " mis" . ($updatedCount > 1 ? '' : '') . " à jour avec succès !";
+                            $success = "$updatedCount rÃ´le" . ($updatedCount > 1 ? 's' : '') . " mis" . ($updatedCount > 1 ? '' : '') . " Ã  jour avec succÃ¨s !";
                         } else {
-                            throw new Exception('Aucun rôle n\'a pu être mis à jour');
+                            throw new Exception('Aucun rÃ´le n\'a pu Ãªtre mis Ã  jour');
                         }
                         
                     } catch (Exception $e) {
@@ -861,7 +867,7 @@ switch ($path) {
                         $membersToRemove = $_POST['members_to_remove'] ?? [];
                         
                         if (empty($membersToRemove)) {
-                            throw new Exception('Aucun membre sélectionné');
+                            throw new Exception('Aucun membre sÃ©lectionnÃ©');
                         }
                         
                         $removedCount = 0;
@@ -872,16 +878,16 @@ switch ($path) {
                                     $spaceManager->removeMember($spaceId, $memberId, $user['id']);
                                     $removedCount++;
                                 } catch (Exception $e) {
-                                    // Continuer avec les autres membres même si un échoue
+                                    // Continuer avec les autres membres mÃªme si un Ã©choue
                                     error_log("Erreur suppression membre $memberId: " . $e->getMessage());
                                 }
                             }
                         }
                         
                         if ($removedCount > 0) {
-                            $success = "$removedCount membre" . ($removedCount > 1 ? 's' : '') . " retiré" . ($removedCount > 1 ? 's' : '') . " avec succès !";
+                            $success = "$removedCount membre" . ($removedCount > 1 ? 's' : '') . " retirÃ©" . ($removedCount > 1 ? 's' : '') . " avec succÃ¨s !";
                         } else {
-                            throw new Exception('Aucun membre n\'a pu être retiré');
+                            throw new Exception('Aucun membre n\'a pu Ãªtre retirÃ©');
                         }
                         
                     } catch (Exception $e) {
@@ -891,7 +897,7 @@ switch ($path) {
             }
         }
         
-        // Récupérer les données pour l'affichage
+        // RÃ©cupÃ©rer les donnÃ©es pour l'affichage
         $members = $spaceManager->getSpaceMembers($spaceId);
         $availableUsers = UserDataManager::getAllUsers();
         $currentUser = $user;
@@ -903,7 +909,7 @@ switch ($path) {
     case '/favicon.ico':
         header('Content-Type: image/x-icon');
         header('Cache-Control: public, max-age=86400'); // Cache 24h
-        // Envoyer un favicon 1x1 transparent pour éviter l'erreur 404
+        // Envoyer un favicon 1x1 transparent pour Ã©viter l'erreur 404
         echo base64_decode('AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
         exit;
         break;
@@ -914,7 +920,7 @@ switch ($path) {
             $filePath = BASE_PATH . $path;
             
             if (file_exists($filePath)) {
-                // Déterminer le type MIME
+                // DÃ©terminer le type MIME
                 $extension = pathinfo($filePath, PATHINFO_EXTENSION);
                 $mimeTypes = [
                     'css' => 'text/css',
@@ -938,7 +944,7 @@ switch ($path) {
                 readfile($filePath);
             } else {
                 http_response_code(404);
-                echo "Fichier non trouvé : " . $path;
+                echo "Fichier non trouvÃ© : " . $path;
             }
         } else {
             // Page 404
@@ -947,3 +953,5 @@ switch ($path) {
         }
         break;
 } 
+
+
