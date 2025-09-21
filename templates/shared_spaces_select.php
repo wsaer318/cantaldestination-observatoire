@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sélection d'espace - Partage d'infographie - FluxVision</title>
+    <title>SÃ©lection d'espace - Partage d'infographie - FluxVision</title>
     <link rel="stylesheet" href="<?= asset('/static/css/style.css') ?>">
     <link rel="stylesheet" href="<?= asset('/static/css/infographie.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -14,27 +14,27 @@
     <?php include '_navbar.php'; ?>
 
     <div class="share-infographic-container">
-        <!-- Colonne gauche : Sélection d'espace -->
+        <!-- Colonne gauche : SÃ©lection d'espace -->
         <div class="share-selection-panel">
             <div class="panel-header">
                 <h1><i class="fas fa-share"></i> Partager l'infographie</h1>
-                <p>Sélectionnez un espace pour partager votre infographie</p>
+                <p>SÃ©lectionnez un espace pour partager votre infographie</p>
             </div>
 
             <!-- Informations de l'infographie -->
             <div class="infographic-info">
-                <h3><i class="fas fa-info-circle"></i> Infographie à partager</h3>
+                <h3><i class="fas fa-info-circle"></i> Infographie Ã  partager</h3>
                 <div class="info-grid">
                     <div class="info-item">
                         <span class="info-label">Zone :</span>
                         <span class="info-value" title="<?= htmlspecialchars($infographicParams['zone']) ?>"><?= htmlspecialchars($infographicParams['zone']) ?></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Année :</span>
+                        <span class="info-label">AnnÃ©e :</span>
                         <span class="info-value" title="<?= htmlspecialchars($infographicParams['year']) ?>"><?= htmlspecialchars($infographicParams['year']) ?></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Période :</span>
+                        <span class="info-label">PÃ©riode :</span>
                         <span class="info-value" title="<?= htmlspecialchars($infographicParams['period']) ?>"><?= htmlspecialchars($infographicParams['period']) ?></span>
                     </div>
                     <?php if ($infographicParams['debut'] && $infographicParams['fin']): ?>
@@ -52,23 +52,23 @@
                 </div>
             </div>
 
-            <!-- Sélection d'espace -->
+            <!-- SÃ©lection d'espace -->
             <div class="space-selection">
                 <h3><i class="fas fa-users"></i> Choisir un espace</h3>
                 
                 <?php if (empty($userSpaces)): ?>
                     <div class="no-spaces">
                         <i class="fas fa-folder-open"></i>
-                        <p>Vous n'avez pas encore d'espaces partagés.</p>
+                        <p>Vous n'avez pas encore d'espaces partagÃ©s.</p>
                         <a href="<?= url('/shared-spaces/create') ?>" class="btn btn--primary">
-                            <i class="fas fa-plus"></i> Créer un espace
+                            <i class="fas fa-plus"></i> CrÃ©er un espace
                         </a>
                     </div>
                 <?php else: ?>
                     <div class="spaces-list">
                         <?php foreach ($userSpaces as $space): ?>
                             <?php 
-                            // Vérifier si l'utilisateur peut partager dans cet espace
+                            // VÃ©rifier si l'utilisateur peut partager dans cet espace
                             $canShare = in_array($space['user_role'], ['editor', 'admin']);
                             ?>
                             <div class="space-option <?= $canShare ? '' : 'space-disabled' ?>" data-space-id="<?= $space['id'] ?>">
@@ -102,9 +102,9 @@
                 <?php endif; ?>
             </div>
 
-            <!-- Informations complémentaires -->
+            <!-- Informations complÃ©mentaires -->
             <div class="share-details">
-                <h3><i class="fas fa-edit"></i> Informations complémentaires</h3>
+                <h3><i class="fas fa-edit"></i> Informations complÃ©mentaires</h3>
                 <form id="share-form" class="share-form">
                     <input type="hidden" name="csrf_token" value="<?= Security::getCSRFToken() ?>">
                     <input type="hidden" name="infographic_params" value="<?= htmlspecialchars(json_encode($infographicParams)) ?>">
@@ -125,7 +125,7 @@
                     <!-- Actions -->
                     <div class="share-actions">
                         <a href="<?= url('/infographie') ?>" class="btn btn--secondary">
-                            <i class="fas fa-arrow-left"></i> Retour à l'infographie
+                            <i class="fas fa-arrow-left"></i> Retour Ã  l'infographie
                         </a>
                         <button type="submit" class="btn btn--primary" id="share-button" disabled>
                             <i class="fas fa-share"></i> Partager l'infographie
@@ -135,21 +135,21 @@
             </div>
         </div>
 
-        <!-- Colonne droite : Prévisualisation -->
+        <!-- Colonne droite : PrÃ©visualisation -->
         <div class="share-preview-panel">
             <div class="preview-header">
-                <h2><i class="fas fa-eye"></i> Prévisualisation</h2>
-                <p>Aperçu de l'infographie à partager</p>
+                <h2><i class="fas fa-eye"></i> PrÃ©visualisation</h2>
+                <p>AperÃ§u de l'infographie Ã  partager</p>
             </div>
             
             <div class="preview-container">
                 <?php if ($infographicParams['preview_id']): ?>
-                    <!-- Prévisualisation capturée -->
+                    <!-- PrÃ©visualisation capturÃ©e -->
                     <img src="<?= signed_url('/api/infographie/preview.php', ['id' => $infographicParams['preview_id']], 600) ?>" 
-                         alt="Prévisualisation de l'infographie" 
+                         alt="PrÃ©visualisation de l'infographie" 
                          class="infographic-preview-image">
                 <?php else: ?>
-                    <!-- Fallback : aperçu live -->
+                    <!-- Fallback : aperÃ§u live -->
                     <div class="live-preview-wrapper">
                         <iframe class="infographic-live-preview"
                                 src="<?= url('/infographie') ?>?annee=<?= urlencode($infographicParams['year'] ?? date('Y')) ?>&periode=<?= urlencode($infographicParams['period'] ?? 'annee_complete') ?>&zone=<?= urlencode($infographicParams['zone'] ?? 'CANTAL') ?><?php if (!empty($infographicParams['debut']) && !empty($infographicParams['fin'])): ?>&debut=<?= urlencode($infographicParams['debut']) ?>&fin=<?= urlencode($infographicParams['fin']) ?><?php endif; ?>&embed=1">
@@ -161,7 +161,7 @@
             <div class="preview-info">
                 <div class="preview-meta">
                     <span class="preview-size">Taille : ~2.5 MB</span>
-                    <span class="preview-format">Format : PNG haute qualité</span>
+                    <span class="preview-format">Format : PNG haute qualitÃ©</span>
                 </div>
             </div>
         </div>
@@ -171,9 +171,14 @@
         // Configuration globale
         const ShareConfig = {
             csrfToken: '<?= Security::getCSRFToken() ?>',
-            baseUrl: '<?= url('/api/shared-spaces') ?>',
-            infographicParams: <?= json_encode($infographicParams) ?>
+            baseUrl: '<?= url('/api/v2/shared-spaces') ?>',
+            rootUrl: '<?= rtrim(url('/'), '/') ?>',
+            infographicParams: <?= json_encode($infographicParams, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>
         };
     </script>
 </body>
 </html>
+
+
+
+

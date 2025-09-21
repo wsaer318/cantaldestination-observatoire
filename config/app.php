@@ -86,8 +86,18 @@ define('JSON_OPTIONS', JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
 // Fonction d'autoload simple
 spl_autoload_register(function ($class) {
-    if (file_exists(BASE_PATH . '/classes/' . $class . '.php')) {
-        require_once BASE_PATH . '/classes/' . $class . '.php';
+    if (str_starts_with($class, 'App\\')) {
+        $relative = substr($class, 4);
+        $file = BASE_PATH . '/app/' . str_replace('\\', '/', $relative) . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+        }
+        return;
+    }
+
+    $legacyPath = BASE_PATH . '/classes/' . $class . '.php';
+    if (file_exists($legacyPath)) {
+        require_once $legacyPath;
     }
 });
 

@@ -388,6 +388,6 @@
     <!-- html2canvas pour capturer l'infographie -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <!-- Scripts regroupés -->
-    <script src="<?= asset('/static/dist/infographie.bundle.js?v=' . APP_VERSION) ?>" defer></script>
+    <script src="<?= asset('/static/dist/infographie.bundle.js?v=' . APP_VERSION . '_' . time() . '_' . rand(1000, 9999) . '_' . rand(1000, 9999)) ?>" defer></script>
 </body>
 </html> 

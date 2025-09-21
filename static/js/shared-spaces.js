@@ -1,5 +1,5 @@
-/**
- * JavaScript pour l'interface utilisateur des espaces partagés
+﻿/**
+ * JavaScript pour l'interface utilisateur des espaces partagÃ©s
  */
 
 // Variables globales
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadUserSpaces();
     loadAvailableUsers();
     
-    // Gestionnaire pour le formulaire de création
+    // Gestionnaire pour le formulaire de crÃ©ation
     const createForm = document.getElementById('create-space-form');
     if (createForm) {
         createForm.addEventListener('submit', handleCreateSpace);
@@ -33,7 +33,7 @@ async function loadUserSpaces() {
         if (!response.ok) {
             console.error('Erreur HTTP:', response.status, response.statusText);
             
-            // Si c'est une erreur 401 (non authentifié), rediriger vers la page de login
+            // Si c'est une erreur 401 (non authentifiÃ©), rediriger vers la page de login
             if (response.status === 401) {
                 window.location.href = '/fluxvision_fin/login';
                 return;
@@ -44,15 +44,15 @@ async function loadUserSpaces() {
         
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
-            console.error('Réponse non-JSON reçue:', contentType);
+            console.error('RÃ©ponse non-JSON reÃ§ue:', contentType);
             
-            // Si on reçoit du HTML au lieu de JSON, c'est probablement une redirection vers login
+            // Si on reÃ§oit du HTML au lieu de JSON, c'est probablement une redirection vers login
             if (contentType && contentType.includes('text/html')) {
                 window.location.href = '/fluxvision_fin/login';
                 return;
             }
             
-            throw new Error('Réponse non-JSON reçue du serveur');
+            throw new Error('RÃ©ponse non-JSON reÃ§ue du serveur');
         }
         
         const data = await response.json();
@@ -79,7 +79,7 @@ async function loadUserSpaces() {
 }
 
 /**
- * Charger les utilisateurs disponibles pour la création d'espace
+ * Charger les utilisateurs disponibles pour la crÃ©ation d'espace
  */
 async function loadAvailableUsers() {
     try {
@@ -100,7 +100,7 @@ async function loadAvailableUsers() {
                     console.warn('Erreur API:', data.message);
                 }
             } else {
-                console.warn('Réponse non-JSON reçue pour les utilisateurs');
+                console.warn('RÃ©ponse non-JSON reÃ§ue pour les utilisateurs');
             }
         } else {
             console.warn('Erreur HTTP:', response.status, response.statusText);
@@ -147,23 +147,23 @@ function renderSpaces() {
                 </div>
                 <div class="stat">
                     <i class="fas fa-calendar-alt"></i>
-                    <span>Créé le ${formatDate(space.created_at)}</span>
+                    <span>CrÃ©Ã© le ${formatDate(space.created_at)}</span>
                 </div>
             </div>
             
             <div class="space-actions">
                 <button type="button" class="btn btn--small btn--primary" onclick="viewSpaceDetails(${space.id})">
                     <i class="fas fa-eye"></i>
-                    Voir détails
+                    Voir dÃ©tails
                 </button>
                 ${space.user_role === 'admin' ? `
                     <button type="button" class="btn btn--small btn--secondary" onclick="manageSpace(${space.id})">
                         <i class="fas fa-cog"></i>
-                        Gérer
+                        GÃ©rer
                     </button>
                     <button type="button" class="btn btn--small btn--danger" onclick="disableSpace(${space.id}, '${escapeHtml(space.name)}')">
                         <i class="fas fa-times"></i>
-                        Désactiver
+                        DÃ©sactiver
                     </button>
                 ` : ''}
                 <button type="button" class="btn btn--small btn--secondary" onclick="viewSpaceInfographics(${space.id})">
@@ -182,18 +182,18 @@ function renderSpaces() {
 }
 
 /**
- * Afficher l'état vide
+ * Afficher l'Ã©tat vide
  */
 function showEmptyState() {
     const container = document.getElementById('spaces-container');
     container.innerHTML = `
         <div class="empty-state">
             <i class="fas fa-folder-open"></i>
-            <h3>Aucun espace partagé</h3>
+            <h3>Aucun espace partagÃ©</h3>
             <p>Vous n'avez pas encore d'espaces de travail collaboratif.</p>
             <button type="button" class="btn btn--primary" onclick="showCreateSpaceModal()">
                 <i class="fas fa-plus"></i>
-                Créer votre premier espace
+                CrÃ©er votre premier espace
             </button>
         </div>
     `;
@@ -224,17 +224,17 @@ function renderAvailableUsers(users) {
 }
 
 /**
- * Gérer la création d'un espace
+ * GÃ©rer la crÃ©ation d'un espace
  */
 async function handleCreateSpace(event) {
     event.preventDefault();
     
-    // Rediriger vers la page de création d'espaces
-    window.location.href = `${SharedSpacesConfig.baseUrl.replace('/api/shared-spaces', '')}/shared-spaces/create`;
+    // Rediriger vers la page de crÃ©ation d'espaces
+    window.location.href = `${SharedSpacesConfig.rootUrl}/shared-spaces/create`;
 }
 
 /**
- * Filtrer les espaces par rôle
+ * Filtrer les espaces par rÃ´le
  */
 function filterSpacesByRole() {
     const roleFilter = document.getElementById('role-filter').value;
@@ -254,7 +254,7 @@ function filterSpacesByRole() {
  * Rechercher dans les espaces
  */
 function searchSpaces() {
-    filterSpacesByRole(); // Réutilise la logique de filtrage
+    filterSpacesByRole(); // RÃ©utilise la logique de filtrage
 }
 
 /**
@@ -265,7 +265,7 @@ function refreshSpaces() {
 }
 
 /**
- * Mettre à jour le compteur d'espaces
+ * Mettre Ã  jour le compteur d'espaces
  */
 function updateSpacesCount() {
     const countElement = document.getElementById('spaces-count');
@@ -274,7 +274,7 @@ function updateSpacesCount() {
 }
 
 /**
- * Afficher le modal de création d'espace
+ * Afficher le modal de crÃ©ation d'espace
  */
 function showCreateSpaceModal() {
     document.getElementById('create-space-modal').style.display = 'flex';
@@ -282,7 +282,7 @@ function showCreateSpaceModal() {
 }
 
 /**
- * Masquer le modal de création d'espace
+ * Masquer le modal de crÃ©ation d'espace
  */
 function hideCreateSpaceModal() {
     document.getElementById('create-space-modal').style.display = 'none';
@@ -290,18 +290,18 @@ function hideCreateSpaceModal() {
 }
 
 /**
- * Afficher le modal de détails d'espace
+ * Afficher le modal de dÃ©tails d'espace
  */
 async function viewSpaceDetails(spaceId) {
     try {
-        // Si c'est l'API de test, utiliser les données locales
+        // Si c'est l'API de test, utiliser les donnÃ©es locales
         if (SharedSpacesConfig.baseUrl.includes('test.php')) {
             const space = allSpaces.find(s => s.id == spaceId);
             if (!space) {
-                throw new Error('Espace non trouvé');
+                throw new Error('Espace non trouvÃ©');
             }
             
-            // Simuler des données de membres pour l'API de test
+            // Simuler des donnÃ©es de membres pour l'API de test
             const mockMembers = [
                 { username: 'admin', role: 'admin' },
                 { username: 'demo', role: 'editor' },
@@ -327,7 +327,7 @@ async function viewSpaceDetails(spaceId) {
         });
         
         if (!response.ok) {
-            throw new Error('Erreur lors du chargement des détails');
+            throw new Error('Erreur lors du chargement des dÃ©tails');
         }
         
         const data = await response.json();
@@ -335,16 +335,16 @@ async function viewSpaceDetails(spaceId) {
         if (data.success) {
             displaySpaceDetails(data);
         } else {
-            throw new Error(data.message || 'Erreur lors du chargement des détails');
+            throw new Error(data.message || 'Erreur lors du chargement des dÃ©tails');
         }
     } catch (error) {
         console.error('Erreur:', error);
-        showErrorMessage('Erreur lors du chargement des détails: ' + error.message);
+        showErrorMessage('Erreur lors du chargement des dÃ©tails: ' + error.message);
     }
 }
 
 /**
- * Afficher les détails d'un espace
+ * Afficher les dÃ©tails d'un espace
  */
 function displaySpaceDetails(data) {
     const space = data.data.space || data.data;
@@ -360,15 +360,15 @@ function displaySpaceDetails(data) {
                 <p>${escapeHtml(space.description || 'Aucune description')}</p>
             </div>
             <div class="info-card">
-                <h3>Mon rôle</h3>
+                <h3>Mon rÃ´le</h3>
                 <p><span class="role-badge ${space.user_role}">${capitalizeFirst(space.user_role)}</span></p>
             </div>
             <div class="info-card">
-                <h3>Créé le</h3>
+                <h3>CrÃ©Ã© le</h3>
                 <p>${formatDate(space.created_at)}</p>
             </div>
             <div class="info-card">
-                <h3>Dernière modification</h3>
+                <h3>DerniÃ¨re modification</h3>
                 <p>${formatDate(space.updated_at)}</p>
             </div>
         </div>
@@ -388,8 +388,8 @@ function displaySpaceDetails(data) {
         </div>
         
         <div class="space-infographics-section">
-            <h3><i class="fas fa-chart-bar"></i> Infographies partagées (0)</h3>
-            <p class="text-muted">Aucune infographie partagée</p>
+            <h3><i class="fas fa-chart-bar"></i> Infographies partagÃ©es (0)</h3>
+            <p class="text-muted">Aucune infographie partagÃ©e</p>
         </div>
     `;
     
@@ -397,24 +397,26 @@ function displaySpaceDetails(data) {
 }
 
 /**
- * Masquer le modal de détails d'espace
+ * Masquer le modal de dÃ©tails d'espace
  */
 function hideSpaceDetailsModal() {
     document.getElementById('space-details-modal').style.display = 'none';
 }
 
 /**
- * Gérer un espace (redirection vers l'admin)
+ * GÃ©rer un espace (redirection vers l'admin)
  */
 function manageSpace(spaceId) {
-    window.location.href = `${SharedSpacesConfig.baseUrl.replace('/api/shared-spaces', '')}/admin/shared-spaces/${spaceId}/manage`;
+    window.location.href = `${SharedSpacesConfig.rootUrl}/admin/shared-spaces/${spaceId}/manage`;
 }
 
 /**
- * Désactiver un espace (soft delete)
+ * DÃ©sactiver un espace (soft delete)
  */
 async function disableSpace(spaceId, spaceName) {
-    if (!confirm(`Êtes-vous sûr de vouloir désactiver l'espace "${spaceName}" ?\n\nL'espace sera désactivé mais pourra être restauré par un administrateur.`)) {
+    if (!confirm(`ÃŠtes-vous sÃ»r de vouloir dÃ©sactiver l'espace "${spaceName}" ?
+
+L'espace sera dÃ©sactivÃ© mais pourra Ãªtre restaurÃ© par un administrateur.`)) {
         return;
     }
     
@@ -422,7 +424,8 @@ async function disableSpace(spaceId, spaceName) {
         const response = await fetch(`${SharedSpacesConfig.baseUrl}/${spaceId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': SharedSpacesConfig.csrfToken
             },
             body: JSON.stringify({
                 csrf_token: SharedSpacesConfig.csrfToken
@@ -430,20 +433,20 @@ async function disableSpace(spaceId, spaceName) {
         });
         
         if (!response.ok) {
-            throw new Error('Erreur lors de la désactivation de l\'espace');
+            throw new Error('Erreur lors de la dÃ©sactivation de l\'espace');
         }
         
         const data = await response.json();
         
         if (data.success) {
-            showSuccessMessage('Espace désactivé avec succès !');
+            showSuccessMessage('Espace dÃ©sactivÃ© avec succÃ¨s !');
             loadUserSpaces(); // Recharger la liste
         } else {
-            throw new Error(data.message || 'Erreur lors de la désactivation de l\'espace');
+            throw new Error(data.message || 'Erreur lors de la dÃ©sactivation de l\'espace');
         }
     } catch (error) {
         console.error('Erreur:', error);
-        showErrorMessage('Erreur lors de la désactivation de l\'espace: ' + error.message);
+        showErrorMessage('Erreur lors de la dÃ©sactivation de l\'espace: ' + error.message);
     }
 }
 
@@ -452,19 +455,19 @@ async function disableSpace(spaceId, spaceName) {
  */
 function viewSpaceInfographics(spaceId) {
     // Rediriger vers la page des infographies de l'espace
-    window.location.href = `${SharedSpacesConfig.baseUrl.replace('/api/shared-spaces', '')}/shared-spaces/${spaceId}/infographics`;
+    window.location.href = `${SharedSpacesConfig.rootUrl}/shared-spaces/${spaceId}/infographics`;
 }
 
 /**
  * Voir une infographie
  */
 function viewInfographic(infographicId) {
-    // TODO: Implémenter la visualisation d'infographie
-    showErrorMessage('Fonctionnalité de visualisation d\'infographie à implémenter');
+    // TODO: ImplÃ©menter la visualisation d'infographie
+    showErrorMessage('FonctionnalitÃ© de visualisation d\'infographie Ã  implÃ©menter');
 }
 
 /**
- * Sélectionner tous les utilisateurs
+ * SÃ©lectionner tous les utilisateurs
  */
 function selectAllUsers() {
     const checkboxes = document.querySelectorAll('#available-users-grid input[type="checkbox"]');
@@ -474,7 +477,7 @@ function selectAllUsers() {
 }
 
 /**
- * Désélectionner tous les utilisateurs
+ * DÃ©sÃ©lectionner tous les utilisateurs
  */
 function deselectAllUsers() {
     const checkboxes = document.querySelectorAll('#available-users-grid input[type="checkbox"]');
@@ -530,3 +533,7 @@ function formatDate(dateString) {
         minute: '2-digit'
     });
 }
+
+
+
+

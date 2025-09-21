@@ -1,4 +1,4 @@
-RewriteEngine On
+﻿RewriteEngine On
 
 # --- Forward du header Authorization vers PHP ---
 SetEnvIfNoCase Authorization "^(.*)$" HTTP_AUTHORIZATION=$1
@@ -9,21 +9,24 @@ RewriteRule ^ - [E=HTTP_AUTHORIZATION:%1]
 # Base
 # ------------------------------
 Options -Indexes
+AddDefaultCharset UTF-8
+AddType "text/css; charset=UTF-8" .css
+AddType "application/javascript; charset=UTF-8" .js
 
 # Autoriser Let's Encrypt
 RewriteRule ^\.well-known/ - [L]
 
-# Bloquer méthodes dangereuses
+# Bloquer mÃ©thodes dangereuses
 RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)$ [NC]
 RewriteRule ^ - [F]
 
-# Bloquer fichiers/dossiers cachés (.git, .env, etc.)
+# Bloquer fichiers/dossiers cachÃ©s (.git, .env, etc.)
 RewriteRule "(^|/)\." - [F]
 
-# Bloquer dossiers sensibles (car <Files> ne gère pas les /)
+# Bloquer dossiers sensibles (car <Files> ne gÃ¨re pas les /)
 RewriteRule ^(config|classes|vendor|storage|backups)/ - [F,L]
 
-# Bloquer quelques fichiers sensibles à la racine
+# Bloquer quelques fichiers sensibles Ã  la racine
 <IfModule mod_authz_core.c>
   <FilesMatch "^(\.env|composer\.(json|lock)|package\.json|yarn\.lock|phpunit\.xml|\.htaccess|\.htpasswd)$">
     Require all denied
@@ -51,7 +54,7 @@ RewriteRule ^(config|classes|vendor|storage|backups)/ - [F,L]
 # CORS (restreint aux origines connues)
 # ------------------------------
 <IfModule mod_headers.c>
-  # Adapter la liste aux origines autorisées (prod + dev)
+  # Adapter la liste aux origines autorisÃ©es (prod + dev)
   SetEnvIfNoCase Origin "^https?://(localhost(:[0-9]+)?|127\.0\.0\.1(:[0-9]+)?|observatoire\.cantal-destination\.com)$" ACAO=$0
 
   Header always set Vary "Origin"
@@ -63,7 +66,7 @@ RewriteRule ^(config|classes|vendor|storage|backups)/ - [F,L]
   # Pour les preflights seulement
   Header always set Access-Control-Max-Age "86400" "expr=%{REQUEST_METHOD} = 'OPTIONS'"
 
-  # En-têtes de sécurité
+  # En-tÃªtes de sÃ©curitÃ©
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
@@ -72,7 +75,7 @@ RewriteRule ^(config|classes|vendor|storage|backups)/ - [F,L]
 </IfModule>
 
 # ------------------------------
-# Préflight OPTIONS : 204 sans redirection
+# PrÃ©flight OPTIONS : 204 sans redirection
 # ------------------------------
 RewriteCond %{REQUEST_METHOD} =OPTIONS
 RewriteRule ^api/ - [R=204,L]
@@ -80,12 +83,14 @@ RewriteRule ^api/ - [R=204,L]
 # ------------------------------
 # Routing APIs (patterns restreints)
 # ------------------------------
+RewriteRule ^api/v2/?$                         api/v2/index.php [L,QSA]
+RewriteRule ^api/v2/(.*)$                      api/v2/index.php [L,QSA]
 RewriteRule ^api/shared-spaces/?$                         api/shared-spaces/router.php [L,QSA]
 RewriteRule ^api/shared-spaces/infographics/([A-Za-z0-9/_-]+)$ api/shared-spaces/infographics.php [L,QSA]
 RewriteRule ^api/shared-spaces/([A-Za-z0-9/_-]+)$         api/shared-spaces/router.php [L,QSA]
 
 RewriteRule ^api/users/available/?$                      api/users/available.php [L,QSA]
-# Interdit les points pour éviter ../ et fichiers cachés
+# Interdit les points pour Ã©viter ../ et fichiers cachÃ©s
 RewriteRule ^api/users/([A-Za-z0-9/_-]+)$                 api/users/$1 [L,QSA]
 
 # ------------------------------
@@ -100,7 +105,7 @@ RewriteRule ^api/database/dim/?$             api/database/dim.php          [L,QS
 RewriteRule ^api/database/schema/ensure/?$   api/database/schema_ensure.php [L,QSA]
 RewriteRule ^api/database/schema/drop_test/?$ api/database/schema_drop_test.php [L,QSA]
 
-# --- API de mobilité ---
+# --- API de mobilitÃ© ---
 RewriteRule ^api/communes_excursion/?$              api/communes_excursion.php [L,QSA]
 RewriteRule ^api/departements_excursion/?$           api/departements_excursion.php [L,QSA]
 RewriteRule ^api/regions_excursion/?$               api/regions_excursion.php [L,QSA]
@@ -115,3 +120,4 @@ RewriteCond %{REQUEST_URI} !^/api/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
+

@@ -93,7 +93,7 @@ class Security {
         // Protection XSS basique
         header('X-XSS-Protection: 1; mode=block');
         
-        // RÃ©fÃ©rence politique stricte
+        // Référence politique stricte
         header('Referrer-Policy: strict-origin-when-cross-origin');
         
         // Content Security Policy

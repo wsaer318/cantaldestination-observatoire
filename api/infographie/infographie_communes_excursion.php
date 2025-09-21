@@ -1,17 +1,17 @@
-<?php
+﻿<?php
 /**
  * API Infographie Communes Excursion
- * Récupère les données des destinations d'excursion pour l'infographie
- * Version optimisée avec cache unifié pour les meilleures performances
+ * RÃ©cupÃ¨re les donnÃ©es des destinations d'excursion pour l'infographie
+ * Version optimisÃ©e avec cache unifiÃ© pour les meilleures performances
  */
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Inclure le gestionnaire de cache unifié
+// Inclure le gestionnaire de cache unifiÃ©
 require_once __DIR__ . '/CacheManager.php';
 
-// Récupération des paramètres
+// RÃ©cupÃ©ration des paramÃ¨tres
 $annee = $_GET['annee'] ?? null;
 $periode = $_GET['periode'] ?? null;
 $zone = $_GET['zone'] ?? null;
@@ -22,16 +22,16 @@ $limit = (int)($_GET['limit'] ?? 10);
 
 if (!$annee || !$periode || !$zone) {
     header('Content-Type: application/json');
-    echo json_encode(['error' => 'Paramètres manquants: annee, periode, zone requis']);
+    echo json_encode(['error' => 'ParamÃ¨tres manquants: annee, periode, zone requis']);
     exit;
 }
 
-// Inclure le gestionnaire de périodes et le mapper de zones
+// Inclure le gestionnaire de pÃ©riodes et le mapper de zones
 require_once __DIR__ . '/periodes_manager_db.php';
 require_once __DIR__ . '/../../classes/ZoneMapper.php';
 
 /**
- * Calcule les plages de dates selon la période
+ * Calcule les plages de dates selon la pÃ©riode
  */
 function calculateWorkingDateRanges($annee, $periode) {
     return PeriodesManagerDB::calculateDateRanges($annee, $periode);
@@ -41,7 +41,7 @@ try {
     // Initialiser le gestionnaire de cache
     $cacheManager = new CantalDestinationCacheManager();
 
-    // Paramètres de cache
+    // ParamÃ¨tres de cache
     $cacheParams = [
         'annee' => $annee,
         'periode' => $periode,
@@ -49,7 +49,7 @@ try {
         'limit' => $limit
     ];
 
-    // Vérifier le cache d'abord (sauf si debug activé ou force_refresh demandé)
+    // VÃ©rifier le cache d'abord (sauf si debug activÃ© ou force_refresh demandÃ©)
     $forceRefresh = isset($_GET['force_refresh']) && $_GET['force_refresh'] === '1';
     if (!$debug && !$forceRefresh) {
     $cachedData = $cacheManager->get('infographie_communes_excursion', $cacheParams);
@@ -62,35 +62,35 @@ try {
         }
     }
 
-    // Cache miss - calculer les données
+    // Cache miss - calculer les donnÃ©es
     header('X-Cache-Status: MISS');
     header('X-Cache-Category: infographie_communes_excursion');
 
-    // Connexion à la base de données
+    // Connexion Ã  la base de donnÃ©es
     require_once dirname(dirname(__DIR__)) . '/database.php';
     $pdo = DatabaseConfig::getConnection();
 
-    // OPTIMISATION : Créer des index critiques pour la performance
+    // OPTIMISATION : CrÃ©er des index critiques pour la performance
     try {
         $pdo->exec("CREATE INDEX IF NOT EXISTS idx_fact_commune_perf ON fact_lieu_activite_soir (id_commune, date, id_zone, id_categorie, id_provenance)");
         $pdo->exec("CREATE INDEX IF NOT EXISTS idx_provenance_nom ON dim_provenances (nom_provenance)");
         $pdo->exec("CREATE INDEX IF NOT EXISTS idx_commune_id ON dim_communes (id_commune)");
     } catch (Exception $e) {
-        // Ignorer les erreurs d'index (peuvent déjà exister)
+        // Ignorer les erreurs d'index (peuvent dÃ©jÃ  exister)
         if ($debug) error_log('Index creation warning: ' . $e->getMessage());
     }
 
     // Mapping des zones avec support historique pour HAUTES TERRES
     $zoneMapped = ZoneMapper::displayToBase($zone);
 
-    // Gestion spéciale pour HAUTES TERRES : inclure les données historiques
+    // Gestion spÃ©ciale pour HAUTES TERRES : inclure les donnÃ©es historiques
     $zoneNames = [$zoneMapped];
     if ($zoneMapped === 'HAUTES TERRES') {
         // Ajouter HAUTES TERRES COMMUNAUTE pour l'historique 2019-2022
         $zoneNames[] = 'HAUTES TERRES COMMUNAUTE';
     }
 
-    // Créer les placeholders pour les noms de zones
+    // CrÃ©er les placeholders pour les noms de zones
     $zonePlaceholders = implode(',', array_fill(0, count($zoneNames), '?'));
 
     // Calcul des plages de dates
@@ -101,7 +101,7 @@ try {
             if ($dEnd >= $dStart) {
                 $dateRanges['start'] = $dStart->format('Y-m-d') . ' 00:00:00';
                 $dateRanges['end'] = $dEnd->format('Y-m-d') . ' 23:59:59';
-                // ✅ FIX : Utiliser clone pour éviter la modification par référence
+                // âœ… FIX : Utiliser clone pour Ã©viter la modification par rÃ©fÃ©rence
                 $prevDateRanges['start'] = (clone $dStart)->modify('-1 year')->format('Y-m-d') . ' 00:00:00';
                 $prevDateRanges['end'] = (clone $dEnd)->modify('-1 year')->format('Y-m-d') . ' 23:59:59';
             }
@@ -114,17 +114,17 @@ try {
         $prevDateRanges = calculateWorkingDateRanges($prevYear, $periode);
     }
 
-    // ✅ APPROCHE OPTIMALE : Utiliser directement les noms dans les jointures
-    // Plus besoin de récupérer les IDs - on joint directement sur les noms
-    // Cela évite complètement les problèmes d'IDs différents entre environnements
+    // âœ… APPROCHE OPTIMALE : Utiliser directement les noms dans les jointures
+    // Plus besoin de rÃ©cupÃ©rer les IDs - on joint directement sur les noms
+    // Cela Ã©vite complÃ¨tement les problÃ¨mes d'IDs diffÃ©rents entre environnements
 
     /*
      * OPTIMISATION MAJEURE DE PERFORMANCE :
-     * - Requête unique au lieu de 2 requêtes séparées (réduction de ~50% du temps)
-     * - LIMIT 10 directement dans la sous-requête (évite de récupérer toutes les communes)
-     * - Jointure optimisée avec les données N-1
-     * - Index automatiques créés pour les colonnes fréquemment utilisées
-     * - Mesure du temps d'exécution pour monitoring
+     * - RequÃªte unique au lieu de 2 requÃªtes sÃ©parÃ©es (rÃ©duction de ~50% du temps)
+     * - LIMIT 10 directement dans la sous-requÃªte (Ã©vite de rÃ©cupÃ©rer toutes les communes)
+     * - Jointure optimisÃ©e avec les donnÃ©es N-1
+     * - Index automatiques crÃ©Ã©s pour les colonnes frÃ©quemment utilisÃ©es
+     * - Mesure du temps d'exÃ©cution pour monitoring
      */
     $sqlOptimized = "
         SELECT
@@ -133,7 +133,7 @@ try {
             COALESCE(cur.total_visiteurs, 0)      AS total_visiteurs,
             COALESCE(prev.total_visiteurs, 0)     AS total_visiteurs_n1
         FROM (
-            -- TOP 10 communes année courante (2025)
+            -- TOP 10 communes annÃ©e courante (2025)
             SELECT
                 f.id_commune,
                 SUM(f.volume) AS total_visiteurs
@@ -152,7 +152,7 @@ try {
             LIMIT ?
         ) AS cur
         LEFT JOIN (
-            -- Données année précédente (2024) sur les mêmes communes
+            -- DonnÃ©es annÃ©e prÃ©cÃ©dente (2024) sur les mÃªmes communes
             SELECT
                 f.id_commune,
                 SUM(f.volume) AS total_visiteurs
@@ -174,25 +174,25 @@ try {
         ORDER BY cur.total_visiteurs DESC
     ";
 
-    // PERFORMANCE : Mesurer le temps d'exécution de la requête
+    // PERFORMANCE : Mesurer le temps d'exÃ©cution de la requÃªte
     $queryStartTime = microtime(true);
 
     $stmt = $pdo->prepare($sqlOptimized);
 
-    // Construction des paramètres avec les noms de zones
+    // Construction des paramÃ¨tres avec les noms de zones
     $params = [
-        // Année courante
+        // AnnÃ©e courante
         $dateRanges['start'],
         $dateRanges['end']
     ];
-    // Ajouter tous les noms de zones pour l'année courante
+    // Ajouter tous les noms de zones pour l'annÃ©e courante
     $params = array_merge($params, $zoneNames);
     $params[] = $limit; // LIMIT pour top destinations
 
-    // Année précédente
+    // AnnÃ©e prÃ©cÃ©dente
     $params[] = $prevDateRanges['start'];
     $params[] = $prevDateRanges['end'];
-    // Ajouter tous les noms de zones pour l'année précédente
+    // Ajouter tous les noms de zones pour l'annÃ©e prÃ©cÃ©dente
     $params = array_merge($params, $zoneNames);
 
     $stmt->execute($params);
@@ -207,7 +207,7 @@ try {
         error_log("API infographie_communes_excursion - Names used: zone_name=$zoneMapped, categorie_name=TOURISTE");
         error_log("API infographie_communes_excursion - Date ranges: current=[{$dateRanges['start']} to {$dateRanges['end']}], previous=[{$prevDateRanges['start']} to {$prevDateRanges['end']}]");
 
-        // 🔍 DIAGNOSTIC SUPPLÉMENTAIRE : Vérifier si la table contient des données pour cette période
+        // ðŸ” DIAGNOSTIC SUPPLÃ‰MENTAIRE : VÃ©rifier si la table contient des donnÃ©es pour cette pÃ©riode
         $diagStmt = $pdo->prepare("
             SELECT COUNT(*) as total_rows, MIN(f.date) as min_date, MAX(f.date) as max_date
             FROM fact_lieu_activite_soir f
@@ -222,13 +222,13 @@ try {
         error_log("API infographie_communes_excursion - DIAGNOSTIC: total_rows={$diagResult['total_rows']}, date_range=[{$diagResult['min_date']} to {$diagResult['max_date']}]");
     }
 
-    // Calculer l'évolution pour chaque destination
+    // Calculer l'Ã©volution pour chaque destination
     $destinations = [];
     foreach ($results as $row) {
         $totalN = (int)$row['total_visiteurs'];
         $totalN1 = (int)$row['total_visiteurs_n1'];
 
-        // Calcul évolution
+        // Calcul Ã©volution
         $evolutionPct = $totalN1 > 0 ? round((($totalN - $totalN1) / $totalN1) * 100, 1) : null;
 
         $destinations[] = [
@@ -240,10 +240,10 @@ try {
         ];
     }
 
-    // 🔍 DIAGNOSTIC : Ajouter des informations de debug dans la réponse
+    // ðŸ” DIAGNOSTIC : Ajouter des informations de debug dans la rÃ©ponse
     $diagnosticInfo = null;
     if ($debug || count($destinations) === 0) {
-        // Compter les données brutes disponibles
+        // Compter les donnÃ©es brutes disponibles
         $diagStmt = $pdo->prepare("
             SELECT COUNT(*) as total_rows, COUNT(DISTINCT f.id_commune) as unique_communes
             FROM fact_lieu_activite_soir f
@@ -270,7 +270,7 @@ try {
         ];
     }
 
-    // Formatage de la réponse
+    // Formatage de la rÃ©ponse
     $response = [
         'zone_observation' => $zone,
         'annee' => $annee,
@@ -291,12 +291,12 @@ try {
         'status' => 'success'
     ];
 
-    // Ajouter les informations de diagnostic si nécessaire
+    // Ajouter les informations de diagnostic si nÃ©cessaire
     if ($diagnosticInfo) {
         $response['diagnostic'] = $diagnosticInfo;
     }
 
-    // Stocker en cache avec le nouveau système
+    // Stocker en cache avec le nouveau systÃ¨me
     $cacheManager->set('infographie_communes_excursion', $cacheParams, $response);
 
     header('Content-Type: application/json');
@@ -311,3 +311,4 @@ try {
     ]);
 }
 ?>
+
