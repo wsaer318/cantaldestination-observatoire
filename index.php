@@ -74,10 +74,9 @@ function serveTemplate($template, $variables = []) {
 $request = $_SERVER['REQUEST_URI'] ?? '/';
 $path = parse_url($request, PHP_URL_PATH) ?? '/';
 
-// Retirer le prÃ©fixe du dossier si prÃ©sent (pour XAMPP)
-$basePath = '';
-if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/fluxvision_fin/') === 0) {
-    $basePath = '/fluxvision_fin';
+// Retirer le préfixe du dossier si présent (détection automatique)
+$basePath = getBasePath();
+if (!empty($basePath) && strpos($path, $basePath) === 0) {
     $path = substr($path, strlen($basePath));
 }
 

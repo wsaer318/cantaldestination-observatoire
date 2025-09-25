@@ -44,6 +44,9 @@ if ($cachedData !== null) {
 // Inclure le gestionnaire intelligent des périodes
 require_once __DIR__ . '/periodes_manager_db.php';
 
+// Inclure le système de correction des données
+require_once __DIR__ . '/correction_helper.php';
+
 /**
  * Calcule les plages de dates selon la période - VERSION INTELLIGENTE
  * Utilise les vraies dates depuis la base de données
@@ -182,6 +185,11 @@ try {
     header('X-Cache-Status: MISS');
     header('X-Cache-Category: infographie_pays');
     header('X-Execution-Time: ' . $execution_time . 'ms');
+    // Appliquer les corrections si nécessaire
+    if (isset($result['data'])) {
+        $result['data'] = applyCorrectionIfNeeded($result['data'], $zone, $annee, $periode, 'infographie_pays_excursionnistes.php');
+    }
+    
     echo json_encode($result, JSON_PRETTY_PRINT);
 
 } catch (PDOException $e) {

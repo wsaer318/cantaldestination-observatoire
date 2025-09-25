@@ -27,8 +27,8 @@ function queryDatabaseExplorer($action, $params = [], $use_secure = false) {
     
     // URL de l'explorateur à utiliser
     $explorer_url = $use_secure ? 
-        'http://localhost/fluxvision_fin/api/db_explorer_secure.php' :
-        'http://localhost/fluxvision_fin/api/db_explorer.php';
+        'http://localhost' . getBasePath() . '/api/db_explorer_secure.php' :
+        'http://localhost' . getBasePath() . '/api/db_explorer.php';
     
     // Paramètres de base
     $base_params = [
@@ -159,7 +159,7 @@ function testSecurity() {
     
     // Test 1: Sans clé d'authentification
     echo "1. Test sans clé d'authentification:\n";
-    $url = 'http://localhost/fluxvision_fin/api/db_explorer.php?action=info';
+    $url = 'http://localhost' . getBasePath() . '/api/db_explorer.php?action=info';
     $response = file_get_contents($url);
     $result = json_decode($response, true);
     
@@ -172,7 +172,7 @@ function testSecurity() {
     
     // Test 2: Clé d'authentification invalide
     echo "2. Test avec clé d'authentification invalide:\n";
-    $url = 'http://localhost/fluxvision_fin/api/db_explorer.php?key=invalid_key&action=info';
+    $url = 'http://localhost' . getBasePath() . '/api/db_explorer.php?key=invalid_key&action=info';
     $response = file_get_contents($url);
     $result = json_decode($response, true);
     

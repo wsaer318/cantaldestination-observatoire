@@ -34,9 +34,9 @@ require_once __DIR__ . '/../../classes/ZoneMapper.php';
  * Utilise les vraies dates depuis la base de données
  * FONCTION SUPPRIMÉE : Déjà déclarée dans infographie_indicateurs_cles.php
  */
-// // function calculateWorkingDateRanges($annee, $periode) {
-// //     return PeriodesManagerDB::calculateDateRanges($annee, $periode);
-// // }
+// function calculateWorkingDateRanges($annee, $periode) {
+//     return PeriodesManagerDB::calculateDateRanges($annee, $periode);
+// }
 
 try {
     // Initialiser le nouveau gestionnaire de cache
@@ -71,17 +71,7 @@ try {
     
     // Normalisation des paramètres
     $zoneMapped = ZoneMapper::displayToBase($zone);
-
-    // Gestion spéciale pour HAUTES TERRES : inclure les données historiques
-    $zoneIds = [$pdo->query("SELECT id_zone FROM dim_zones_observation WHERE nom_zone = '$zoneMapped'")->fetch()['id_zone']];
-    if ($zoneMapped === 'HAUTES TERRES') {
-        // Récupérer l'ID de HAUTES TERRES COMMUNAUTE pour l'historique 2019-2022
-        $historiqueZone = $pdo->query("SELECT id_zone FROM dim_zones_observation WHERE nom_zone = 'HAUTES TERRES COMMUNAUTE'")->fetch();
-        if ($historiqueZone) {
-            $zoneIds[] = $historiqueZone['id_zone'];
-        }
-    }
-
+    
     // Calcul des plages de dates (support override début/fin)
     if ($debutOverride && $finOverride) {
         $start = new DateTime($debutOverride . ' 00:00:00');
@@ -91,10 +81,9 @@ try {
         $e1 = (clone $end)->modify('-1 year');
         $prevDateRanges = [ 'start' => $s1->format('Y-m-d H:i:s'), 'end' => $e1->format('Y-m-d H:i:s') ];
     } else {
-        // Calcul des plages de dates selon la période
-        $dateRanges = PeriodesManagerDB::calculateDateRanges($annee, $periode);
+        $dateRanges = calculateWorkingDateRanges($annee, $periode);
         $prevYear = (int)$annee - 1;
-        $prevDateRanges = PeriodesManagerDB::calculateDateRanges($prevYear, $periode);
+        $prevDateRanges = calculateWorkingDateRanges($prevYear, $periode);
     }
     
     // Vérification que la table existe
@@ -106,7 +95,7 @@ try {
     }
     
     // Pré-résoudre les IDs des dimensions
-    $dimensionIds = getDimensionIds($pdo, $zoneIds);
+    $dimensionIds = getDimensionIds($pdo, $zoneMapped);
     
     // Requête optimisée avec agrégation directe pour de meilleures performances
     $sql = "
@@ -123,7 +112,7 @@ try {
                 SUM(volume) as n_nuitees
             FROM fact_nuitees_departements 
             WHERE date BETWEEN ? AND ?
-            AND id_zone IN (" . implode(',', array_fill(0, count($zoneIds), '?')) . ")
+            AND id_zone = ?
             AND id_categorie = ?
             AND id_provenance = ?
             GROUP BY id_departement
@@ -134,7 +123,7 @@ try {
                 SUM(volume) as n_nuitees_n1
             FROM fact_nuitees_departements 
             WHERE date BETWEEN ? AND ?
-            AND id_zone IN (" . implode(',', array_fill(0, count($zoneIds), '?')) . ")
+            AND id_zone = ?
             AND id_categorie = ?
             AND id_provenance = ?
             GROUP BY id_departement
@@ -146,34 +135,21 @@ try {
     ";
     
     $stmt = $pdo->prepare($sql);
-
-    // Construction des paramètres avec tous les IDs de zone
-    $params = [
+    $stmt->execute([
         // Periode actuelle
-        $dateRanges['start'], $dateRanges['end']
-    ];
-    // Ajouter tous les IDs de zone pour la période actuelle
-    $params = array_merge($params, $zoneIds);
-    $params[] = $dimensionIds['id_categorie'];
-    $params[] = $dimensionIds['id_provenance'];
-
-    // Periode precedente
-    $params[] = $prevDateRanges['start'];
-    $params[] = $prevDateRanges['end'];
-    // Ajouter tous les IDs de zone pour la période précédente
-    $params = array_merge($params, $zoneIds);
-    $params[] = $dimensionIds['id_categorie'];
-    $params[] = $dimensionIds['id_provenance'];
-
-    // Limite
-    $params[] = $limit;
-
-    $stmt->execute($params);
+        $dateRanges['start'], $dateRanges['end'],
+        $dimensionIds['id_zone'], $dimensionIds['id_categorie'], $dimensionIds['id_provenance'],
+        // Periode precedente
+        $prevDateRanges['start'], $prevDateRanges['end'],
+        $dimensionIds['id_zone'], $dimensionIds['id_categorie'], $dimensionIds['id_provenance'],
+        // Limite
+        $limit
+    ]);
     
     $rawData = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Calcul du total pour les pourcentages
-    $totalNuitees = calculateTotal($pdo, $dateRanges, $dimensionIds, $zoneIds);
+    $totalNuitees = calculateTotal($pdo, $dateRanges, $dimensionIds);
     
     // Transformation des données
     $result = [];
@@ -223,11 +199,12 @@ try {
 
 /**
  * Pré-résoudre les IDs des dimensions pour éviter les JOINs
- * MODIFICATION: Support multi-zones pour HAUTES TERRES
  */
-function getDimensionIds($pdo, $zoneIds) {
-    // Utiliser le premier ID de zone (zone principale)
-    $id_zone = $zoneIds[0];
+function getDimensionIds($pdo, $zoneMapped) {
+    // Récupérer les IDs une seule fois
+    $stmt = $pdo->prepare("SELECT id_zone FROM dim_zones_observation WHERE nom_zone = ?");
+    $stmt->execute([$zoneMapped]);
+    $id_zone = $stmt->fetch()['id_zone'] ?? null;
     
     $stmt = $pdo->prepare("SELECT id_categorie FROM dim_categories_visiteur WHERE nom_categorie = 'TOURISTE'");
     $stmt->execute();
@@ -251,32 +228,21 @@ function getDimensionIds($pdo, $zoneIds) {
 /**
  * Calcul efficace du total séparé
  */
-function calculateTotal($pdo, $dateRanges, $dimensionIds, $zoneIds = null) {
-    // Support multi-zones pour HAUTES TERRES
-    if ($zoneIds === null) {
-        $zoneIds = [$dimensionIds['id_zone']];
-    }
-
-    $zonePlaceholders = implode(',', array_fill(0, count($zoneIds), '?'));
-
+function calculateTotal($pdo, $dateRanges, $dimensionIds) {
     $sql = "
         SELECT SUM(volume) as total
         FROM fact_nuitees_departements
         WHERE date BETWEEN ? AND ?
-        AND id_zone IN ($zonePlaceholders)
+        AND id_zone = ?
         AND id_categorie = ?
         AND id_provenance = ?
     ";
-
-    $params = [
-        $dateRanges['start'], $dateRanges['end']
-    ];
-    $params = array_merge($params, $zoneIds);
-    $params[] = $dimensionIds['id_categorie'];
-    $params[] = $dimensionIds['id_provenance'];
-
+    
     $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
+    $stmt->execute([
+        $dateRanges['start'], $dateRanges['end'],
+        $dimensionIds['id_zone'], $dimensionIds['id_categorie'], $dimensionIds['id_provenance']
+    ]);
     
     return (int)($stmt->fetch()['total'] ?? 0);
 }

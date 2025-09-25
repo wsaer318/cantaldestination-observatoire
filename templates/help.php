@@ -170,7 +170,7 @@
                                 Comment interpréter les indicateurs de fréquentation ?
                             </label>
                             <div class="faq-answer">
-                                <p>Consultez la section <a href="/fluxvision_fin/methodologie">Méthodologie</a> pour comprendre le calcul des indicateurs. Chaque métrique est également expliquée dans les <a href="/fluxvision_fin/fiches">fiches techniques</a>.</p>
+                                <p>Consultez la section <a href="<?= url('/methodologie') ?>">Méthodologie</a> pour comprendre le calcul des indicateurs. Chaque métrique est également expliquée dans les <a href="<?= url('/fiches') ?>">fiches techniques</a>.</p>
                             </div>
                         </div>
                     </div>

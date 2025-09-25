@@ -3,7 +3,7 @@
 require_once dirname(__DIR__) . '/database.php';
 
 $environment = DatabaseConfig::isProduction() ? 'production' : 'local';
-$basePath = DatabaseConfig::isProduction() ? '' : '/fluxvision_fin';
+$basePath = getBasePath();
 ?>
 
 <script>

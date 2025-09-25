@@ -8,7 +8,7 @@ echo "🧪 TEST DE L'API CHECK_IMPORT_PROGRESS\n";
 echo "=====================================\n\n";
 
 // URL de l'API à tester
-$api_url = 'http://localhost/fluxvision_fin/tools/import/check_import_progress.php';
+$api_url = 'http://localhost' . getBasePath() . '/tools/import/check_import_progress.php';
 
 echo "📡 Test de l'API : $api_url\n\n";
 

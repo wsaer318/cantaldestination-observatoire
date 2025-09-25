@@ -86,18 +86,8 @@ define('JSON_OPTIONS', JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
 // Fonction d'autoload simple
 spl_autoload_register(function ($class) {
-    if (str_starts_with($class, 'App\\')) {
-        $relative = substr($class, 4);
-        $file = BASE_PATH . '/app/' . str_replace('\\', '/', $relative) . '.php';
-        if (file_exists($file)) {
-            require_once $file;
-        }
-        return;
-    }
-
-    $legacyPath = BASE_PATH . '/classes/' . $class . '.php';
-    if (file_exists($legacyPath)) {
-        require_once $legacyPath;
+    if (file_exists(BASE_PATH . '/classes/' . $class . '.php')) {
+        require_once BASE_PATH . '/classes/' . $class . '.php';
     }
 });
 
@@ -138,25 +128,48 @@ function slugify($value) {
     return strtolower($value);
 }
 
-// Fonction pour gÃ©nÃ©rer les URLs correctes
-function asset($path) {
-    // DÃ©tecter l'environnement
-    $basePath = '';
+/**
+ * Détection automatique du chemin de base de l'application
+ * Cette fonction évite les URLs hardcodées et s'adapte automatiquement
+ * aux changements de répertoire
+ */
+function getBasePath() {
+    static $basePath = null;
     
-    // Si on est en local (XAMPP ou dÃ©veloppement)
-    if (isset($_SERVER['HTTP_HOST']) && 
-        (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || 
-         strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false ||
-         strpos($_SERVER['SERVER_NAME'], 'localhost') !== false)) {
-        
-        $scriptName = $_SERVER['SCRIPT_NAME'];
-        if (strpos($scriptName, '/fluxvision_fin/') !== false) {
-            $basePath = '/fluxvision_fin';
-        }
+    if ($basePath !== null) {
+        return $basePath;
     }
-    // En production, pas de prÃ©fixe nÃ©cessaire si c'est Ã  la racine du domaine
-    // Ou adapter selon la structure du serveur de production
     
+    // En production, généralement pas de préfixe
+    if (DatabaseConfig::isProduction()) {
+        $basePath = '';
+        return $basePath;
+    }
+    
+    // En développement local, détecter automatiquement le chemin
+    if (isset($_SERVER['SCRIPT_NAME'])) {
+        $scriptName = $_SERVER['SCRIPT_NAME'];
+        
+        // Extraire le chemin du script (ex: /detected/path/index.php)
+        $pathInfo = pathinfo($scriptName);
+        $dirName = $pathInfo['dirname'];
+        
+        // Si le répertoire n'est pas la racine, l'utiliser comme base
+        if ($dirName !== '/' && $dirName !== '\\') {
+            $basePath = rtrim($dirName, '/\\');
+        } else {
+            $basePath = '';
+        }
+    } else {
+        $basePath = '';
+    }
+    
+    return $basePath;
+}
+
+// Fonction pour gÃ©nÃ©rer les URLs correctes (version améliorée)
+function asset($path) {
+    $basePath = getBasePath();
     return $basePath . $path;
 }
 
@@ -177,10 +190,10 @@ function mapPeriode($periode) {
     $periode = urldecode($periode);
     
     $periodeMap = [
-        'annÃ©e' => 'annee',
+        'année' => 'annee',
         'annee' => 'annee',
-        'week-end de pÃ¢ques' => 'week-end_de_paques',
-        'week-end_de_pÃ¢ques' => 'week-end_de_paques',
+        'week-end de pâques' => 'week-end_de_paques',
+        'week-end_de_pâques' => 'week-end_de_paques',
         'week-end_de_paques' => 'week-end_de_paques',
         'vacances d\'hiver' => 'vacances_d_hiver',
         "vacances d'hiver" => 'vacances_d_hiver',

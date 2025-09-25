@@ -236,40 +236,18 @@
                                     </div>
                                 </div>
 
-                                <!-- Durée de séjour (nouvelle section, pleine largeur) -->
-                                <div class="stay-subsection">
-                                    <div class="origins-header stay-header">
-                                        <h4><i class="fa-solid fa-stopwatch"></i> Durée de séjour – Comportements</h4>
+                                <!-- Section Durée de séjour (indicateurs clés) -->
+                                <div class="duree-sejour-subsection">
+                                    <div class="duree-sejour-header">
+                                        <h4><i class="fa-solid fa-stopwatch"></i> Durées Séjour (Nuits)</h4>
                                     </div>
-                                    <div class="origins-grid">
-                                        <div class="chart-container chart-stay-distribution full-width" tabindex="0">
-                                            <div class="chart-header">
-                                                <h4>Durée de séjour – Français vs International</h4>
-                                            </div>
-                                            <div class="chart-wrapper">
-                                                <canvas id="infographie-stay-distribution"></canvas>
-                                            </div>
-                                        </div>
+                                    <div class="duree-sejour-grid">
+                                        <!-- Indicateurs clés (duree de sejour) Total, Français, International -->
+                                        <div class="indicators-row" data-indicators-duree-sejour></div>
                                     </div>
                                 </div>
 
-                                <!-- Mobilité Interne - Nouveau bloc -->
-                                <div class="mobility-subsection">
-                                    <div class="origins-header mobility-header">
-                                        <h4><i class="fa-solid fa-route"></i> Mobilité Interne</h4>
-                                    </div>
-                                    <div class="origins-grid">
-                                        <div class="chart-container chart-mobility full-width" tabindex="0">
-                                            <div class="chart-header">
-                                                <h4>Top 10 Destinations Touristiques</h4>
-                                                <div class="chart-subtitle">Communes les plus attractives</div>
-                                            </div>
-                                            <div class="chart-wrapper">
-                                                <canvas id="infographie-mobility-destinations"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                             
                             <!-- Section Excursionnistes complète -->
@@ -383,11 +361,14 @@
         </footer>
     </div>
 
+    <!-- Configuration JavaScript dynamique -->
+    <?php include 'config_js.php'; ?>
+    
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <!-- html2canvas pour capturer l'infographie -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <!-- Scripts regroupés -->
-    <script src="<?= asset('/static/dist/infographie.bundle.js?v=' . APP_VERSION . '_' . time() . '_' . rand(1000, 9999) . '_' . rand(1000, 9999)) ?>" defer></script>
+    <script src="<?= asset('/static/dist/infographie.bundle.js?v=' . APP_VERSION) ?>" defer></script>
 </body>
 </html> 

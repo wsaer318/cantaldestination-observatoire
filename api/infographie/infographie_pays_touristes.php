@@ -7,6 +7,9 @@ ini_set('display_errors', 1);
 
 // Inclure le gestionnaire intelligent des périodes
 require_once __DIR__ . '/periodes_manager_db.php';
+
+// Inclure le système de correction des données
+require_once __DIR__ . '/correction_helper.php';
 require_once __DIR__ . '/../../classes/ZoneMapper.php';
 
 // Récupération directe des paramètres
@@ -152,6 +155,11 @@ try {
     }
     
     header('Content-Type: application/json');
+    // Appliquer les corrections si nécessaire
+    if (isset($result['data'])) {
+        $result['data'] = applyCorrectionIfNeeded($result['data'], $zone, $annee, $periode, 'infographie_pays_touristes.php');
+    }
+    
     echo json_encode($results, JSON_PRETTY_PRINT);
     
 } catch (Exception $e) {

@@ -1324,6 +1324,206 @@ try {
         ];
     }
     
+    // ====== NOUVEAUX INDICATEURS DURÉE MOYENNE DE SÉJOUR (25-27) ======
+    
+    // 25. Durée moyenne de séjour totale (Français + International)
+    if (in_array('fact_sejours_duree', $tables)) {
+        $sql25 = "
+            SELECT ROUND(SUM(d.nb_nuits * f.volume) / NULLIF(SUM(f.volume), 0), 2) AS avg_val
+            FROM fact_sejours_duree f
+            JOIN dim_durees_sejour d ON d.id_duree = f.id_duree
+            JOIN dim_zones_observation z ON z.id_zone = f.id_zone
+            JOIN dim_categories_visiteur c ON c.id_categorie = f.id_categorie
+            JOIN dim_provenances pr ON pr.id_provenance = f.id_provenance
+            WHERE f.date BETWEEN ? AND ?
+              AND z.nom_zone = ?
+              AND c.nom_categorie = 'TOURISTE'
+              AND pr.nom_provenance <> 'LOCAL'
+        ";
+        
+        $stmt = $pdo->prepare($sql25);
+        
+        // Calcul pour les 5 années
+        $stmt->execute([$dateRanges['start'], $dateRanges['end'], $zoneMapped]);
+        $dureeMoyenneTotale = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN1['start'], $dateRangesN1['end'], $zoneMappedN1]);
+        $dureeMoyenneTotaleN1 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN2['start'], $dateRangesN2['end'], $zoneMappedN2]);
+        $dureeMoyenneTotaleN2 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN3['start'], $dateRangesN3['end'], $zoneMappedN3]);
+        $dureeMoyenneTotaleN3 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN4['start'], $dateRangesN4['end'], $zoneMappedN4]);
+        $dureeMoyenneTotaleN4 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        // Calcul des évolutions
+        $evolutionPct25 = calculateEvolutionFromReference($dureeMoyenneTotale, $dureeMoyenneTotaleN1);
+        $evolutionPct25N1 = calculateEvolutionFromReference($dureeMoyenneTotale, $dureeMoyenneTotaleN2);
+        $evolutionPct25N2 = calculateEvolutionFromReference($dureeMoyenneTotale, $dureeMoyenneTotaleN3);
+        $evolutionPct25N3 = calculateEvolutionFromReference($dureeMoyenneTotale, $dureeMoyenneTotaleN4);
+    } else {
+        $dureeMoyenneTotale = 0;
+        $dureeMoyenneTotaleN1 = 0;
+        $dureeMoyenneTotaleN2 = 0;
+        $dureeMoyenneTotaleN3 = 0;
+        $dureeMoyenneTotaleN4 = 0;
+        $evolutionPct25 = null;
+        $evolutionPct25N1 = null;
+        $evolutionPct25N2 = null;
+        $evolutionPct25N3 = null;
+    }
+    
+    $indicators[] = [
+        'numero' => 25,
+        'indicateur' => '25. Durée moyenne de séjour totale',
+        'N' => $dureeMoyenneTotale,
+        'N_1' => $dureeMoyenneTotaleN1,
+        'N_2' => $dureeMoyenneTotaleN2,
+        'N_3' => $dureeMoyenneTotaleN3,
+        'evolution_pct' => $evolutionPct25,
+        'evolution_pct_N1' => $evolutionPct25N1,
+        'evolution_pct_N2' => $evolutionPct25N2,
+        'evolution_pct_N3' => $evolutionPct25N3,
+        'unite' => 'Nuits',
+        'remarque' => 'Durée moyenne pondérée (FR + INTL)',
+        'annee_reference' => $annee
+    ];
+    
+    // 26. Durée moyenne de séjour française
+    if (in_array('fact_sejours_duree', $tables)) {
+        $sql26 = "
+            SELECT ROUND(SUM(d.nb_nuits * f.volume) / NULLIF(SUM(f.volume), 0), 2) AS avg_val
+            FROM fact_sejours_duree f
+            JOIN dim_durees_sejour d ON d.id_duree = f.id_duree
+            JOIN dim_zones_observation z ON z.id_zone = f.id_zone
+            JOIN dim_categories_visiteur c ON c.id_categorie = f.id_categorie
+            JOIN dim_provenances pr ON pr.id_provenance = f.id_provenance
+            WHERE f.date BETWEEN ? AND ?
+              AND z.nom_zone = ?
+              AND c.nom_categorie = 'TOURISTE'
+              AND pr.nom_provenance = 'NONLOCAL'
+        ";
+        
+        $stmt = $pdo->prepare($sql26);
+        
+        // Calcul pour les 5 années
+        $stmt->execute([$dateRanges['start'], $dateRanges['end'], $zoneMapped]);
+        $dureeMoyenneFrancaise = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN1['start'], $dateRangesN1['end'], $zoneMappedN1]);
+        $dureeMoyenneFrancaiseN1 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN2['start'], $dateRangesN2['end'], $zoneMappedN2]);
+        $dureeMoyenneFrancaiseN2 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN3['start'], $dateRangesN3['end'], $zoneMappedN3]);
+        $dureeMoyenneFrancaiseN3 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN4['start'], $dateRangesN4['end'], $zoneMappedN4]);
+        $dureeMoyenneFrancaiseN4 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        // Calcul des évolutions
+        $evolutionPct26 = calculateEvolutionFromReference($dureeMoyenneFrancaise, $dureeMoyenneFrancaiseN1);
+        $evolutionPct26N1 = calculateEvolutionFromReference($dureeMoyenneFrancaise, $dureeMoyenneFrancaiseN2);
+        $evolutionPct26N2 = calculateEvolutionFromReference($dureeMoyenneFrancaise, $dureeMoyenneFrancaiseN3);
+        $evolutionPct26N3 = calculateEvolutionFromReference($dureeMoyenneFrancaise, $dureeMoyenneFrancaiseN4);
+    } else {
+        $dureeMoyenneFrancaise = 0;
+        $dureeMoyenneFrancaiseN1 = 0;
+        $dureeMoyenneFrancaiseN2 = 0;
+        $dureeMoyenneFrancaiseN3 = 0;
+        $dureeMoyenneFrancaiseN4 = 0;
+        $evolutionPct26 = null;
+        $evolutionPct26N1 = null;
+        $evolutionPct26N2 = null;
+        $evolutionPct26N3 = null;
+    }
+    
+    $indicators[] = [
+        'numero' => 26,
+        'indicateur' => '26. Durée moyenne de séjour française',
+        'N' => $dureeMoyenneFrancaise,
+        'N_1' => $dureeMoyenneFrancaiseN1,
+        'N_2' => $dureeMoyenneFrancaiseN2,
+        'N_3' => $dureeMoyenneFrancaiseN3,
+        'evolution_pct' => $evolutionPct26,
+        'evolution_pct_N1' => $evolutionPct26N1,
+        'evolution_pct_N2' => $evolutionPct26N2,
+        'evolution_pct_N3' => $evolutionPct26N3,
+        'unite' => 'Nuits',
+        'remarque' => 'Durée moyenne pondérée (Français)',
+        'annee_reference' => $annee
+    ];
+    
+    // 27. Durée moyenne de séjour internationale
+    if (in_array('fact_sejours_duree', $tables)) {
+        $sql27 = "
+            SELECT ROUND(SUM(d.nb_nuits * f.volume) / NULLIF(SUM(f.volume), 0), 2) AS avg_val
+            FROM fact_sejours_duree f
+            JOIN dim_durees_sejour d ON d.id_duree = f.id_duree
+            JOIN dim_zones_observation z ON z.id_zone = f.id_zone
+            JOIN dim_categories_visiteur c ON c.id_categorie = f.id_categorie
+            JOIN dim_provenances pr ON pr.id_provenance = f.id_provenance
+            WHERE f.date BETWEEN ? AND ?
+              AND z.nom_zone = ?
+              AND c.nom_categorie = 'TOURISTE'
+              AND pr.nom_provenance = 'ETRANGER'
+        ";
+        
+        $stmt = $pdo->prepare($sql27);
+        
+        // Calcul pour les 5 années
+        $stmt->execute([$dateRanges['start'], $dateRanges['end'], $zoneMapped]);
+        $dureeMoyenneInternationale = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN1['start'], $dateRangesN1['end'], $zoneMappedN1]);
+        $dureeMoyenneInternationaleN1 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN2['start'], $dateRangesN2['end'], $zoneMappedN2]);
+        $dureeMoyenneInternationaleN2 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN3['start'], $dateRangesN3['end'], $zoneMappedN3]);
+        $dureeMoyenneInternationaleN3 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        $stmt->execute([$dateRangesN4['start'], $dateRangesN4['end'], $zoneMappedN4]);
+        $dureeMoyenneInternationaleN4 = (float)($stmt->fetch()['avg_val'] ?? 0);
+        
+        // Calcul des évolutions
+        $evolutionPct27 = calculateEvolutionFromReference($dureeMoyenneInternationale, $dureeMoyenneInternationaleN1);
+        $evolutionPct27N1 = calculateEvolutionFromReference($dureeMoyenneInternationale, $dureeMoyenneInternationaleN2);
+        $evolutionPct27N2 = calculateEvolutionFromReference($dureeMoyenneInternationale, $dureeMoyenneInternationaleN3);
+        $evolutionPct27N3 = calculateEvolutionFromReference($dureeMoyenneInternationale, $dureeMoyenneInternationaleN4);
+    } else {
+        $dureeMoyenneInternationale = 0;
+        $dureeMoyenneInternationaleN1 = 0;
+        $dureeMoyenneInternationaleN2 = 0;
+        $dureeMoyenneInternationaleN3 = 0;
+        $dureeMoyenneInternationaleN4 = 0;
+        $evolutionPct27 = null;
+        $evolutionPct27N1 = null;
+        $evolutionPct27N2 = null;
+        $evolutionPct27N3 = null;
+    }
+    
+    $indicators[] = [
+        'numero' => 27,
+        'indicateur' => '27. Durée moyenne de séjour internationale',
+        'N' => $dureeMoyenneInternationale,
+        'N_1' => $dureeMoyenneInternationaleN1,
+        'N_2' => $dureeMoyenneInternationaleN2,
+        'N_3' => $dureeMoyenneInternationaleN3,
+        'evolution_pct' => $evolutionPct27,
+        'evolution_pct_N1' => $evolutionPct27N1,
+        'evolution_pct_N2' => $evolutionPct27N2,
+        'evolution_pct_N3' => $evolutionPct27N3,
+        'unite' => 'Nuits',
+        'remarque' => 'Durée moyenne pondérée (International)',
+        'annee_reference' => $annee
+    ];
+    
     // Résultat final
     $result = [
         'zone_observation' => $zoneMapped,

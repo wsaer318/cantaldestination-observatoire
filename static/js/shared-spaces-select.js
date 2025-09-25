@@ -178,7 +178,7 @@ async function handleShareSubmit(event) {
             
             // Rediriger vers la page des espaces partagés après 2 secondes
             setTimeout(() => {
-                window.location.href = `/fluxvision_fin/shared-spaces`;
+                window.location.href = (window.CantalDestinationConfig ? window.CantalDestinationConfig.url('/shared-spaces') : '/shared-spaces');
             }, 2000);
         } else {
             throw new Error(result.message || 'Erreur lors du partage');

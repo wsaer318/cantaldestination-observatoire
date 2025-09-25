@@ -4,6 +4,9 @@
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/periodes_manager_db.php';
+
+// Inclure le système de correction des données
+require_once __DIR__ . '/correction_helper.php';
 require_once __DIR__ . '/../../classes/ZoneMapper.php';
 require_once dirname(dirname(__DIR__)) . '/database.php';
 

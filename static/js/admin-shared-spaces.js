@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     SharedSpacesConfig.csrfToken = csrfInput ? csrfInput.value : '';
     
     // Utiliser le chemin de base du projet
-    SharedSpacesConfig.baseUrl = window.location.origin + '/fluxvision_fin';
+    SharedSpacesConfig.baseUrl = window.location.origin + (window.CantalDestinationConfig ? window.CantalDestinationConfig.basePath : '');
     
     window.fvLog('SharedSpacesConfig initialisé:', {
         csrfToken: SharedSpacesConfig.csrfToken ? 'Présent' : 'Manquant',

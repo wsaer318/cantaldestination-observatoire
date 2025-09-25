@@ -36,7 +36,7 @@ if (session_status() === PHP_SESSION_NONE) {
     // Timeout de session
     if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 3600)) {
         session_destroy();
-        header('Location: /fluxvision_fin/login?timeout=1');
+        header('Location: ' . url('/login?timeout=1'));
         exit;
     }
 
@@ -53,7 +53,7 @@ function getCurrentUser() {
 
 function requireAuthentication() {
     if (!isUserAuthenticated()) {
-        header('Location: /fluxvision_fin/login');
+        header('Location: ' . url('/login'));
         exit;
     }
 }

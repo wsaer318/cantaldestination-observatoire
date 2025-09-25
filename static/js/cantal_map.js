@@ -190,7 +190,7 @@ class CantalMap {
     async loadZonesData() {
         try {
             // Charger les données des zones depuis l'API
-            const response = await fetch('/fluxvision_fin/api/filters_mysql.php');
+            const response = await fetch((window.CantalDestinationConfig ? window.CantalDestinationConfig.url('/api/filters_mysql.php') : '/api/filters_mysql.php'));
             const data = await response.json();
             
             if (data.zones) {
@@ -589,7 +589,7 @@ class CantalMap {
                     </p>` : ''
                 }
                 <div style="text-align: center; margin-top: 10px;">
-                    <a href="/fluxvision_fin/tdb_comparaison?zone=${encodeURIComponent(zoneName)}" 
+                    <a href="${window.CantalDestinationConfig ? window.CantalDestinationConfig.url('/tdb_comparaison') : '/tdb_comparaison'}?zone=${encodeURIComponent(zoneName)}" 
                        class="popup-btn" 
                        style="
                            background: ${config.color};

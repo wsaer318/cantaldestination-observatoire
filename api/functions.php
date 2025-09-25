@@ -7,7 +7,7 @@
  * Génère une URL relative
  */
 function api_url($path = '') {
-    $baseUrl = '/fluxvision_fin';
+    $baseUrl = getBasePath();
     return $baseUrl . '/' . ltrim($path, '/');
 }
 

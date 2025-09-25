@@ -350,7 +350,7 @@ function initImportProgressTracking() {
  */
 function checkImportProgress() {
     // Détecter l'environnement pour construire le bon chemin
-    const basePath = window.location.pathname.includes('/fluxvision_fin/') ? '/fluxvision_fin' : '';
+    const basePath = window.CantalDestinationConfig ? window.CantalDestinationConfig.basePath : '';
 
     fetch(basePath + '/tools/import/check_import_progress.php', {
         method: 'GET',

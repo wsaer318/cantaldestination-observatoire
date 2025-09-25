@@ -2608,30 +2608,22 @@ body.embedded .main-content {
 }
 
 /* =============================================================================
+   SECTION DURÉE DE SÉJOUR
+   ============================================================================= */
+
+/* Centrer le titre de la section durée de séjour */
+.duree-sejour-header {
+    text-align: center;
+}
+
+.duree-sejour-header h4 {
+    text-align: center;
+    margin: 0;
+    padding: 15px 0;
+}
+
+/* =============================================================================
    ÉGALISATION DIMENSIONS GRAPHIQUE MOBILITÉ
    ============================================================================= */
 
-/* Graphique mobilité avec les mêmes dimensions que les départements */
-.chart-mobility {
-    min-height: var(--chart-h-lg) !important;
-    max-height: var(--chart-h-xl) !important;
-    grid-column: 1 / -1 !important; /* Toute la largeur comme les départements */
-}
-
-.chart-mobility .chart-wrapper {
-    min-height: calc(var(--chart-h-lg) - 120px) !important;
-    max-height: calc(var(--chart-h-xl) - 120px) !important;
-    padding-top: 0.5rem !important; /* Même espacement que les départements */
-}
-
-/* Mode export */
-.infographie-content.export-mode .chart-mobility {
-    min-height: var(--chart-h-lg) !important;
-    max-height: var(--chart-h-xl) !important;
-}
-
-.infographie-content.export-mode .chart-mobility .chart-wrapper {
-    min-height: calc(var(--chart-h-lg) - 120px) !important;
-    max-height: calc(var(--chart-h-xl) - 120px) !important;
-}
 

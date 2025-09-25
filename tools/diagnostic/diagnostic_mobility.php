@@ -22,7 +22,7 @@ function testAPIHTTP($annee, $periode, $zone, $limit = 10) {
     echo "\n🧪 TEST HTTP: {$annee} - {$zone} - {$periode}\n";
 
     // URL complète pour le serveur local
-    $url = "http://localhost/fluxvision_fin/api/infographie/infographie_communes_excursion.php?annee={$annee}&periode={$periode}&zone={$zone}&limit={$limit}&debug=1";
+    $url = "http://localhost" . getBasePath() . "/api/infographie/infographie_communes_excursion.php?annee={$annee}&periode={$periode}&zone={$zone}&limit={$limit}&debug=1";
 
     echo "URL: {$url}\n";
 
@@ -285,10 +285,10 @@ echo "4. Problème de traitement des données côté frontend\n";
 echo "\n🧪 TESTS À FAIRE :\n";
 echo "=================\n";
 echo "1. Test direct de l'API :\n";
-echo "   http://localhost/fluxvision_fin/test_api_browser.php?test=1\n";
+echo "   http://localhost" . getBasePath() . "/test_api_browser.php?test=1\n";
 echo "   ou depuis le terminal: php test_api_browser.php\n";
 echo "\n2. Test simulation JavaScript :\n";
-echo "   http://localhost/fluxvision_fin/diagnostic_mobility.php?js_test=1\n";
+echo "   http://localhost" . getBasePath() . "/diagnostic_mobility.php?js_test=1\n";
 echo "\n3. Test de l'infographie :\n";
 echo "   https://observatoire.cantal-destination.com/infographie?annee=2023&periode=vacances_ete&zone=CANTAL\n";
 echo "\n4. Vérifiez les logs JavaScript dans la console (F12)\n";
@@ -324,7 +324,7 @@ if (isset($_GET['js_test'])) {
     $jsUrl = "api/infographie/infographie_communes_excursion.php?annee=2023&periode=vacances_ete&zone=CANTAL&limit=10";
     echo "URL appelée par JavaScript: {$jsUrl}\n";
 
-    $fullUrl = "http://localhost/fluxvision_fin/" . $jsUrl;
+    $fullUrl = "http://localhost" . getBasePath() . "/" . $jsUrl;
     echo "URL complète: {$fullUrl}\n\n";
 
     $ch = curl_init();
@@ -332,7 +332,7 @@ if (isset($_GET['js_test'])) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer: http://localhost/fluxvision_fin/infographie'
+        'Referer: http://localhost' . getBasePath() . '/infographie'
     ]);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
@@ -386,7 +386,7 @@ function generateBrowserTest() {
     echo "console.log('🔍 Test API depuis le navigateur');\n";
     echo "console.log('📡 Test de l\\'API en cours...');\n";
 
-    echo "fetch('/fluxvision_fin/api/infographie/infographie_communes_excursion.php?annee=2023&periode=vacances_ete&zone=CANTAL&limit=10')\n";
+    echo "fetch('" . getBasePath() . "/api/infographie/infographie_communes_excursion.php?annee=2023&periode=vacances_ete&zone=CANTAL&limit=10')\n";
     echo "  .then(response => {\n";
     echo "    console.log('📡 Statut HTTP:', response.status);\n";
     echo "    return response.json();\n";

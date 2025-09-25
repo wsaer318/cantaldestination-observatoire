@@ -8,7 +8,7 @@ echo "===========================================\n\n";
 
 // Fonction pour récupérer les données d'une année
 function getMobilityData($year) {
-    $url = "http://localhost/fluxvision_fin/api/infographie/infographie_communes_excursion.php?annee={$year}&periode=vacances_ete&zone=CANTAL&limit=20";
+    $url = "http://localhost" . getBasePath() . "/api/infographie/infographie_communes_excursion.php?annee={$year}&periode=vacances_ete&zone=CANTAL&limit=20";
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

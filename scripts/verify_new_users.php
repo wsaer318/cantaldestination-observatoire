@@ -89,7 +89,7 @@ try {
     // Informations de connexion
     echo "🔑 INFORMATIONS DE CONNEXION:\n";
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-    echo "🌐 URL de connexion: http://localhost/fluxvision_fin/templates/login.php\n";
+    echo "🌐 URL de connexion: http://localhost" . getBasePath() . "/login\n";
     echo "🔒 Mot de passe pour tous: FluxVision2024!\n";
     echo "⚠️  Important: Chaque utilisateur doit changer son mot de passe à la première connexion\n\n";
     

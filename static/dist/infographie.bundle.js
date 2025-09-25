@@ -1,4 +1,4 @@
-// Auto-generated on 2025-09-21T08:32:17+00:00 -- Do not edit manually
+// Auto-generated on 2025-09-24T09:33:26+00:00 -- Do not edit manually
 // ---- begin static/js/utils.js ----
 
 // Fonctions utilitaires partagées entre les fichiers JavaScript
@@ -281,21 +281,22 @@ window.utils = {
 
 /**
  * Configuration FluxVision - Gestion des URLs selon l'environnement
+ * Version améliorée avec détection automatique et configuration centralisée
  */
 
-// Détection de l'environnement
+// Détection de l'environnement (fallback si la config PHP n'est pas disponible)
 function isProduction() {
+    // Si la configuration PHP est disponible, l'utiliser
+    if (window.CANTALDESTINATION_ENV) {
+        return window.CANTALDESTINATION_ENV.isProduction;
+    }
+    
+    // Fallback: détection automatique
     const host = window.location.hostname;
     const href = window.location.href;
     
-    // Détection plus précise
     // Si on est en localhost ou 127.0.0.1, c'est forcément local
     if (host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.')) {
-        return false;
-    }
-    
-    // Si l'URL contient fluxvision_fin, c'est probablement local
-    if (href.includes('/fluxvision_fin/')) {
         return false;
     }
     
@@ -304,13 +305,33 @@ function isProduction() {
            host.includes('observatoire.cantal-destination.com');
 }
 
+// Détection automatique du chemin de base
+function getBasePath() {
+    // Si la configuration PHP est disponible, l'utiliser
+    if (window.CANTALDESTINATION_ENV && window.CANTALDESTINATION_ENV.basePath) {
+        return window.CANTALDESTINATION_ENV.basePath;
+    }
+    
+    // Fallback: détection automatique du chemin
+    const pathname = window.location.pathname;
+    const pathParts = pathname.split('/').filter(part => part);
+    
+    // Si on a des parties de chemin, reconstruire le chemin de base
+    if (pathParts.length > 1) {
+        // Prendre tout sauf le dernier élément (qui est souvent le fichier)
+        return '/' + pathParts.slice(0, -1).join('/');
+    }
+    
+    return isProduction() ? '' : '';
+}
+
 // Configuration des chemins selon l'environnement
 const CantalDestinationConfig = {
     // Environnement actuel
     environment: isProduction() ? 'production' : 'local',
     
-    // Base path selon l'environnement
-    basePath: isProduction() ? '' : '/fluxvision_fin',
+    // Base path selon l'environnement (détection automatique)
+    basePath: getBasePath(),
     
     // Génération des URLs
     url: function(path) {
@@ -326,142 +347,109 @@ const CantalDestinationConfig = {
     assetUrl: function(path) {
         return this.url('/static' + path);
     },
+    
+    // Vérification si on est en production
+    isProduction: function() {
+        return isProduction();
+    },
+    
+    // Vérification si on est en local
+    isLocal: function() {
+        return !isProduction();
+    }
+};
+
+// Fonctions utilitaires globales pour la compatibilité
+window.asset = function(path) {
+    return CantalDestinationConfig.assetUrl(path);
+};
+
+window.url = function(path) {
+    return CantalDestinationConfig.url(path);
 };
 
 // Configuration des périodes - Système Hybride
 const PeriodConfig = {
-    // Les 4 saisons utilisateur (interface simple)
-    seasons: {
-        'printemps': {
-            name: 'Printemps',
-            months: [3, 4, 5],
-            icon: '🌸',
-            color: '#4ade80'
-        },
-        'ete': {
-            name: 'Été', 
-            months: [6, 7, 8],
-            icon: '☀️',
-            color: '#f59e0b'
-        },
-        'automne': {
-            name: 'Automne',
-            months: [9, 10, 11], 
-            icon: '🍂',
-            color: '#ea580c'
-        },
-        'hiver': {
-            name: 'Hiver',
-            months: [12, 1, 2],
-            icon: '❄️', 
-            color: '#3b82f6'
-        }
+    // Périodes disponibles
+    periods: [
+        { key: 'annee', label: 'Année', type: 'year' },
+        { key: 'week-end_de_paques', label: 'Week-end de Pâques', type: 'holiday' },
+        { key: 'vacances_d_hiver', label: 'Vacances d\'hiver', type: 'holiday' },
+        { key: 'vacances_d_ete', label: 'Vacances d\'été', type: 'holiday' },
+        { key: 'vacances_de_toussaint', label: 'Vacances de Toussaint', type: 'holiday' },
+        { key: 'vacances_de_noel', label: 'Vacances de Noël', type: 'holiday' }
+    ],
+    
+    // Années disponibles
+    years: [2020, 2021, 2022, 2023, 2024, 2025],
+    
+    // Zones disponibles
+    zones: [
+        { key: 'CANTAL', label: 'Cantal', type: 'department' },
+        { key: 'AURILLAC', label: 'Aurillac', type: 'city' },
+        { key: 'MAURIAC', label: 'Mauriac', type: 'city' },
+        { key: 'SAINT_FLOUR', label: 'Saint-Flour', type: 'city' }
+    ],
+    
+    // Fonction pour obtenir la période par clé
+    getPeriod: function(key) {
+        return this.periods.find(p => p.key === key);
     },
     
-    // Contextes d'utilisation
-    contexts: {
-        USER: 'user',         // Interface simple (4 saisons)
-        BUSINESS: 'business', // Périodes métier précises
-        HYBRID: 'hybrid',     // Les deux (menus experts)
-        AUTO: 'auto'          // Détection automatique
-    },
-    
-    // Détection intelligente de la saison actuelle
-    getCurrentSeason: function() {
-        const month = new Date().getMonth() + 1;
-        
-        for (const [key, season] of Object.entries(this.seasons)) {
-            if (season.months.includes(month)) {
-                return key;
-            }
-        }
-        return 'hiver'; // Fallback
-    },
-    
-    // Formatage d'affichage des périodes
-    formatPeriodDisplay: function(periode, context = 'user') {
-        if (context === 'user' && this.seasons[periode]) {
-            return `${this.seasons[periode].icon} ${this.seasons[periode].name}`;
-        }
-        
-        // Pour les périodes métier, capitaliser simplement
-        return periode.charAt(0).toUpperCase() + periode.slice(1).replace(/_/g, ' ');
-    },
-    
-    // Validation des paramètres de période
-    isValidPeriod: function(periode, context = 'auto') {
-        if (context === 'user' || context === 'auto') {
-            return Object.keys(this.seasons).includes(periode);
-        }
-        
-        // Pour le contexte business, on fait confiance au backend
-        return periode && periode.length > 0;
+    // Fonction pour obtenir la zone par clé
+    getZone: function(key) {
+        return this.zones.find(z => z.key === key);
     }
 };
 
-// API Helper pour les périodes
-const PeriodAPI = {
-    // Appel API intelligent avec mapping automatique
-    callWithPeriod: function(endpoint, periode, annee, zone, context = 'auto', additionalParams = {}) {
-        const params = new URLSearchParams({
-            periode: periode,
-            annee: annee,
-            zone: zone,
-            context: context,
-            ...additionalParams
-        });
-        
-        return fetch(`${CantalDestinationConfig.apiUrl(endpoint)}?${params}`);
-    },
+// Configuration des tableaux de bord
+const DashboardConfig = {
+    types: [
+        { key: 'General', label: 'Général', icon: 'fas fa-chart-line' },
+        { key: 'Excursionnistes', label: 'Excursionnistes', icon: 'fas fa-hiking' },
+        { key: 'Comparaison', label: 'Comparaison', icon: 'fas fa-balance-scale' },
+        { key: 'Infographie', label: 'Infographie', icon: 'fas fa-chart-pie' }
+    ],
     
-    // Récupération des options de périodes disponibles
-    getAvailableOptions: async function(annee, context = 'user') {
-        try {
-            const response = await fetch(`${CantalDestinationConfig.apiUrl('period_options.php')}?annee=${annee}&context=${context}`);
-            return await response.json();
-        } catch (error) {
-            console.error('Erreur chargement options périodes:', error);
-            
-            // Fallback : retourner les 4 saisons
-            const seasons = {};
-            Object.entries(PeriodConfig.seasons).forEach(([key, season]) => {
-                seasons[key] = { name: season.name, type: 'season' };
+    getType: function(key) {
+        return this.types.find(t => t.key === key);
+    }
+};
+
+// Configuration des espaces partagés
+const SharedSpacesConfig = {
+    baseUrl: window.location.origin + CantalDestinationConfig.basePath,
+    csrfToken: window.CANTALDESTINATION_ENV.csrfToken || null,
+
+    // Initialisation
+    init: function() {
+        // Le token CSRF est déjà défini depuis la configuration globale
+        // Log de configuration pour le debug
+        if (CantalDestinationConfig.isLocal()) {
+            console.log('🔧 SharedSpacesConfig initialisé:', {
+                baseUrl: this.baseUrl,
+                csrfToken: this.csrfToken ? 'Présent' : 'Manquant'
             });
-            
-            return { seasons };
-        }
-    },
-    
-    // Informations sur la période actuelle (pour dashboard)
-    getCurrentPeriodInfo: async function() {
-        try {
-            const response = await fetch(`${CantalDestinationConfig.apiUrl('current_period_info.php')}`);
-            return await response.json();
-        } catch (error) {
-            console.error('Erreur informations période actuelle:', error);
-            
-            // Fallback local
-            const currentSeason = PeriodConfig.getCurrentSeason();
-            const currentYear = new Date().getFullYear();
-            
-            return {
-                current_season: currentSeason,
-                current_year: currentYear,
-                display_name: `${PeriodConfig.seasons[currentSeason].name} ${currentYear}`,
-                fallback: true
-            };
         }
     }
 };
 
-// Fonctions globales pour la compatibilité
-window.getApiUrl = function(endpoint) {
-    return CantalDestinationConfig.apiUrl(endpoint);
-};
+// Initialisation automatique
+document.addEventListener('DOMContentLoaded', function() {
+    SharedSpacesConfig.init();
+    
 
-// Nouvelles fonctions globales pour les périodes
-window.PeriodConfig = PeriodConfig;
-window.PeriodAPI = PeriodAPI;
+});
+
+// Export pour les modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        CantalDestinationConfig,
+        PeriodConfig,
+        DashboardConfig,
+        SharedSpacesConfig
+    };
+}
 
 // ---- end static/js/config.js ----
 
@@ -823,14 +811,13 @@ const filtersLoader = new FiltersLoader();
 
 // ---- begin static/js/infographie.js ----
 
-﻿/**
+/**
  * Script JavaScript pour la page d'infographie
  * Gère la génération et le téléchargement d'infographies touristiques
  */
 
 class InfographieManager {
     constructor(config = {}) {
-
         // Configuration par défaut
         this.config = {
             defaultYear: new Date().getFullYear(),
@@ -856,7 +843,7 @@ class InfographieManager {
         this.init();
     }
 
-    // Fonction utilitaire pour parser les dates ISO sans dÃ©calage de timezone
+    // Fonction utilitaire pour parser les dates ISO sans décalage de timezone
     parseISODate(s) {
         if (!s) return null;
         
@@ -876,7 +863,7 @@ class InfographieManager {
         return new Date(Y, M-1, D);
     }
 
-    // Fonction utilitaire pour gÃ©rer les erreurs d'abandon
+    // Fonction utilitaire pour gérer les erreurs d'abandon
     handleFetchError(error) {
         // Ignorer les erreurs d'abandon
         if (error.name === 'AbortError') {
@@ -937,11 +924,11 @@ class InfographieManager {
             // Charger la configuration dynamique
             await this.loadConfig();
             
-            // Les filtres sont maintenant gÃ©rÃ©s par filters_loader.js
-            // Attendre que les filtres soient chargÃ©s
+            // Les filtres sont maintenant gérés par filters_loader.js
+            // Attendre que les filtres soient chargés
             await this.waitForFiltersLoaded();
             
-            // Appliquer les paramÃ¨tres URL aux filtres
+            // Appliquer les paramètres URL aux filtres
             this.applyURLParametersToFilters();
 
             // Initialiser le sélecteur avancé (préréglages DB + UI)
@@ -962,7 +949,7 @@ class InfographieManager {
         }
     }
 
-    // ✅ Nouvelle mÃ©thode pour observer les changements d'URL
+    // ✅ Nouvelle méthode pour observer les changements d'URL
     observeURLChanges() {
         let isInternalChange = false;
         
@@ -998,7 +985,7 @@ class InfographieManager {
             }
         });
         
-        // MÃ©thode pour marquer les changements internes
+        // Méthode pour marquer les changements internes
         this.markInternalURLChange = () => {
             isInternalChange = true;
             setTimeout(() => { isInternalChange = false; }, 100);
@@ -1018,7 +1005,7 @@ class InfographieManager {
             const y = Number(year);
             // Si la config n'a pas de périodes (encore), ne pas écraser les options existantes
             if (!Array.isArray(all) || all.length === 0) {
-                // Assurer uniquement l'injection de l'option 'custom' si demandÃ©e
+                // Assurer uniquement l'injection de l'option 'custom' si demandée
                 if (desiredCode === 'custom' && !Array.from(periodSelect.options).some(o => o.value === 'custom')) {
                     const opt = document.createElement('option');
                     opt.value = 'custom';
@@ -1028,7 +1015,7 @@ class InfographieManager {
                 }
                 return;
             }
-            // IMPORTANT: ne pas reconstruire la liste, conserver les options crÃ©Ã©es par filters_loader.js
+            // IMPORTANT: ne pas reconstruire la liste, conserver les options créées par filters_loader.js
             const previousValue = periodSelect.value;
             const existing = Array.from(periodSelect.options).map(o => ({ value: o.value, label: o.textContent || '' }));
             const has = (v) => existing.some(o => o.value === v);
@@ -1052,7 +1039,7 @@ class InfographieManager {
                 if (!has(target)) {
                     const opt = document.createElement('option');
                     opt.value = 'annee_complete';
-                    opt.textContent = 'AnnÃ©e complète';
+                    opt.textContent = 'Année complète';
                     periodSelect.insertBefore(opt, periodSelect.firstChild);
                     target = 'annee_complete';
                 }
@@ -1122,7 +1109,7 @@ class InfographieManager {
             const monthsFR = [
                 'janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'
             ];
-            const monthsShortFR = ['janv.','fÃ©vr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','dÃ©c.'];
+            const monthsShortFR = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
             const state = { view: new Date(), start: null, end: null };
 
             const positionPanel = () => {
@@ -1140,27 +1127,27 @@ class InfographieManager {
                 const viewportWidth = window.innerWidth;
                 const viewportHeight = window.innerHeight;
                 
-                // Position initiale (en bas Ã  droite du bouton)
+                // Position initiale (en bas à droite du bouton)
                 let left = Math.round(r.left);
                 let top = Math.round(r.bottom + 6);
                 
-                // VÃ©rifier si le panneau dÃ©passe Ã  droite
+                // Vérifier si le panneau dépasse à droite
                 if (left + panelRect.width > viewportWidth) {
                     left = Math.max(10, viewportWidth - panelRect.width - 10);
                 }
                 
-                // VÃ©rifier si le panneau dÃ©passe Ã  gauche
+                // Vérifier si le panneau dépasse à gauche
                 if (left < 10) {
                     left = 10;
                 }
                 
-                // VÃ©rifier si le panneau dÃ©passe en bas
+                // Vérifier si le panneau dépasse en bas
                 if (top + panelRect.height > viewportHeight) {
                     // Placer le panneau au-dessus du bouton
                     top = Math.max(10, r.top - panelRect.height - 6);
                 }
                 
-                // VÃ©rifier si le panneau dÃ©passe en haut
+                // Vérifier si le panneau dépasse en haut
                 if (top < 10) {
                     top = 10;
                 }
@@ -1174,7 +1161,7 @@ class InfographieManager {
                 panel.style.left = left + 'px';
                 panel.style.top = top + 'px';
                 
-                // Restaurer l'état original si nÃ©cessaire
+                // Restaurer l'état original si nécessaire
                 if (wasHidden) {
                     panel.style.visibility = '';
                     panel.style.display = '';
@@ -1189,7 +1176,7 @@ class InfographieManager {
                 overlay.removeAttribute('hidden');
                 try { toggle?.setAttribute('aria-expanded','true'); } catch(_){ }
                 positionPanel();
-                // Synchroniser l'année du panneau avec le sÃ©lecteur standard et recharger la liste
+                // Synchroniser l'année du panneau avec le sélecteur standard et recharger la liste
                 try {
                     const stdYear = document.getElementById('exc-year-select')?.value;
                     if (yearSel && stdYear) {
@@ -1245,12 +1232,12 @@ class InfographieManager {
                 monthSel.value = String(state.view.getMonth());
             };
 
-            // Cache pour Ã©viter les appels multiples Ã  loadDbPresets
+            // Cache pour éviter les appels multiples à loadDbPresets
             const presetsCache = new Map();
             
             const loadDbPresets = async (year) => {
                 try {
-                    // VÃ©rifier le cache
+                    // Vérifier le cache
                     if (presetsCache.has(year)) {
                         const cachedData = presetsCache.get(year);
                         this.renderPresetsList(cachedData.presets, cachedData.year);
@@ -1267,7 +1254,7 @@ class InfographieManager {
                         code,
                         label: String(info?.nom || code)
                     }));
-                    const presets = [{ code: 'annee_complete', label: `AnnÃ©e complète ${year}` }, ...items];
+                    const presets = [{ code: 'annee_complete', label: `Année complète ${year}` }, ...items];
                     
                     // Mettre en cache
                     presetsCache.set(year, { presets, year });
@@ -1280,7 +1267,7 @@ class InfographieManager {
                 }
             };
             
-            // MÃ©thode pour rendre la liste des presets
+            // Méthode pour rendre la liste des presets
             this.renderPresetsList = (presets, year) => {
                 try {
                     while (list.firstChild) list.removeChild(list.firstChild);
@@ -1300,7 +1287,7 @@ class InfographieManager {
                                         if (!opt) {
                                             opt = document.createElement('option');
                                             opt.value = 'annee_complete';
-                                            opt.textContent = 'AnnÃ©e complète';
+                                            opt.textContent = 'Année complète';
                                             pSel.insertBefore(opt, pSel.firstChild);
                                         }
                                         pSel.value = 'annee_complete';
@@ -1322,7 +1309,7 @@ class InfographieManager {
                                 } catch(_){}
                                 // Active state in the list
                                 Array.from(list.children).forEach(el => el.classList.toggle('active', el === div));
-                                // ✅ Ne pas fermer le panneau - laisser l'utilisateur voir la sÃ©lection
+                                // ✅ Ne pas fermer le panneau - laisser l'utilisateur voir la sélection
                                 // closePanel();
                             } catch(_){ 
                                 this.log('preset click error:', _);
@@ -1331,7 +1318,7 @@ class InfographieManager {
                         list.appendChild(div);
                     });
                     
-                    // ✅ Mettre en surbrillance la pÃ©riode actuellement sÃ©lectionnÃ©e
+                    // ✅ Mettre en surbrillance la période actuellement sélectionnée
                     highlightCurrentPeriod();
                     
                 } catch (error) {
@@ -1339,7 +1326,7 @@ class InfographieManager {
                 }
             };
             
-            // ✅ Fonction pour mettre en surbrillance la pÃ©riode actuelle
+            // ✅ Fonction pour mettre en surbrillance la période actuelle
             const highlightCurrentPeriod = () => {
                 try {
                     const periodSelect = document.getElementById('exc-period-select');
@@ -1349,7 +1336,7 @@ class InfographieManager {
                     // Retirer toutes les surbrillances
                     Array.from(list.children).forEach(el => el.classList.remove('active'));
                     
-                    // Si la pÃ©riode n'est pas custom, mettre en surbrillance l'Ã©lÃ©ment correspondant
+                    // Si la période n'est pas custom, mettre en surbrillance l'élément correspondant
                     if (currentPeriod && currentPeriod !== 'custom') {
                         const targetElement = Array.from(list.children).find(el => 
                             el.dataset.code === currentPeriod
@@ -1371,7 +1358,7 @@ class InfographieManager {
             const fmt = (d)=> `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
 
             function formatCompactRange(start, end){
-                if (!start || !end) return 'SÃ©lecteur avancÃ©â€¦';
+                if (!start || !end) return 'Sélecteur avancé…';
                 const sameMonth = start.getFullYear()===end.getFullYear() && start.getMonth()===end.getMonth();
                 if (sameMonth) {
                     return `${String(start.getDate()).padStart(2,'0')}–${String(end.getDate()).padStart(2,'0')} ${monthsShortFR[start.getMonth()]} ${start.getFullYear()}`;
@@ -1390,7 +1377,7 @@ class InfographieManager {
                 const display = document.getElementById('pp-display');
                 if (!display) return;
                 if (state.start && state.end) display.textContent = formatCompactRange(state.start, state.end);
-                else display.textContent = 'SÃ©lecteur avancÃ©â€¦';
+                else display.textContent = 'Sélecteur avancé…';
             }
 
             function renderCalendar(){
@@ -1429,9 +1416,9 @@ class InfographieManager {
                 grid.appendChild(row);
                 // Hint
                 if (hint) {
-                    if (!state.start) hint.textContent = 'SÃ©lectionne la date de dÃ©butâ€¦';
-                    else if (!state.end) hint.textContent = 'SÃ©lectionne la date de finâ€¦';
-                    else hint.textContent = `SÃ©lection : ${fmt(state.start)} → ${fmt(state.end)}`;
+                    if (!state.start) hint.textContent = 'Sélectionne la date de début…';
+                    else if (!state.end) hint.textContent = 'Sélectionne la date de fin…';
+                    else hint.textContent = `Sélection : ${fmt(state.start)} → ${fmt(state.end)}`;
                 }
                 // Keyboard navigation within days
                 if (panel._ppKb) panel.removeEventListener('keydown', panel._ppKb);
@@ -1462,7 +1449,7 @@ class InfographieManager {
                 state.end = atMidnight(date);
                 if (state.end < state.start) { const t = state.start; state.start = state.end; state.end = t; }
                 
-                // ✅ Synchroniser la vue du calendrier avec la date de fin (borne supÃ©rieure)
+                // ✅ Synchroniser la vue du calendrier avec la date de fin (borne supérieure)
                 state.view = new Date(state.end.getFullYear(), state.end.getMonth(), 1);
                 if (yearSel) yearSel.value = String(state.view.getFullYear());
                 if (monthSel) monthSel.value = String(state.view.getMonth());
@@ -1472,29 +1459,29 @@ class InfographieManager {
                 updateDisplay();
                 renderCalendar();
                 try {
-                    // Exposer la plage personnalisée et mettre Ã  jour l'entÃªte et l'URL
+                    // Exposer la plage personnalisée et mettre à jour l'entête et l'URL
                     const fmtISO = (d)=> `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
                     const custom = { start: fmtISO(state.start), end: fmtISO(state.end) };
                     
-                    // Utiliser la mÃ©thode centralisÃ©e
+                    // Utiliser la méthode centralisée
                     self.syncCustomRange({ 
                         commitToUrl: true, 
                         start: custom.start, 
                         end: custom.end 
                     });
                     
-                    // ✅ NE PAS changer automatiquement l'année - laisser l'utilisateur la contrÃ´ler
+                    // ✅ NE PAS changer automatiquement l'année - laisser l'utilisateur la contrôler
                     // const yearSelectEl = document.getElementById('exc-year-select');
                     // if (yearSelectEl) yearSelectEl.value = String(state.start.getFullYear());
                     
                     const periodSelectEl = document.getElementById('exc-period-select');
                     if (periodSelectEl) {
-                        // Utiliser l'année actuellement sÃ©lectionnÃ©e, pas celle de la date
+                        // Utiliser l'année actuellement sélectionnée, pas celle de la date
                         const currentYear = document.getElementById('exc-year-select')?.value || new Date().getFullYear();
                         await self.updatePeriodSelectForYear(currentYear, 'custom');
                     }
                     
-                    // Mettre Ã  jour l'URL (annee, periode, zone) pour rester cohÃ©rent avec la source de vÃ©ritÃ©
+                    // Mettre à jour l'URL (annee, periode, zone) pour rester cohérent avec la source de vérité
                     try { 
                         self.markInternalURLChange();
                         self.updateURLWithFilters(); 
@@ -1505,7 +1492,7 @@ class InfographieManager {
                     if (startSpan) startSpan.textContent = fmt(state.start);
                     if (endSpan) endSpan.textContent = fmt(state.end);
                     
-                    // RafraÃ®chir l'entÃªte et relancer la gÃ©nÃ©ration
+                    // Rafraîchir l'entête et relancer la génération
                     try { self.updateHeaderFromAPI(); } catch(_){
                         self.log('updateHeaderFromAPI error:', _);
                     }
@@ -1577,13 +1564,13 @@ class InfographieManager {
             yearSel.addEventListener('change', () => { 
                 const y = Number(yearSel.value||new Date().getFullYear()); 
                 
-                // 1. Mettre Ã  jour state.view
+                // 1. Mettre à jour state.view
                 state.view = new Date(y, state.view.getMonth(), 1); 
                 
                 // 2. Rendu du calendrier
                 renderCalendar(); 
                 
-                // 3. Charger les presets de la base de donnÃ©es
+                // 3. Charger les presets de la base de données
                 loadDbPresets(y); 
                 
                 // 4. Synchroniser exc-year-select avec pp-year-select
@@ -1605,12 +1592,12 @@ class InfographieManager {
                     if (this.isValidDate(sd) && this.isValidDate(ed)) {
                         state.start = atMidnight(sd);
                         state.end = atMidnight(ed);
-                        // ✅ Afficher le mois de la date de fin (borne supÃ©rieure) Ã  l'ouverture
+                        // ✅ Afficher le mois de la date de fin (borne supérieure) à l'ouverture
                         state.view = new Date(state.end.getFullYear(), state.end.getMonth(), 1);
                         
                         
                         
-                                        // ✅ Synchroniser les sÃ©lecteurs avec la vue du calendrier
+                                        // ✅ Synchroniser les sélecteurs avec la vue du calendrier
                 if (yearSel) {
                     yearSel.value = String(state.view.getFullYear());
                     yearSel.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1622,11 +1609,11 @@ class InfographieManager {
                         
                         
                         
-                        // ✅ NE PAS changer automatiquement l'année - laisser l'utilisateur la contrÃ´ler
+                        // ✅ NE PAS changer automatiquement l'année - laisser l'utilisateur la contrôler
                         // const yearSelectEl = document.getElementById('exc-year-select');
                         // if (yearSelectEl) yearSelectEl.value = String(state.start.getFullYear());
                         
-                        // Utiliser l'année actuellement sÃ©lectionnÃ©e, pas celle de la date
+                        // Utiliser l'année actuellement sélectionnée, pas celle de la date
                         const currentYear = document.getElementById('exc-year-select')?.value || new Date().getFullYear();
                         await self.updatePeriodSelectForYear(currentYear, 'custom');
                         
@@ -1640,7 +1627,7 @@ class InfographieManager {
                 }
             } catch(_){}
 
-            // ✅ Initialisation des dates et du mois affichÃ© selon la pÃ©riode sÃ©lectionnÃ©e
+            // ✅ Initialisation des dates et du mois affiché selon la période sélectionnée
             try {
                 const periodSelect = document.getElementById('exc-period-select');
                 const yearSelect = document.getElementById('exc-year-select');
@@ -1651,10 +1638,10 @@ class InfographieManager {
                     
                     
                     
-                    // Si pas de plage custom dÃ©finie, initialiser selon la pÃ©riode
+                    // Si pas de plage custom définie, initialiser selon la période
                     if (!state.start || !state.end) {
                         if (periode === 'annee_complete') {
-                            // AnnÃ©e complète : 1er janvier au 31 décembre
+                            // Année complète : 1er janvier au 31 décembre
                             state.start = new Date(annee, 0, 1); // 1er janvier
                             state.end = new Date(annee, 11, 31); // 31 décembre
                             // Afficher décembre (mois de la date de fin)
@@ -1662,7 +1649,7 @@ class InfographieManager {
                             
                             
                         } else if (periode && periode !== 'custom') {
-                            // Pour les autres pÃ©riodes prÃ©dÃ©finies, rÃ©cupÃ©rer les dates depuis l'API
+                            // Pour les autres périodes prédéfinies, récupérer les dates depuis l'API
                             try {
                                 const base = (typeof window.getApiUrl === 'function')
                                     ? window.getApiUrl('get_periodes.php')
@@ -1689,7 +1676,7 @@ class InfographieManager {
                             }
                         }
                         
-                        // Synchroniser les sÃ©lecteurs avec la vue du calendrier
+                        // Synchroniser les sélecteurs avec la vue du calendrier
                         if (yearSel) {
                             yearSel.value = String(state.view.getFullYear());
                             yearSel.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1705,7 +1692,7 @@ class InfographieManager {
             } catch (error) {
             }
 
-            // ✅ Fonction pour rÃ©initialiser le sÃ©lecteur selon la pÃ©riode
+            // ✅ Fonction pour réinitialiser le sélecteur selon la période
             const resetPeriodPickerForPeriod = async () => {
                 const periodSelect = document.getElementById('exc-period-select');
                 const yearSelect = document.getElementById('exc-year-select');
@@ -1714,17 +1701,17 @@ class InfographieManager {
                     const periode = periodSelect.value;
                     const annee = parseInt(yearSelect.value);
                     
-                    // RÃ©initialiser l'état
+                    // Réinitialiser l'état
                     state.start = null;
                     state.end = null;
                     
                     if (periode === 'annee_complete') {
-                        // AnnÃ©e complète : 1er janvier au 31 décembre
+                        // Année complète : 1er janvier au 31 décembre
                         state.start = new Date(annee, 0, 1);
                         state.end = new Date(annee, 11, 31);
-                        state.view = new Date(annee, 11, 1); // DÃ©cembre
+                        state.view = new Date(annee, 11, 1); // Décembre
                     } else if (periode && periode !== 'custom') {
-                        // Pour les autres pÃ©riodes prÃ©dÃ©finies, rÃ©cupÃ©rer les dates depuis l'API
+                        // Pour les autres périodes prédéfinies, récupérer les dates depuis l'API
                         try {
                             const base = (typeof window.getApiUrl === 'function')
                                 ? window.getApiUrl('get_periodes.php')
@@ -1751,7 +1738,7 @@ class InfographieManager {
                         }
                     }
                     
-                    // Synchroniser les sÃ©lecteurs
+                    // Synchroniser les sélecteurs
                     if (yearSel) {
                         yearSel.value = String(state.view.getFullYear());
                         yearSel.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1761,7 +1748,7 @@ class InfographieManager {
                         monthSel.dispatchEvent(new Event('change', { bubbles: true }));
                     }
                     
-                    // Mettre Ã  jour l'affichage
+                    // Mettre à jour l'affichage
                     updateDisplay();
                     renderCalendar();
                 }
@@ -1773,18 +1760,18 @@ class InfographieManager {
             // Initial render
             renderCalendar();
             
-            // ✅ Ã‰couter les changements de pÃ©riode
+            // ✅ Écouter les changements de période
             const observePeriodChanges = () => {
                 const periodSelect = document.getElementById('exc-period-select');
                 if (periodSelect) {
-                    // Ã‰couter les Ã©vÃ©nements change
+                    // Écouter les événements change
                     periodSelect.addEventListener('change', () => {
                         resetPeriodPickerForPeriod();
                     });
                 }
             };
             
-            // DÃ©marrer l'observation
+            // Démarrer l'observation
             observePeriodChanges();
         } catch (e) {
             // Erreur silencieuse
@@ -1796,7 +1783,7 @@ class InfographieManager {
             // Attendre un peu pour que les scripts se chargent
             await new Promise(resolve => setTimeout(resolve, 100));
             
-            // Utiliser la mÃªme configuration que tdb_comparaison (obligatoire maintenant)
+            // Utiliser la même configuration que tdb_comparaison (obligatoire maintenant)
             if (typeof CantalDestinationDynamicConfig !== 'undefined') {
                 this.config = new CantalDestinationDynamicConfig();
                 await this.config.loadFromDatabase();
@@ -1821,7 +1808,7 @@ class InfographieManager {
     }
 
     applyURLParametersToFilters() {
-        // Appliquer les paramÃ¨tres URL aux filtres (mÃªme logique que tdb_comparaison)
+        // Appliquer les paramètres URL aux filtres (même logique que tdb_comparaison)
         try {
             const urlParams = new URLSearchParams(window.location.search);
             
@@ -1838,7 +1825,7 @@ class InfographieManager {
                 }
             }
 
-            // Appliquer la pÃ©riode depuis l'URL
+            // Appliquer la période depuis l'URL
             const periodFromUrl = urlParams.get('periode');
             if (periodFromUrl) {
                 const periodSelect = document.getElementById('exc-period-select');
@@ -1848,7 +1835,7 @@ class InfographieManager {
                         opt.value.toLowerCase() === periodFromUrl.toLowerCase()
                     );
                     
-                    // Recherche flexible si pas trouvÃ©
+                    // Recherche flexible si pas trouvé
                     if (!option) {
                         option = Array.from(periodSelect.options).find(opt => 
                             opt.value.toLowerCase().includes(periodFromUrl.toLowerCase()) ||
@@ -1881,7 +1868,7 @@ class InfographieManager {
 
     updateURLWithFilters() {
         
-        // Mettre Ã  jour l'URL avec les valeurs actuelles des filtres (sans rechargement)
+        // Mettre à jour l'URL avec les valeurs actuelles des filtres (sans rechargement)
         try {
             const yearSelect = document.getElementById('exc-year-select');
             const periodSelect = document.getElementById('exc-period-select');
@@ -1892,7 +1879,7 @@ class InfographieManager {
             if (yearSelect?.value && periodSelect?.value && zoneSelect?.value) {
                 const urlParams = new URLSearchParams(window.location.search);
                 
-                // Mettre Ã  jour les paramÃ¨tres
+                // Mettre à jour les paramètres
                 urlParams.set('annee', yearSelect.value);
                 urlParams.set('periode', periodSelect.value);
                 urlParams.set('zone', zoneSelect.value);
@@ -1902,7 +1889,7 @@ class InfographieManager {
                 
 
                 
-                                        // Mettre Ã  jour l'URL sans rechargement
+                                        // Mettre à jour l'URL sans rechargement
                         this.markInternalURLChange();
                         window.history.replaceState(null, '', newUrl);
 
@@ -1941,25 +1928,25 @@ class InfographieManager {
             return;
         }
         
-        // Si aucun filtre n'est disponible, lever une erreur contrÃ´lÃ©e
-        throw new Error('Impossible de charger les filtres aprÃ¨s 10 secondes');
+        // Si aucun filtre n'est disponible, lever une erreur contrôlée
+        throw new Error('Impossible de charger les filtres après 10 secondes');
     }
 
     initializeEvents() {
         const self = this;
         
-        // Bouton de tÃ©lÃ©chargement
+        // Bouton de téléchargement
         const downloadBtn = document.getElementById('btn-telecharger-infographie');
         if (downloadBtn) {
             downloadBtn.addEventListener('click', () => { this.downloadInfographie(); });
         }
 
-        // Ã‰couter les changements de filtres
+        // Écouter les changements de filtres
         const yearSelect = document.getElementById('exc-year-select');
         const periodSelect = document.getElementById('exc-period-select');
         const zoneSelect = document.getElementById('exc-zone-select');
 
-        // ✅ Fonction pour rÃ©initialiser le sÃ©lecteur avancÃ© selon la pÃ©riode
+        // ✅ Fonction pour réinitialiser le sélecteur avancé selon la période
         const resetAdvancedPeriodPicker = async () => {
             try {
                 const periode = periodSelect?.value;
@@ -1968,7 +1955,7 @@ class InfographieManager {
                 if (periode && annee) {
 
                     
-                    // Appeler la fonction de rÃ©initialisation du sÃ©lecteur avancÃ©
+                    // Appeler la fonction de réinitialisation du sélecteur avancé
                     if (window.resetPeriodPickerForPeriod) {
                         await window.resetPeriodPickerForPeriod();
                     }
@@ -1977,34 +1964,34 @@ class InfographieManager {
             }
         };
 
-        // Fonction pour gÃ©nÃ©rer l'infographie automatiquement
+        // Fonction pour générer l'infographie automatiquement
         const autoGenerateInfographie = async () => {
 
             
-            // VÃ©rifier que tous les filtres sont chargÃ©s et ont une valeur
+            // Vérifier que tous les filtres sont chargés et ont une valeur
             if (yearSelect?.value && periodSelect?.value && zoneSelect?.value) {
 
                 
-                // Si la pÃ©riode n'est PAS custom, supprimer toute plage custom persistÃ©e (URL/mÃ©moire)
+                // Si la période n'est PAS custom, supprimer toute plage custom persistée (URL/mémoire)
                 try {
                     if (periodSelect.value !== 'custom') {
                         self.syncCustomRange({ commitToUrl: true });
                     } else {
-                        // ✅ Mettre Ã  jour window.infographieCustomDateRange avec les dates de l'URL
+                        // ✅ Mettre à jour window.infographieCustomDateRange avec les dates de l'URL
                         self.syncCustomRange();
                     }
                 } catch(_) {
                     self.log('autoGenerateInfographie syncCustomRange error:', _);
                 }
                 
-                // ✅ Mettre Ã  jour l'URL AVANT updateHeaderFromAPI pour que les dates soient cohÃ©rentes
+                // ✅ Mettre à jour l'URL AVANT updateHeaderFromAPI pour que les dates soient cohérentes
                 self.markInternalURLChange();
                 self.updateURLWithFilters();
                 
-                // ✅ RÃ©initialiser le sÃ©lecteur avancÃ© selon la nouvelle pÃ©riode
+                // ✅ Réinitialiser le sélecteur avancé selon la nouvelle période
                 await resetAdvancedPeriodPicker();
                 
-                // ✅ Forcer la mise Ã  jour des dates custom dans l'URL si nÃ©cessaire
+                // ✅ Forcer la mise à jour des dates custom dans l'URL si nécessaire
                 if (periodSelect.value === 'custom') {
                     const urlParams = new URLSearchParams(window.location.search);
                     const currentYear = yearSelect.value;
@@ -2017,10 +2004,10 @@ class InfographieManager {
                         
 
                         
-                        // VÃ©rifier si les dates custom sont d'une année diffÃ©rente de l'année sÃ©lectionnÃ©e
+                        // Vérifier si les dates custom sont d'une année différente de l'année sélectionnée
                         if (startDate.getFullYear() !== parseInt(currentYear) || endDate.getFullYear() !== parseInt(currentYear)) {
                             
-                            // ✅ Corriger la crÃ©ation des dates pour Ã©viter les problÃ¨mes de timezone
+                            // ✅ Corriger la création des dates pour éviter les problèmes de timezone
                             const formatDate = (year, month, day) => {
                                 return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                             };
@@ -2028,7 +2015,7 @@ class InfographieManager {
                             const newCustomStart = formatDate(parseInt(currentYear), startDate.getMonth(), startDate.getDate());
                             const newCustomEnd = formatDate(parseInt(currentYear), endDate.getMonth(), endDate.getDate());
                             
-                            // Utiliser la mÃ©thode centralisÃ©e
+                            // Utiliser la méthode centralisée
                             self.syncCustomRange({ 
                                 commitToUrl: true, 
                                 start: newCustomStart, 
@@ -2039,11 +2026,11 @@ class InfographieManager {
                     }
                 }
                 
-                // Mettre Ã  jour le header APRÃˆS la mise Ã  jour de l'URL
+                // Mettre à jour le header APRÈS la mise à jour de l'URL
                 this.updateHeaderFromAPI();
                 
-                // ✅ Toujours rÃ©gÃ©nÃ©rer l'infographie quand on change les filtres
-                // RÃ©initialiser le flag pour permettre la rÃ©gÃ©nÃ©ration
+                // ✅ Toujours régénérer l'infographie quand on change les filtres
+                // Réinitialiser le flag pour permettre la régénération
                 this.chartsGenerated = false;
                 this.generateInfographie();
             } else {
@@ -2051,36 +2038,36 @@ class InfographieManager {
             }
         };
 
-        // Ã‰couter les changements de filtres
+        // Écouter les changements de filtres
         [yearSelect, periodSelect, zoneSelect].forEach(select => {
             if (select) {
                 select.addEventListener('change', (event) => {
                     
-                    // Stocker la valeur prÃ©cÃ©dente pour le prochain changement
+                    // Stocker la valeur précédente pour le prochain changement
                     event.target.dataset.previousValue = event.target.value;
                     
-                    // Appeler la fonction de gÃ©nÃ©ration automatique
+                    // Appeler la fonction de génération automatique
                     autoGenerateInfographie();
                 });
             }
         });
 
-        // GÃ©nÃ©rer l'infographie initiale une fois les filtres chargÃ©s
+        // Générer l'infographie initiale une fois les filtres chargés
         this.generateInitialInfographie();
     }
 
     async generateInitialInfographie() {
-        // Attendre que les filtres soient chargÃ©s
+        // Attendre que les filtres soient chargés
         await this.waitForFiltersLoaded();
         
-        // VÃ©rifier que tous les filtres ont des valeurs par dÃ©faut
+        // Vérifier que tous les filtres ont des valeurs par défaut
         const yearSelect = document.getElementById('exc-year-select');
         const periodSelect = document.getElementById('exc-period-select');
         const zoneSelect = document.getElementById('exc-zone-select');
 
         if (yearSelect?.value && periodSelect?.value && zoneSelect?.value) {
             this.updateHeaderFromAPI();
-            // GÃ©nÃ©rer l'infographie initiale seulement une fois
+            // Générer l'infographie initiale seulement une fois
             if (!this.chartsGenerated) {
                 this.generateInfographie();
             }
@@ -2090,7 +2077,7 @@ class InfographieManager {
     async updateHeaderFromAPI() {
         
         try {
-            // RÃ©cupÃ©rer les valeurs des filtres
+            // Récupérer les valeurs des filtres
             const annee = document.getElementById('exc-year-select')?.value || this.config?.defaultYear;
             const periode = document.getElementById('exc-period-select')?.value || this.config?.defaultPeriod;
             const zone = document.getElementById('exc-zone-select')?.value || this.config?.defaultZone;
@@ -2100,8 +2087,8 @@ class InfographieManager {
                 return;
             }
 
-            // Appeler l'API bloc_a pour rÃ©cupÃ©rer les vraies dates (mÃªme logique que le tableau de bord)
-            // Prendre en compte une Ã©ventuelle plage custom (URL ou mÃ©moire)
+            // Appeler l'API bloc_a pour récupérer les vraies dates (même logique que le tableau de bord)
+            // Prendre en compte une éventuelle plage custom (URL ou mémoire)
             const urlParams = new URLSearchParams(window.location.search);
             const debutFromUrl = urlParams.get('debut');
             const finFromUrl = urlParams.get('fin');
@@ -2121,7 +2108,7 @@ class InfographieManager {
                 return;
             }
 
-            // Mettre Ã  jour le header; si plage custom active, forcer le libellÃ© long
+            // Mettre à jour le header; si plage custom active, forcer le libellé long
             if (customRange) {
                 data.periode = 'custom';
                 data.annee = String(this.parseISODate(customRange.start).getFullYear());
@@ -2133,13 +2120,13 @@ class InfographieManager {
 
         } catch (error) {
             // Erreur silencieuse
-            // Fallback vers les dates calculÃ©es
+            // Fallback vers les dates calculées
             this.updateHeaderDates();
         }
     }
 
     updateHeader(data) {
-        // MÃªme logique que dans tdb_comparaison.js
+        // Même logique que dans tdb_comparaison.js
         const startDate = this.formatDate(data.debut);
         const endDate = this.formatDate(data.fin);
         
@@ -2176,13 +2163,13 @@ class InfographieManager {
         if (excEndDate) excEndDate.textContent = endDate;
         if (ppDisplay) ppDisplay.textContent = this.formatCompactRangeFromStrings(data.debut, data.fin);
 
-        // Mettre Ã  jour aussi les ancrages de compatibilitÃ©
+        // Mettre à jour aussi les ancrages de compatibilité
         const titleHook = document.querySelector('[data-title]');
         const subtitleHook = document.querySelector('[data-subtitle]');
-        if (titleHook) titleHook.textContent = 'SynthÃ¨se Touristique';
+        if (titleHook) titleHook.textContent = 'Synthèse Touristique';
         if (subtitleHook) subtitleHook.textContent = `${periodLabel} ${data.annee}`;
 
-        // Synchroniser immÃ©diatement le header visuel (ht-title-line line2) si dÃ©jÃ  prÃ©sent
+        // Synchroniser immédiatement le header visuel (ht-title-line line2) si déjà présent
         try {
             const headerCenter = document.querySelector('.ht-center');
             const line2 = headerCenter ? headerCenter.querySelector('.ht-title-line.line2') : null;
@@ -2209,41 +2196,41 @@ class InfographieManager {
     }
 
     updateHeaderDates() {
-        // MÃ©thode de fallback avec dates calculÃ©es
+        // Méthode de fallback avec dates calculées
         const startDateSpan = document.getElementById('exc-start-date');
         const endDateSpan = document.getElementById('exc-end-date');
         const headerPeriodSpan = document.getElementById('header-period');
 
         if (headerPeriodSpan) {
             const periodSelect = document.getElementById('exc-period-select');
-            const selectedPeriod = periodSelect?.options[periodSelect.selectedIndex]?.text || 'PÃ©riode';
+            const selectedPeriod = periodSelect?.options[periodSelect.selectedIndex]?.text || 'Période';
             headerPeriodSpan.textContent = selectedPeriod;
         }
 
 
-        // En cas de fallback, afficher des dates gÃ©nÃ©riques
+        // En cas de fallback, afficher des dates génériques
         if (startDateSpan) startDateSpan.textContent = '--/--/----';
         if (endDateSpan) endDateSpan.textContent = '--/--/----';
     }
 
-    // MÃ©thode pour calculer les dates selon la pÃ©riode
+    // Méthode pour calculer les dates selon la période
 
 
-    // MÃ©thode utilitaire pour formater les dates
+    // Méthode utilitaire pour formater les dates
     formatDate(s) {
         if (!s) return '--/--/----';
         const d = this.parseISODate(s) || new Date(s);
         return this.isValidDate(d) ? d.toLocaleDateString('fr-FR') : '--/--/----';
     }
 
-    // Formate une plage compacte pour pp-display Ã  partir de chaÃ®nes date ISO/SQL
+    // Formate une plage compacte pour pp-display à partir de chaînes date ISO/SQL
     formatCompactRangeFromStrings(startStr, endStr) {
         try {
-            if (!startStr || !endStr) return 'SÃ©lecteur avancÃ©â€¦';
+            if (!startStr || !endStr) return 'Sélecteur avancé…';
             const s = this.parseISODate(startStr) || new Date(startStr);
             const e = this.parseISODate(endStr) || new Date(endStr);
             
-            if (!this.isValidDate(s) || !this.isValidDate(e)) return 'SÃ©lecteur avancÃ©â€¦';
+            if (!this.isValidDate(s) || !this.isValidDate(e)) return 'Sélecteur avancé…';
             const sameMonth = s.getFullYear() === e.getFullYear() && s.getMonth() === e.getMonth();
             const fmtMonth = new Intl.DateTimeFormat('fr-FR', { month: 'short' });
             const dd = (d)=> String(d.getDate()).padStart(2,'0');
@@ -2252,18 +2239,18 @@ class InfographieManager {
             }
             return `${dd(s)} ${fmtMonth.format(s)} ${s.getFullYear()} – ${dd(e)} ${fmtMonth.format(e)} ${e.getFullYear()}`;
         } catch (_) {
-            return 'SÃ©lecteur avancÃ©â€¦';
+            return 'Sélecteur avancé…';
         }
     }
 
     async generateInfographie() {
         
-        // Annuler les requÃªtes prÃ©cÃ©dentes
+        // Annuler les requêtes précédentes
         this.fetchCtl?.abort();
         this.fetchCtl = new AbortController();
         const { signal } = this.fetchCtl;
         
-        // Ã‰viter les gÃ©nÃ©rations multiples simultanÃ©es
+        // Éviter les générations multiples simultanées
         if (this.chartsGenerated) {
             return;
         }
@@ -2274,12 +2261,12 @@ class InfographieManager {
         this.showLoadingIndicator();
         
         try {
-            // RÃ©cupÃ©rer les valeurs des filtres
+            // Récupérer les valeurs des filtres
             const filters = this.getFilterValues();
             
             // Si des bornes custom existent mais que l'utilisateur a explicitement choisi annee_complete,
             // on ne force pas period=custom (on laisse l'utilisateur sur annee_complete),
-            // mais on supprime les bornes custom de l'URL pour Ã©viter la confusion
+            // mais on supprime les bornes custom de l'URL pour éviter la confusion
             if (filters.customStart && filters.customEnd) {
                 const selectedPeriod = document.getElementById('exc-period-select')?.value;
                 
@@ -2298,13 +2285,13 @@ class InfographieManager {
                 }
             }
             
-            // Charger les donnÃ©es
+            // Charger les données
             await this.loadInfographieData(filters, signal);
             
-            // GÃ©nÃ©rer l'infographie
+            // Générer l'infographie
             this.renderInfographie();
             
-            // Activer les boutons de tÃ©lÃ©chargement et partage
+            // Activer les boutons de téléchargement et partage
             const downloadBtn = document.getElementById('btn-telecharger-infographie');
             const shareBtn = document.getElementById('btn-partager-infographie');
             
@@ -2317,23 +2304,23 @@ class InfographieManager {
 
         } catch (error) {
             // Erreur silencieuse
-            this.showError('Erreur lors de la gÃ©nÃ©ration de l\'infographie');
+            this.showError('Erreur lors de la génération de l\'infographie');
         } finally {
             // Masquer l'indicateur de chargement
             this.hideLoadingIndicator();
             
-            // Garder chartsGenerated Ã  true si la gÃ©nÃ©ration a rÃ©ussi
-            // (les boutons restent activÃ©s, donc l'infographie est prÃªte)
+            // Garder chartsGenerated à true si la génération a réussi
+            // (les boutons restent activés, donc l'infographie est prête)
             if (this.chartsGenerated) {
-                // L'infographie a Ã©tÃ© gÃ©nÃ©rÃ©e avec succÃ¨s, on garde le flag Ã  true
-                window.fvLog('Infographie gÃ©nÃ©rÃ©e avec succÃ¨s');
+                // L'infographie a été générée avec succès, on garde le flag à true
+                window.fvLog('Infographie générée avec succès');
             }
         }
     }
 
     getFilterValues() {
         
-        // Lire les paramÃ¨tres URL en prioritÃ© (mÃªme logique que tdb_comparaison)
+        // Lire les paramètres URL en priorité (même logique que tdb_comparaison)
         const urlParams = new URLSearchParams(window.location.search);
         const yearFromUrl = urlParams.get('annee');
         const periodFromUrl = urlParams.get('periode');
@@ -2355,7 +2342,7 @@ class InfographieManager {
             zone: zoneFromUrl || zoneSelect?.value || this.config.defaultZone
         };
         
-        // ✅ Utiliser directement les dates de l'URL (qui sont maintenant mises Ã  jour par autoGenerateInfographie)
+        // ✅ Utiliser directement les dates de l'URL (qui sont maintenant mises à jour par autoGenerateInfographie)
         if (debutFromUrl && finFromUrl) {
             values.customStart = debutFromUrl;
             values.customEnd = finFromUrl;
@@ -2370,35 +2357,22 @@ class InfographieManager {
             ? `&debut=${encodeURIComponent(filters.customStart)}&fin=${encodeURIComponent(filters.customEnd)}`
             : '';
         
-        
         const results = await Promise.allSettled([
             this.loadKeyIndicators(filters, paramsRange, signal),
             this.loadNuiteesOrigins(filters, paramsRange, signal),
             this.loadExcursionnistesOrigins(filters, paramsRange, signal),
             this.loadNuiteesDepartements(filters, paramsRange, signal),
             this.loadExcursionnistesDepartements(filters, paramsRange, signal),
-            this.loadStayDistribution(filters, paramsRange, signal),
-            this.loadMobilityDestinations(filters, paramsRange, signal)
         ]);
 
-        const [keyIndicatorsResult, nuiteesOriginsResult, excursionnistesOriginsResult, nuiteesDepartementsResult, excursionnistesDepartementsResult, stayDistributionResult, mobilityDestinationsResult] = results;
+        const [keyIndicatorsResult, nuiteesOriginsResult, excursionnistesOriginsResult, nuiteesDepartementsResult, excursionnistesDepartementsResult] = results;
 
-
-        window.fvLog('[Infographie] 📊 RÃ©sultats des chargements:');
+        window.fvLog('[Infographie] 📊 Résultats des chargements:');
         window.fvLog('[Infographie] 🔑 keyIndicatorsResult:', keyIndicatorsResult.status === 'fulfilled' ? '✅' : '❌', keyIndicatorsResult.status === 'fulfilled' ? keyIndicatorsResult.value : keyIndicatorsResult.reason);
         window.fvLog('[Infographie] 🏠 nuiteesOriginsResult:', nuiteesOriginsResult.status === 'fulfilled' ? '✅' : '❌');
         window.fvLog('[Infographie] 🚶 excursionnistesOriginsResult:', excursionnistesOriginsResult.status === 'fulfilled' ? '✅' : '❌');
         window.fvLog('[Infographie] 📊 nuiteesDepartementsResult:', nuiteesDepartementsResult.status === 'fulfilled' ? '✅' : '❌');
         window.fvLog('[Infographie] 🚶 excursionnistesDepartementsResult:', excursionnistesDepartementsResult.status === 'fulfilled' ? '✅' : '❌');
-        window.fvLog('[Infographie] 🏨 stayDistributionResult:', stayDistributionResult.status === 'fulfilled' ? '✅' : '❌');
-        window.fvLog('[Infographie] 🎯 mobilityDestinationsResult:', mobilityDestinationsResult.status === 'fulfilled' ? '✅' : '❌');
-
-        if (mobilityDestinationsResult.status === 'fulfilled') {
-            window.fvLog('[Infographie] 📦 DonnÃ©es mobilityDestinations:', mobilityDestinationsResult.value);
-            window.fvLog('[Infographie] 📊 Nombre de destinations:', mobilityDestinationsResult.value?.length || 0);
-        } else {
-            console.error('[Infographie] ❌ Erreur mobilityDestinationsResult:', mobilityDestinationsResult.reason);
-        }
 
         this.currentData = {
             filters: filters,
@@ -2411,50 +2385,42 @@ class InfographieManager {
                 ...(excursionnistesOriginsResult.status === 'fulfilled' ? excursionnistesOriginsResult.value : {}),
                 departements: excursionnistesDepartementsResult.status === 'fulfilled' ? excursionnistesDepartementsResult.value : null
             },
-            stayDistribution: stayDistributionResult.status === 'fulfilled' ? stayDistributionResult.value : null,
-            mobilityDestinations: mobilityDestinationsResult.status === 'fulfilled' ? mobilityDestinationsResult.value : null
         };
 
-        window.fvLog('[Infographie] 💾 currentData crÃ©Ã© avec mobilityDestinations:', this.currentData.mobilityDestinations);
-        window.fvLog('[Infographie] 📊 Taille mobilityDestinations:', this.currentData.mobilityDestinations?.length || 0);
+
 
 
         return this.currentData;
     }
 
     async loadKeyIndicators(filters, paramsRange = '', signal) {
-        // Utiliser l'API existante pour les indicateurs clÃ©s (mÃªme que tdb_comparaison)
+        // Utiliser l'API existante pour les indicateurs clés (même que tdb_comparaison)
         try {
             const url = `api/infographie/infographie_indicateurs_cles.php?annee=${filters.year}&periode=${filters.period}&zone=${filters.zone}${paramsRange}`;
             const response = await fetch(url, { signal });
             const responseText = await response.text();
             
-            // VÃ©rifier si la rÃ©ponse est du JSON valide
-            // Gérer le BOM (Byte Order Mark) qui peut être présent au début
-            const cleanResponseText = responseText.replace(/^\uFEFF/, '').trim();
-
-            if (!cleanResponseText.startsWith('{') && !cleanResponseText.startsWith('[')) {
+            // Vérifier si la réponse est du JSON valide
+            if (!responseText.trim().startsWith('{') && !responseText.trim().startsWith('[')) {
                 // Erreur silencieuse
                 return null;
             }
             
-            const parsed = JSON.parse(cleanResponseText);
-            const payload = Array.isArray(parsed?.data) ? parsed.data : parsed;
-            return payload;
+            const data = JSON.parse(responseText);
+            return data;
         } catch (error) {
             return this.handleFetchError(error);
         }
     }
 
     async loadNuiteesOrigins(filters, paramsRange = '', signal) {
-        // Charger les donnÃ©es d'origines pour les nuitées (rÃ©gions + pays)
+        // Charger les données d'origines pour les nuitées (régions + pays)
         try {
-            // Charger les rÃ©gions et pays en parallÃ¨le pour les nuitées
+            // Charger les régions et pays en parallèle pour les nuitées
             const [regionsData, paysData] = await Promise.all([
                 this.loadNuiteesRegions(filters, paramsRange, signal),
                 this.loadNuiteesPays(filters, paramsRange, signal)
             ]);
-
             
             return {
                 regions: regionsData,
@@ -2469,21 +2435,17 @@ class InfographieManager {
 
     async loadNuiteesRegions(filters, paramsRange = '', signal) {
         try {
-            const url = `api/v2/infographie/regions-touristes?annee=${filters.year}&periode=${filters.period}&zone=${filters.zone}&limit=10${paramsRange}`;
+            const url = `api/infographie/infographie_regions_touristes.php?annee=${filters.year}&periode=${filters.period}&zone=${filters.zone}&limit=10${paramsRange}`;
             const response = await fetch(url, { signal });
             const responseText = await response.text();
             
-            // Gérer le BOM (Byte Order Mark) qui peut être présent au début
-            const cleanResponseText = responseText.replace(/^\uFEFF/, '').trim();
-
-            if (!cleanResponseText.startsWith('{') && !cleanResponseText.startsWith('[')) {
+            if (!responseText.trim().startsWith('{') && !responseText.trim().startsWith('[')) {
                 // Erreur silencieuse
                 return null;
             }
             
-            const parsed = JSON.parse(cleanResponseText);
-            const payload = Array.isArray(parsed?.data) ? parsed.data : parsed;
-            return payload;
+            const data = JSON.parse(responseText);
+            return data;
             
         } catch (error) {
             return this.handleFetchError(error);
@@ -2492,21 +2454,17 @@ class InfographieManager {
 
     async loadNuiteesPays(filters, paramsRange = '', signal) {
         try {
-            const url = `api/v2/infographie/pays-touristes?annee=${filters.year}&periode=${filters.period}&zone=${filters.zone}&limit=10${paramsRange}`;
+            const url = `api/infographie/infographie_pays_touristes.php?annee=${filters.year}&periode=${filters.period}&zone=${filters.zone}&limit=10${paramsRange}`;
             const response = await fetch(url, { signal });
             const responseText = await response.text();
             
-            // Gérer le BOM (Byte Order Mark) qui peut être présent au début
-            const cleanResponseText = responseText.replace(/^\uFEFF/, '').trim();
-
-            if (!cleanResponseText.startsWith('{') && !cleanResponseText.startsWith('[')) {
+            if (!responseText.trim().startsWith('{') && !responseText.trim().startsWith('[')) {
                 // Erreur silencieuse
                 return null;
             }
             
-            const parsed = JSON.parse(cleanResponseText);
-            const payload = Array.isArray(parsed?.data) ? parsed.data : parsed;
-            return payload;
+            const data = JSON.parse(responseText);
+            return data;
             
         } catch (error) {
             return this.handleFetchError(error);
@@ -2514,19 +2472,19 @@ class InfographieManager {
     }
 
     async loadExcursionnistesOrigins(filters, paramsRange = '', signal) {
-        // Charger les donnÃ©es d'origines pour les excursionnistes (rÃ©gions + pays)
+        // Charger les données d'origines pour les excursionnistes (régions + pays)
         try {
-            // Charger les rÃ©gions et pays en parallÃ¨le pour les excursionnistes
+            // Charger les régions et pays en parallèle pour les excursionnistes
             const [regionsData, paysData] = await Promise.all([
                 this.loadExcursionnistesRegions(filters, paramsRange, signal),
                 this.loadExcursionnistesPays(filters, paramsRange, signal)
             ]);
-
+            
             return {
                 regions: regionsData,
                 pays: paysData
             };
-
+            
         } catch (error) {
             return this.handleFetchError(error);
         }
@@ -2534,21 +2492,17 @@ class InfographieManager {
 
     async loadExcursionnistesRegions(filters, paramsRange = '', signal) {
         try {
-            const url = `api/v2/infographie/regions-excursionnistes?annee=${filters.year}&periode=${filters.period}&zone=${filters.zone}&limit=10${paramsRange}`;
+            const url = `api/infographie/infographie_regions_excursionnistes.php?annee=${filters.year}&periode=${filters.period}&zone=${filters.zone}&limit=10${paramsRange}`;
             const response = await fetch(url, { signal });
             const responseText = await response.text();
             
-            // Gérer le BOM (Byte Order Mark) qui peut être présent au début
-            const cleanResponseText = responseText.replace(/^\uFEFF/, '').trim();
-
-            if (!cleanResponseText.startsWith('{') && !cleanResponseText.startsWith('[')) {
+            if (!responseText.trim().startsWith('{') && !responseText.trim().startsWith('[')) {
                 // Erreur silencieuse
                 return null;
             }
             
-            const parsed = JSON.parse(cleanResponseText);
-            const payload = Array.isArray(parsed?.data) ? parsed.data : parsed;
-            return payload;
+            const data = JSON.parse(responseText);
+            return data;
             
         } catch (error) {
             return this.handleFetchError(error);
@@ -2565,25 +2519,15 @@ class InfographieManager {
             });
             if (filters.customStart && filters.customEnd) { params.set('debut', filters.customStart); params.set('fin', filters.customEnd); }
 
-            const url = `api/v2/infographie/pays-excursionnistes?${params}`;
+            const url = `api/infographie/infographie_pays_excursionnistes.php?${params}`;
             const response = await fetch(url, { signal });
-
-            // Gérer le BOM (Byte Order Mark) qui peut être présent au début
-            const responseText = await response.text();
-            const cleanResponseText = responseText.replace(/^\uFEFF/, '').trim();
-
-            if (!cleanResponseText.startsWith('{') && !cleanResponseText.startsWith('[')) {
-                return null;
-            }
-
-            const data = JSON.parse(cleanResponseText);
+            const data = await response.json();
 
             if (data.error) {
                 throw new Error(data.error);
             }
 
-            const payload = Array.isArray(data?.data) ? data.data : data;
-            return payload;
+            return data;
         } catch (error) {
             return this.handleFetchError(error);
         }
@@ -2599,43 +2543,20 @@ class InfographieManager {
             });
             if (filters.customStart && filters.customEnd) { params.set('debut', filters.customStart); params.set('fin', filters.customEnd); }
 
-            const url = `api/v2/infographie/departements-touristes?${params}`;
+            const url = `api/infographie/infographie_departements_touristes.php?${params}`;
             const response = await fetch(url, { signal });
-            const responseText = await response.text();
-
-            // Gérer le BOM
-            const cleanResponseText = responseText.replace(/^\uFEFF/, '').trim();
-
-            const data = JSON.parse(cleanResponseText);
+            const data = await response.json();
 
             if (data.error) {
                 throw new Error(data.error);
             }
 
-            const payload = Array.isArray(data?.data) ? data.data : data;
-            return payload;
+            return data;
         } catch (error) {
             return this.handleFetchError(error);
         }
     }
 
-    async loadStayDistribution(filters, paramsRange = '', signal) {
-        try {
-            const params = new URLSearchParams({
-                annee: filters.year,
-                periode: filters.period,
-                zone: filters.zone
-            });
-            if (filters.customStart && filters.customEnd) { params.set('debut', filters.customStart); params.set('fin', filters.customEnd); }
-            const url = `api/infographie/infographie_duree_sejour.php?${params}`;
-            const response = await fetch(url, { signal });
-            const data = await response.json();
-            const payload = Array.isArray(data?.data) ? data.data : data;
-            return payload;
-        } catch (error) {
-            return this.handleFetchError(error);
-        }
-    }
 
     async loadExcursionnistesDepartements(filters, paramsRange = '', signal) {
         try {
@@ -2652,73 +2573,31 @@ class InfographieManager {
                 params.set('fin', filters.customEnd);
             }
 
-            const url = `api/v2/infographie/departements-excursionnistes?${params}`;
+            const url = `api/infographie/infographie_departements_excursionnistes.php?${params}`;
             const response = await fetch(url, { signal });
-            const responseText = await response.text();
-
-            // Gérer le BOM
-            const cleanResponseText = responseText.replace(/^\uFEFF/, '').trim();
-
-            const data = JSON.parse(cleanResponseText);
-
-            if (data.error) {
-                throw new Error(data.error);
-            }
-            const payload = Array.isArray(data?.data) ? data.data : data;
-            return payload;
-        } catch (error) {
-            return this.handleFetchError(error);
-        }
-    }
-
-    async loadMobilityDestinations(filters, paramsRange = '', signal) {
-        try {
-            const params = new URLSearchParams({
-                annee: filters.year,
-                periode: filters.period,
-                zone: filters.zone,
-                limit: 10
-            });
-
-            // Ajouter les dates custom si disponibles
-            if (filters.customStart && filters.customEnd) {
-                params.set('debut', filters.customStart);
-                params.set('fin', filters.customEnd);
-            }
-
-            const url = `api/infographie/infographie_communes_excursion.php?${params}`;
-            window.fvLog('[Infographie] 📷 Appel API mobility destinations:', url);
-            window.fvLog('[Infographie] 📊 ParamÃ¨tres:', Object.fromEntries(params));
-
-            const response = await fetch(url, { signal });
-            window.fvLog('[Infographie] 📡 Statut HTTP:', response.status, response.statusText);
-            window.fvLog('[Infographie] 📋 Headers:', Object.fromEntries(response.headers.entries()));
-
             const data = await response.json();
-            window.fvLog('[Infographie] 📦 DonnÃ©es brutes reÃ§ues:', data);
-            window.fvLog('[Infographie] 🎯 Destinations trouvÃ©es:', data.destinations?.length || 0);
-            window.fvLog('[Infographie] ðŸ“ˆ Total destinations dans la rÃ©ponse:', data.total_destinations || 'N/A');
 
             if (data.error) {
                 throw new Error(data.error);
             }
-            return data.destinations || [];
+            return data;
         } catch (error) {
             return this.handleFetchError(error);
         }
     }
+
 
     renderInfographie() {
-        window.fvLog('[Infographie] 🎨 DÃ©but du rendu de l\'infographie');
+        window.fvLog('[Infographie] 🎨 Début du rendu de l\'infographie');
 
         const container = document.getElementById('infographie-container');
         if (!container) {
-            console.error('[Infographie] ❌ Container infographie-container non trouvÃ©');
+            console.error('[Infographie] ❌ Container infographie-container non trouvé');
             return;
         }
 
-        window.fvLog('[Infographie] ✅ Container trouvÃ©, destruction des anciens graphiques');
-        // DÃ©truire tous les graphiques existants avant de continuer
+        window.fvLog('[Infographie] ✅ Container trouvé, destruction des anciens graphiques');
+        // Détruire tous les graphiques existants avant de continuer
         this.destroyAllCharts();
 
         // Masquer le placeholder
@@ -2733,17 +2612,17 @@ class InfographieManager {
             existingContent.remove();
         }
 
-        // VÃ©rifier le template principal
+        // Vérifier le template principal
         const template = document.getElementById('infographie-main-template');
         if (!template) {
             // Erreur silencieuse
-            container.innerHTML = '<div class="error">Template principal non trouvÃ©</div>';
+            container.innerHTML = '<div class="error">Template principal non trouvé</div>';
             return;
         }
 
         const clone = template.content.cloneNode(true);
 
-        // Remplir les donnÃ©es du template
+        // Remplir les données du template
         try {
             this.populateMainTemplate(clone);
         } catch (error) {
@@ -2755,7 +2634,7 @@ class InfographieManager {
         // Ajouter le contenu au container
         container.appendChild(clone);
 
-        // VÃ©rifier que le contenu a bien Ã©tÃ© ajoutÃ© et l'activer
+        // Vérifier que le contenu a bien été ajouté et l'activer
         const addedContent = container.querySelector('.infographie-content');
         if (addedContent) {
             addedContent.classList.add('active');
@@ -2763,8 +2642,8 @@ class InfographieManager {
             // Erreur silencieuse
         }
 
-        // GÃ©nÃ©rer les graphiques immÃ©diatement aprÃ¨s avoir ajoutÃ© le DOM
-        // Plus de timeout pour Ã©viter les conflits
+        // Générer les graphiques immédiatement après avoir ajouté le DOM
+        // Plus de timeout pour éviter les conflits
         this.generateCharts();
     }
 
@@ -2774,7 +2653,7 @@ class InfographieManager {
         const periodLabel = document.getElementById('exc-period-select')?.options[document.getElementById('exc-period-select').selectedIndex]?.text || filters.period;
 
         // Remplir le header (nouvelle maquette HeaderTourisme)
-        // 1) Ancien systÃ¨me (si prÃ©sent)
+        // 1) Ancien système (si présent)
         const titleElement = clone.querySelector('[data-title]');
         const subtitleElement = clone.querySelector('[data-subtitle]');
         if (titleElement) {
@@ -2784,7 +2663,7 @@ class InfographieManager {
             subtitleElement.textContent = `${periodLabel} ${filters.year}`;
         }
 
-        // 2) Nouveau header: mettre Ã  jour les lignes centrales si disponibles
+        // 2) Nouveau header: mettre à jour les lignes centrales si disponibles
         const headerCenter = clone.querySelector('.ht-center');
         if (headerCenter) {
             const line2 = headerCenter.querySelector('.ht-title-line.line2');
@@ -2831,14 +2710,22 @@ class InfographieManager {
             this.log('populateMainTemplate: excursionnistes container not found');
         }
 
-        // Footer : bandeau des partenaires (pas de texte source Ã  remplir)
+        // Remplir les indicateurs durée de séjour
+        const dureeSejourContainer = clone.querySelector('[data-indicators-duree-sejour]');
+        if (dureeSejourContainer) {
+            this.populateKeyIndicators(dureeSejourContainer, 'duree-sejour');
+        } else {
+            this.log('populateMainTemplate: duree-sejour container not found');
+        }
+
+        // Footer : bandeau des partenaires (pas de texte source à remplir)
         
         
     }
 
     populateKeyIndicators(container, category = null) {
         if (!this.currentData.keyIndicators) {
-            // Masquer la section d'indicateurs si pas de donnÃ©es
+            // Masquer la section d'indicateurs si pas de données
             const indicatorsSubsection = container.closest('.indicators-subsection');
             if (indicatorsSubsection) {
                 indicatorsSubsection.classList.add('is-hidden');
@@ -2851,7 +2738,7 @@ class InfographieManager {
             // Indicateurs Nuitées de base
             {
                 numero: 1,
-                title: "Nuitées totales (FranÃ§ais + International)",
+                title: "Nuitées totales (Français + International)",
                 icon: "fa-solid fa-bed",
                 unit: "Nuitées",
                 defaultRemark: "Touristes NonLocaux + Etrangers",
@@ -2876,10 +2763,10 @@ class InfographieManager {
             // Indicateurs Nuitées Printemps (6-9)
             {
                 numero: 6,
-                title: "Weekend de PÃ¢ques",
+                title: "Weekend de Pâques",
                 icon: "fa-solid fa-rabbit",
                 unit: "Nuitées",
-                defaultRemark: "Nuitées weekend de PÃ¢ques",
+                defaultRemark: "Nuitées weekend de Pâques",
                 category: "nuitees"
             },
             {
@@ -2900,67 +2787,67 @@ class InfographieManager {
             },
             {
                 numero: 9,
-                title: "Weekend de la PentecÃ´te",
+                title: "Weekend de la Pentecôte",
                 icon: "fa-solid fa-fire",
                 unit: "Nuitées",
-                defaultRemark: "Nuitées weekend de la PentecÃ´te",
+                defaultRemark: "Nuitées weekend de la Pentecôte",
                 category: "nuitees"
             },
             // Indicateurs Excursionnistes de base
             {
                 numero: 15,
-                title: "Excursionnistes franÃ§ais",
+                title: "Excursionnistes français",
                 icon: "fa-solid fa-person-hiking",
-                unit: "PrÃ©sences",
-                defaultRemark: "Excursionnistes NonLocaux (FranÃ§ais)",
+                unit: "Présences",
+                defaultRemark: "Excursionnistes NonLocaux (Français)",
                 category: "excursionnistes"
             },
             {
                 numero: 15.5,
                 title: "Excursionnistes internationaux",
                 icon: "fa-solid fa-globe",
-                unit: "PrÃ©sences",
+                unit: "Présences",
                 defaultRemark: "Excursionnistes Etrangers",
                 category: "excursionnistes"
             },
             {
                 numero: 16,
-                title: "Excursionnistes totaux (FranÃ§ais + International)",
+                title: "Excursionnistes totaux (Français + International)",
                 icon: "fa-solid fa-person-hiking",
-                unit: "PrÃ©sences",
+                unit: "Présences",
                 defaultRemark: "Excursionnistes NonLocaux + Etrangers",
                 category: "excursionnistes"
             },
             {
                 numero: 17,
-                title: "PrÃ©sences 2e samedi",
+                title: "Présences 2e samedi",
                 icon: "fa-solid fa-calendar-week",
-                unit: "PrÃ©sences",
+                unit: "Présences",
                 defaultRemark: "Excursionnistes 2e samedi du mois",
                 category: "excursionnistes"
             },
             {
                 numero: 18,
-                title: "PrÃ©sences 3e samedi",
+                title: "Présences 3e samedi",
                 icon: "fa-solid fa-calendar-week",
-                unit: "PrÃ©sences",
+                unit: "Présences",
                 defaultRemark: "Excursionnistes 3e samedi du mois",
                 category: "excursionnistes"
             },
             // Indicateurs Excursionnistes Printemps (19-22)
             {
                 numero: 19,
-                title: "Weekend de PÃ¢ques",
+                title: "Weekend de Pâques",
                 icon: "fa-solid fa-rabbit",
-                unit: "PrÃ©sences",
-                defaultRemark: "Excursionnistes weekend de PÃ¢ques",
+                unit: "Présences",
+                defaultRemark: "Excursionnistes weekend de Pâques",
                 category: "excursionnistes"
             },
             {
                 numero: 20,
                 title: "1er mai",
                 icon: "fa-solid fa-seedling",
-                unit: "PrÃ©sences",
+                unit: "Présences",
                 defaultRemark: "Excursionnistes 1er mai",
                 category: "excursionnistes"
             },
@@ -2968,24 +2855,24 @@ class InfographieManager {
                 numero: 21,
                 title: "Weekend de l'Ascension",
                 icon: "fa-solid fa-dove",
-                unit: "PrÃ©sences",
+                unit: "Présences",
                 defaultRemark: "Excursionnistes weekend de l'Ascension",
                 category: "excursionnistes"
             },
             {
                 numero: 22,
-                title: "Weekend de la PentecÃ´te",
+                title: "Weekend de la Pentecôte",
                 icon: "fa-solid fa-fire",
-                unit: "PrÃ©sences",
-                defaultRemark: "Excursionnistes weekend de la PentecÃ´te",
+                unit: "Présences",
+                defaultRemark: "Excursionnistes weekend de la Pentecôte",
                 category: "excursionnistes"
             },
-            // Indicateurs Excursionnistes Ã‰tÃ© (23-24)
+            // Indicateurs Excursionnistes Été (23-24)
             {
                 numero: 23,
                 title: "14 juillet",
                 icon: "fa-solid fa-firework",
-                unit: "PrÃ©sences",
+                unit: "Présences",
                 defaultRemark: "Excursionnistes 14 juillet",
                 category: "excursionnistes"
             },
@@ -2993,16 +2880,41 @@ class InfographieManager {
                 numero: 24,
                 title: "15 août",
                 icon: "fa-solid fa-sun",
-                unit: "PrÃ©sences",
+                unit: "Présences",
                 defaultRemark: "Excursionnistes 15 août",
                 category: "excursionnistes"
+            },
+            // Indicateurs Durée de séjour (25-27)
+            {
+                numero: 25,
+                title: "Durée moyenne de séjour totale",
+                icon: "fa-solid fa-stopwatch",
+                unit: "Nuits",
+                defaultRemark: "Durée moyenne pondérée (FR + INTL)",
+                category: "duree-sejour"
+            },
+            {
+                numero: 26,
+                title: "Durée moyenne de séjour française",
+                icon: "fa-solid fa-flag",
+                unit: "Nuits",
+                defaultRemark: "Durée moyenne pondérée française",
+                category: "duree-sejour"
+            },
+            {
+                numero: 27,
+                title: "Durée moyenne de séjour internationale",
+                icon: "fa-solid fa-globe",
+                unit: "Nuits",
+                defaultRemark: "Durée moyenne pondérée internationale",
+                category: "duree-sejour"
             }
         ];
 
         const indicators = this.currentData.keyIndicators.bloc_a || [];
         const currentYear = parseInt(this.currentData.filters.year);
 
-        // Filtrer les indicateurs par catÃ©gorie si spÃ©cifiÃ©e
+        // Filtrer les indicateurs par catégorie si spécifiée
         const filteredConfig = category ? keyIndicatorsConfig.filter(config => config.category === category) : keyIndicatorsConfig;
 
         // Vider le container
@@ -3013,17 +2925,17 @@ class InfographieManager {
         filteredConfig.forEach(config => {
             const indicator = this.findIndicator(indicators, config.numero);
             
-            // Ne pas afficher les indicateurs conditionnels s'ils ne sont pas dans la rÃ©ponse de l'API
+            // Ne pas afficher les indicateurs conditionnels s'ils ne sont pas dans la réponse de l'API
             // - Indicateurs 17, 18 : vacances d'hiver uniquement
             // - Indicateurs 6, 7, 8, 9, 19, 20, 21, 22 : printemps uniquement
-            // - Indicateurs 23, 24 : Ã©tÃ© uniquement (14 juillet et 15 août)
+            // - Indicateurs 23, 24 : été uniquement (14 juillet et 15 août)
             const indicateursConditionnels = [6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24];
             if (indicateursConditionnels.includes(config.numero) && !indicator) {
                 return; // Skip cet indicateur
             }
             
-            // VÃ©rifier si la valeur de rÃ©fÃ©rence est nulle (0)
-            // ⚠️ TEMPORAIRE: Afficher les indicateurs 2025 mÃªme sans donnÃ©es N-1 pour HAUTES TERRES
+            // Vérifier si la valeur de référence est nulle (0)
+            // ⚠️ TEMPORAIRE: Afficher les indicateurs 2025 même sans données N-1 pour HAUTES TERRES
             const referenceValue = indicator?.N || 0;
             const isHautesTerres = this.currentFilters?.zone === 'HAUTES TERRES';
             if (referenceValue === 0 && !isHautesTerres) {
@@ -3040,7 +2952,7 @@ class InfographieManager {
             
             const clone = template.content.cloneNode(true);
             
-            // Remplir les donnÃ©es avec le nouveau template
+            // Remplir les données avec le nouveau template
             const iconElement = clone.querySelector('[data-icon]');
             const titleElement = clone.querySelector('[data-title]');
             const unitElement = clone.querySelector('[data-unit]');
@@ -3050,7 +2962,7 @@ class InfographieManager {
             if (titleElement) titleElement.textContent = config.title;
             if (unitElement) unitElement.textContent = config.unit;
             
-            // GÃ©nÃ©rer l'historique des 4 derniÃ¨res années
+            // Générer l'historique des 4 dernières années
             if (historyElement) {
                 this.generateIndicatorHistory(historyElement, indicator, currentYear);
             }
@@ -3059,7 +2971,7 @@ class InfographieManager {
             indicatorsAdded++;
         });
         
-        // Masquer la section d'indicateurs si aucun indicateur n'a Ã©tÃ© ajoutÃ©
+        // Masquer la section d'indicateurs si aucun indicateur n'a été ajouté
         if (indicatorsAdded === 0) {
             const indicatorsSubsection = container.closest('.indicators-subsection');
             if (indicatorsSubsection) {
@@ -3073,19 +2985,19 @@ class InfographieManager {
     generateIndicatorHistory(container, indicator, currentYear) {
         const referenceYear = indicator?.annee_reference || currentYear;
         
-        // Utiliser les nouvelles donnÃ©es de l'API avec les 4 années
+        // Utiliser les nouvelles données de l'API avec les 4 années
         const years = [];
         
-        // AnnÃ©e de rÃ©fÃ©rence (année sÃ©lectionnÃ©e)
+        // Année de référence (année sélectionnée)
         years.push({
             year: referenceYear,
             value: indicator?.N || 0,
-            evolution: null, // Pas d'Ã©volution pour l'année de rÃ©fÃ©rence
+            evolution: null, // Pas d'évolution pour l'année de référence
             isReference: true,
             isCurrent: (referenceYear === currentYear)
         });
         
-        // AnnÃ©e N-1
+        // Année N-1
         years.push({
             year: referenceYear - 1,
             value: indicator?.N_1 || 0,
@@ -3094,7 +3006,7 @@ class InfographieManager {
             isCurrent: false
         });
         
-        // AnnÃ©e N-2
+        // Année N-2
         years.push({
             year: referenceYear - 2,
             value: indicator?.N_2 || 0,
@@ -3103,7 +3015,7 @@ class InfographieManager {
             isCurrent: false
         });
         
-        // AnnÃ©e N-3
+        // Année N-3
         years.push({
             year: referenceYear - 3,
             value: indicator?.N_3 || 0,
@@ -3112,10 +3024,10 @@ class InfographieManager {
             isCurrent: false
         });
         
-        // GÃ©nÃ©rer le HTML pour chaque année (exclure les années avec valeur 0)
+        // Générer le HTML pour chaque année (exclure les années avec valeur 0)
         container.innerHTML = '';
         years.forEach(yearData => {
-            // Ne pas afficher les années avec une valeur de 0 (sauf l'année de rÃ©fÃ©rence)
+            // Ne pas afficher les années avec une valeur de 0 (sauf l'année de référence)
             if (yearData.value === 0 && !yearData.isReference) {
                 return;
             }
@@ -3123,7 +3035,7 @@ class InfographieManager {
             const yearRow = document.createElement('div');
             yearRow.className = `indicator-year-row ${yearData.isCurrent ? 'current-year' : ''} ${yearData.isReference ? 'reference-year' : ''}`;
             
-            // AnnÃ©e (seulement pour les années prÃ©cÃ©dentes)
+            // Année (seulement pour les années précédentes)
             if (!yearData.isReference) {
                 const yearSpan = document.createElement('span');
                 yearSpan.className = 'indicator-year';
@@ -3134,9 +3046,12 @@ class InfographieManager {
             // Valeur
             const valueSpan = document.createElement('span');
             valueSpan.className = 'indicator-value';
-                            valueSpan.textContent = this.formatNumber(yearData.value);
             
-            // Ã‰volution
+            // Utiliser formatDuration pour les indicateurs de durée de séjour (25, 26, 27)
+            const isDurationIndicator = indicator?.numero >= 25 && indicator?.numero <= 27;
+            valueSpan.textContent = isDurationIndicator ? this.formatDuration(yearData.value) : this.formatNumber(yearData.value);
+            
+            // Évolution
             const evolutionSpan = document.createElement('span');
             evolutionSpan.className = 'indicator-evolution';
             
@@ -3149,7 +3064,7 @@ class InfographieManager {
                     evolutionSpan.textContent = `${symbol} ${formattedEvolution}`;
                 evolutionSpan.classList.add(yearData.evolution >= 0 ? 'positive' : 'negative');
             } else {
-                // Pas de donnÃ©es
+                // Pas de données
                 evolutionSpan.textContent = yearData.value > 0 ? '--' : '--';
                 evolutionSpan.classList.add('neutral');
             }
@@ -3161,12 +3076,12 @@ class InfographieManager {
         });
     }
 
-    // MÃ©thode utilitaire pour trouver un indicateur par numÃ©ro
+    // Méthode utilitaire pour trouver un indicateur par numéro
     findIndicator(indicators, numero) {
         return indicators.find(ind => ind.numero === numero);
     }
 
-    // MÃ©thode utilitaire pour formater les nombres au format franÃ§ais
+    // Méthode utilitaire pour formater les nombres au format français
     formatNumber(num) {
         if (num === null || num === undefined || isNaN(num)) return '0';
         
@@ -3183,7 +3098,7 @@ class InfographieManager {
         }
     }
 
-    // MÃ©thode pour formater les nombres avec sÃ©parateurs de milliers (format franÃ§ais)
+    // Méthode pour formater les nombres avec séparateurs de milliers (format français)
     formatNumberWithSeparators(num) {
         if (num === null || num === undefined || isNaN(num)) return '0';
         
@@ -3191,7 +3106,7 @@ class InfographieManager {
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0');
     }
 
-    // MÃ©thode pour afficher un message d'erreur sur un canvas de graphique
+    // Méthode pour afficher un message d'erreur sur un canvas de graphique
     showChartError(canvas, message) {
         if (!canvas) return;
 
@@ -3211,7 +3126,7 @@ class InfographieManager {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
 
-        // Afficher le message sur plusieurs lignes si nÃ©cessaire
+        // Afficher le message sur plusieurs lignes si nécessaire
         const maxWidth = canvas.width * 0.8;
         const words = message.split(' ');
         let line = '';
@@ -3236,7 +3151,7 @@ class InfographieManager {
         });
     }
 
-    // MÃ©thode pour formater les pourcentages au format franÃ§ais
+    // Méthode pour formater les pourcentages au format français
     formatPercentage(num) {
         if (num === null || num === undefined || isNaN(num)) return '0%';
         
@@ -3244,7 +3159,15 @@ class InfographieManager {
         return value.toFixed(1).replace('.', ',') + '%';
     }
 
-    // MÃ©thode pour obtenir le symbole de variation (flÃ¨che)
+    // Méthode pour formater les durées de séjour (1 chiffre après la virgule)
+    formatDuration(num) {
+        if (num === null || num === undefined || isNaN(num)) return '0,0';
+        
+        const value = parseFloat(num);
+        return value.toFixed(1).replace('.', ',');
+    }
+
+    // Méthode pour obtenir le symbole de variation (flèche)
     getVariationSymbol(evolution) {
         if (evolution === null || evolution === undefined || isNaN(evolution)) return '';
         
@@ -3258,284 +3181,50 @@ class InfographieManager {
 
     generateCharts() {
         
-        // RÃ©initialiser l'affichage de tous les conteneurs de graphiques
+        // Réinitialiser l'affichage de tous les conteneurs de graphiques
         this.resetChartContainers();
         
-        // GÃ©nÃ©rer les graphiques d'origines
-        this.updateLoadingText('GÃ©nÃ©ration des graphiques d\'origines...');
+        // Générer les graphiques d'origines
+        this.updateLoadingText('Génération des graphiques d\'origines...');
         this.generateNuiteesOriginCharts();
         
         this.generateExcursionnistesOriginCharts();
 
-        // GÃ©nÃ©rer le graphique de durÃ©e de sÃ©jour combinÃ© (FranÃ§ais vs International)
-        this.updateLoadingText('GÃ©nÃ©ration du graphique de durÃ©e de sÃ©jour...');
-        this.generateStayDistributionCombined();
 
-        // GÃ©nÃ©rer le graphique de mobilitÃ© interne (destinations touristiques)
-        window.fvLog('[Infographie] 🚀 Appel de generateMobilityDestinationsChart');
-        this.updateLoadingText('GÃ©nÃ©ration du graphique de mobilitÃ© interne...');
-        this.generateMobilityDestinationsChart();
         
-        // RÃ©organiser les grilles de durÃ©e de sÃ©jour si nÃ©cessaire
         this.updateLoadingText('Finalisation de l\'infographie...');
-        this.reorganizeStayGrid();
         
-        // VÃ©rification finale de l'état des Ã©lÃ©ments
+        // Vérification finale de l'état des éléments
         this.logFinalState();
         
-        // Forcer le masquage des titres si nÃ©cessaire
+        // Forcer le masquage des titres si nécessaire
         this.forceHideEmptyTitles();
     }
 
 
 
-    // Nouveau: graphique 100% empilÃ© avec 2 barres (FranÃ§ais, International) pour l'infographie
-    generateStayDistributionCombined() {
-        try {
-            const canvas = document.getElementById('infographie-stay-distribution');
-            if (!canvas) return;
-
-            // RÃ©cupÃ©rer les couleurs du thÃ¨me
-            const colors = this.getThemeColors();
-
-            // Ajouter l'indicateur d'unitÃ© pour le graphique de durÃ©e de sÃ©jour
-            const chartContainer = canvas.closest('.chart-container');
-            if (chartContainer) {
-                const chartHeader = chartContainer.querySelector('.chart-header');
-                if (chartHeader) {
-                    // Supprimer l'ancien indicateur d'unitÃ© s'il existe
-                    const existingUnitIndicator = chartContainer.querySelector('.chart-unit-indicator');
-                    if (existingUnitIndicator) {
-                        existingUnitIndicator.remove();
-                    }
-
-                    // CrÃ©er le nouvel indicateur d'unitÃ©
-                    const unitIndicator = document.createElement('div');
-                    unitIndicator.className = 'chart-unit-indicator';
-                    unitIndicator.textContent = '%';
-                    chartHeader.appendChild(unitIndicator);
-                }
-            }
-
-            // Utiliser les donnÃ©es dÃ©diÃ©es de l'infographie
-            const fr = Array.isArray(this.currentData?.stayDistribution?.stay_distribution_fr) ? this.currentData.stayDistribution.stay_distribution_fr : [];
-            const intl = Array.isArray(this.currentData?.stayDistribution?.stay_distribution_intl) ? this.currentData.stayDistribution.stay_distribution_intl : [];
-
-            if (!fr.length && !intl.length) {
-                // Masquer complètement le conteneur du graphique
-                const chartContainer = canvas.closest('.chart-container');
-                if (chartContainer) {
-                    chartContainer.classList.add('is-hidden');
-                }
-                return;
-            }
-
-            // Construire la liste des durÃ©es
-            const dureesSet = new Set();
-            fr.forEach(d => dureesSet.add(d.duree));
-            intl.forEach(d => dureesSet.add(d.duree));
-            const allDurees = Array.from(dureesSet);
-
-            // Classer par importance globale (FranÃ§ais + International)
-            const scoreByDuree = {};
-            allDurees.forEach(duree => {
-                const frPart = Number(fr.find(x => x.duree === duree)?.part_pct ?? 0);
-                const intlPart = Number(intl.find(x => x.duree === duree)?.part_pct ?? 0);
-                scoreByDuree[duree] = frPart + intlPart;
-            });
-            const sorted = allDurees.sort((a,b) => (scoreByDuree[b] - scoreByDuree[a]));
-            const topLimit = 5;
-            const topDurees = sorted.slice(0, topLimit);
-            const otherDurees = sorted.slice(topLimit);
-
-            const aggregateItems = (arr, durees) => {
-                let vol = 0, volN1 = 0, part = 0;
-                durees.forEach(d => {
-                    const it = arr.find(x => x.duree === d);
-                    if (!it) return;
-                    vol += Number(it.volume ?? 0);
-                    volN1 += Number(it.volume_n1 ?? 0);
-                    part += Number(it.part_pct ?? 0);
-                });
-                const delta = volN1 > 0 ? ((vol - volN1) / volN1) * 100 : null;
-                return { duree: 'Autres', volume: vol, volume_n1: volN1, part_pct: part, delta_pct: (delta!=null? Number(delta.toFixed(1)) : null) };
-            };
-
-            const datasets = [];
-            topDurees.forEach((duree, i) => {
-                const frItem = fr.find(x => x.duree === duree);
-                const intlItem = intl.find(x => x.duree === duree);
-                const baseColor = CHART_COLORS[i % CHART_COLORS.length];
-                datasets.push({
-                    label: duree,
-                    data: [
-                        frItem && frItem.part_pct != null ? Number(frItem.part_pct) : 0,
-                        intlItem && intlItem.part_pct != null ? Number(intlItem.part_pct) : 0
-                    ],
-                    backgroundColor: baseColor,
-                    borderColor: this.hexToRgba(baseColor, 1),
-                    borderWidth: 1,
-                    rawItems: [frItem || null, intlItem || null]
-                });
-            });
-
-            if (otherDurees.length > 0) {
-                const frAgg = aggregateItems(fr, otherDurees);
-                const intlAgg = aggregateItems(intl, otherDurees);
-                const frDetails = otherDurees.map(d => fr.find(x => x.duree === d)).filter(Boolean);
-                const intlDetails = otherDurees.map(d => intl.find(x => x.duree === d)).filter(Boolean);
-                const idx = datasets.length;
-                const baseColor = CHART_COLORS[idx % CHART_COLORS.length];
-                datasets.push({
-                    label: 'Autres',
-                    data: [Number(frAgg.part_pct || 0), Number(intlAgg.part_pct || 0)],
-                    backgroundColor: baseColor,
-                    borderColor: this.hexToRgba(baseColor, 1),
-                    borderWidth: 1,
-                    rawItems: [frAgg, intlAgg],
-                    otherLabels: otherDurees,
-                    otherDetails: { fr: frDetails, intl: intlDetails }
-                });
-            }
-
-            const chartKey = 'infographieStayDistributionChart';
-            if (this.chartInstances[chartKey]) {
-                this.chartInstances[chartKey].destroy();
-            }
-
-            this.chartInstances[chartKey] = new Chart(canvas.getContext('2d'), {
-                type: 'bar',
-                data: { labels: ['FranÃ§ais', 'International'], datasets },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    layout: {
-                        padding: {
-                            top: 20,
-                            bottom: 20,
-                            left: 20,
-                            right: 20
-                        }
-                    },
-                    plugins: {
-                        legend: { 
-                            display: true, 
-                            position: 'top', 
-                            labels: { 
-                                color: colors.textPrimary, // Utiliser la variable CSS
-                                font: { size: 11, weight: '600' }, // Police plus grosse et plus grasse
-                                usePointStyle: true, 
-                                boxWidth: 12,
-                                padding: 12
-                            } 
-                        },
-                        tooltip: {
-                            enabled: true,
-                            backgroundColor: this.hexToRgba(colors.cardBg, 0.95),
-                            titleColor: colors.primary,
-                            titleFont: { weight: 'bold', size: 12 },
-                            bodyColor: colors.textPrimary,
-                            borderColor: this.hexToRgba(colors.primary, 0.5),
-                            borderWidth: 1,
-                            padding: 10,
-                            displayColors: true,
-                            callbacks: {
-                                title: (items) => items?.[0]?.label ?? '',
-                                label: (ctx) => {
-                                    const ds = ctx.dataset;
-                                    const value = ctx.parsed.x ?? ctx.parsed.y ?? ctx.parsed;
-                                    const raw = Array.isArray(ds.rawItems) ? ds.rawItems[ctx.dataIndex] : null;
-                                    const lines = [
-                                        `${ds.label}`,
-                                        `Part: ${Number(value).toFixed(1)}%`
-                                    ];
-                                    if (raw) {
-                                        if (raw.volume !== undefined && raw.volume !== null) lines.push(`Nuitées: ${this.formatNumber(Number(raw.volume))}`);
-                                        if (raw.delta_pct !== undefined && raw.delta_pct !== null) {
-                                        const evolution = Number(raw.delta_pct);
-                                        const symbol = this.getVariationSymbol(evolution);
-                                        const formattedEvolution = this.formatPercentage(Math.abs(evolution));
-                                        lines.push(`${symbol} ${formattedEvolution} vs rÃ©fÃ©rence`);
-                                    }
-                                    if (raw.volume_n1 !== undefined && raw.volume_n1 !== null) lines.push(`N-1: ${this.formatNumber(Number(raw.volume_n1))}`);
-                                    }
-                                    if (ds.label === 'Autres' && Array.isArray(ds.otherLabels) && ds.otherLabels.length) {
-                                        lines.push(`Inclut: ${ds.otherLabels.join(', ')}`);
-                                        const group = ctx.dataIndex === 0 ? (ds.otherDetails?.fr || []) : (ds.otherDetails?.intl || []);
-                                        if (group.length) {
-                                            lines.push('– DÃ©tails –');
-                                            group.slice(0, 8).forEach(item => {
-                                                const name = item?.duree ?? '';
-                                                const part = item?.part_pct != null ? this.formatPercentage(Number(item.part_pct)) : 'n/a';
-                                                const vol = item?.volume != null ? this.formatNumber(Number(item.volume)) : '0';
-                                                const n1 = item?.volume_n1 != null ? this.formatNumber(Number(item.volume_n1)) : '0';
-                                                const delta = item?.delta_pct != null ? (() => {
-                                                    const evolution = Number(item.delta_pct);
-                                                    const symbol = this.getVariationSymbol(evolution);
-                                                    const formattedEvolution = this.formatPercentage(Math.abs(evolution));
-                                                    return `${symbol} ${formattedEvolution}`;
-                                                })() : 'n/a';
-                                                lines.push(`${name}: ${part} | ${vol} (N) | ${n1} (N-1) | ${delta}`);
-                                            });
-                                            if (group.length > 8) lines.push(`(+${group.length - 8} autresâ€¦)`);
-                                        }
-                                    }
-                                    return lines;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: { 
-                            beginAtZero: true, 
-                            min: 0, 
-                            max: 100, 
-                            stacked: true, 
-                            ticks: { 
-                                color: colors.textSecondary, // Utiliser la variable CSS
-                                font: { size: 10, weight: '500' },
-                                callback: v => `${Number(v)}%` 
-                            } 
-                        },
-                        y: { 
-                            stacked: true, 
-                            grid: { display: false }, 
-                            ticks: { 
-                                color: colors.textPrimary, // Utiliser la variable CSS
-                                font: { size: 11, weight: '500' }
-                            } 
-                        }
-                    }
-                }
-            });
-        } catch (e) {
-            // Erreur silencieuse
-        }
-    }
-
     generateNuiteesOriginCharts() {
-        // RÃ©cupÃ©rer les couleurs du thÃ¨me
+        // Récupérer les couleurs du thème
         const colors = this.getThemeColors();
         
-        // GÃ©nÃ©rer les 3 graphiques sÃ©parÃ©ment
+        // Générer les 3 graphiques séparément
         this.generateOriginChart('nuitees-departements-chart', 'nuiteesOrigins', 'departements', colors.primary, 15);
         this.generateOriginChart('nuitees-regions-chart', 'nuiteesOrigins', 'regions', colors.primary, 5);
         this.generateOriginChart('nuitees-pays-chart', 'nuiteesOrigins', 'pays', colors.primary, 5);
         
-        // RÃ©organiser la grille aprÃ¨s masquage des graphiques vides
+        // Réorganiser la grille après masquage des graphiques vides
         this.reorganizeOriginGrid('nuitees');
     }
 
     generateExcursionnistesOriginCharts() {
         // Récupérer les couleurs du thème
         const colors = this.getThemeColors();
-
+        
         // Générer les 3 graphiques séparément avec la couleur d'origine #667eea (bleu)
         this.generateOriginChart('excursionnistes-departements-chart', 'excursionnistesOrigins', 'departements', '#667eea', 15);
         this.generateOriginChart('excursionnistes-regions-chart', 'excursionnistesOrigins', 'regions', '#667eea', 5);
         this.generateOriginChart('excursionnistes-pays-chart', 'excursionnistesOrigins', 'pays', '#667eea', 5);
-
+        
         // Réorganiser la grille après masquage des graphiques vides
         this.reorganizeOriginGrid('excursionnistes');
     }
@@ -3544,13 +3233,13 @@ class InfographieManager {
         // Récupérer les couleurs du thème
         const colors = this.getThemeColors();
         
-        // GÃ©nÃ©rer automatiquement le label basÃ© sur le type
+        // Générer automatiquement le label basé sur le type
         const typeLabels = {
-            'departements': 'DÃ©partements',
-            'regions': 'RÃ©gions', 
+            'departements': 'Départements',
+            'regions': 'Régions', 
             'pays': 'Pays'
         };
-        const label = typeLabels[dataType] || 'DonnÃ©es';
+        const label = typeLabels[dataType] || 'Données';
         
         const canvas = document.getElementById(canvasId);
         if (!canvas) {
@@ -3558,21 +3247,21 @@ class InfographieManager {
             return;
         }
 
-        // Ajouter l'indicateur d'unitÃ© dans l'en-tÃªte du graphique
+        // Ajouter l'indicateur d'unité dans l'en-tête du graphique
         const chartContainer = canvas.closest('.chart-container');
         if (chartContainer) {
             const chartHeader = chartContainer.querySelector('.chart-header');
             if (chartHeader) {
-                // Supprimer l'ancien indicateur d'unitÃ© s'il existe
+                // Supprimer l'ancien indicateur d'unité s'il existe
                 const existingUnitIndicator = chartContainer.querySelector('.chart-unit-indicator');
                 if (existingUnitIndicator) {
                     existingUnitIndicator.remove();
                 }
 
-                // CrÃ©er le nouvel indicateur d'unitÃ©
+                // Créer le nouvel indicateur d'unité
                 const unitIndicator = document.createElement('div');
                 unitIndicator.className = 'chart-unit-indicator';
-                const unit = dataCategory.includes('nuitees') ? 'nuitées' : 'prÃ©sences';
+                const unit = dataCategory.includes('nuitees') ? 'nuitées' : 'présences';
                 unitIndicator.textContent = unit;
                 chartHeader.appendChild(unitIndicator);
             }
@@ -3599,6 +3288,7 @@ class InfographieManager {
         }
 
         if (!data || !Array.isArray(data) || data.length === 0) {
+            
             // Masquer complètement le conteneur du graphique
             const chartContainer = canvas.closest('.chart-container');
             if (chartContainer) {
@@ -3607,10 +3297,10 @@ class InfographieManager {
             return;
         }
 
-        // Traitement des donnÃ©es pour Chart.js avec comparaison N vs N-1
+        // Traitement des données pour Chart.js avec comparaison N vs N-1
         const chartData = this.processOriginDataComparison(data, dataType, limit);
         
-        // VÃ©rifier si on a des donnÃ©es valides aprÃ¨s traitement
+        // Vérifier si on a des données valides après traitement
         if (!chartData.labels || chartData.labels.length === 0 || chartData.currentValues.every(v => v === 0)) {
 
             // Masquer complètement le conteneur du graphique
@@ -3621,13 +3311,13 @@ class InfographieManager {
             return;
         }
         
-        // DÃ©truire le graphique existant s'il existe
+        // Détruire le graphique existant s'il existe
         const chartKey = `${canvasId}Chart`;
         if (this.chartInstances[chartKey]) {
             this.chartInstances[chartKey].destroy();
         }
 
-        // CrÃ©er le graphique en barres horizontales avec comparaison
+        // Créer le graphique en barres horizontales avec comparaison
         this.chartInstances[chartKey] = new Chart(canvas, {
             type: 'bar',
             data: {
@@ -3672,7 +3362,7 @@ class InfographieManager {
                         chart.data.labels.forEach((label, index) => {
                             if (Array.isArray(label) && label.length > 1) {
                                 const y = yScale.getPixelForTick(index);
-                                const x = yScale.left - 8; // Position Ã  gauche de l'axe avec marge
+                                const x = yScale.left - 8; // Position à gauche de l'axe avec marge
                                 
                                 ctx.save();
                                 ctx.fillStyle = colors.textPrimary; // Utiliser la variable CSS
@@ -3680,7 +3370,7 @@ class InfographieManager {
                                 ctx.textAlign = 'right';
                                 ctx.textBaseline = 'middle';
                                 
-                                // Afficher la deuxiÃ¨me ligne de l'Ã©tiquette
+                                // Afficher la deuxième ligne de l'étiquette
                                 ctx.fillText(label[1], x, y + 12);
                                 ctx.restore();
                             }
@@ -3694,7 +3384,7 @@ class InfographieManager {
                         const ds = chart.data.datasets[0];
                         if (!ds) return;
 
-                        // Capture une rÃ©fÃ©rence sÃ»re Ã  la fonction de formatage
+                        // Capture une référence sûre à la fonction de formatage
                         const fmt = this.formatNumber.bind(this);
 
                         ctx.save();
@@ -3710,9 +3400,9 @@ class InfographieManager {
                         ds.data.forEach((v, i) => {
                             if (!v) return;
                             const yPix = y.getPixelForValue(i);
-                            const xPix = x.getPixelForValue(v) + 4; // RÃ©duit de 8px Ã  4px
-                            // Utiliser l'espace de padding dÃ©fini dans layout.padding.right
-                            const maxX = chartArea.right + 20; // RÃ©duit de 40px Ã  20px
+                            const xPix = x.getPixelForValue(v) + 4; // Réduit de 8px à 4px
+                            // Utiliser l'espace de padding défini dans layout.padding.right
+                            const maxX = chartArea.right + 20; // Réduit de 40px à 20px
                             const xClamped = Math.min(xPix, maxX);
                             ctx.fillText(fmt(v), xClamped, yPix);
                         });
@@ -3729,7 +3419,7 @@ class InfographieManager {
                         top: 10,
                         bottom: 10,
                         left: 'auto',
-                        right: 6 // RÃ©duit de 10px Ã  6px pour rapprocher les chiffres
+                        right: 6 // Réduit de 10px à 6px pour rapprocher les chiffres
                     }
                 },
                 plugins: {
@@ -3780,12 +3470,12 @@ class InfographieManager {
                             title: (ctx) => ctx[0]?.label || '',
                             label: (context) => {
                                 const value = context.parsed.x || 0;
-                                const unit = dataCategory.includes('nuitees') ? 'nuitées' : 'prÃ©sences';
+                                const unit = dataCategory.includes('nuitees') ? 'nuitées' : 'présences';
                                 const year = context.dataset.label || chartData.currentYear;
                                 return `${year}: ${this.formatNumber(value)} ${unit}`;
                             },
                             afterLabel: (context) => {
-                                // Calculer l'Ã©volution si on a les deux valeurs
+                                // Calculer l'évolution si on a les deux valeurs
                                 const currentIndex = context.datasetIndex === 0 ? 0 : 1;
                                 const otherIndex = currentIndex === 0 ? 1 : 0;
                                 const currentValue = context.parsed.x || 0;
@@ -3795,7 +3485,7 @@ class InfographieManager {
                                     const evolution = ((currentValue - otherValue) / otherValue * 100);
                                     const symbol = this.getVariationSymbol(evolution);
                                     const formattedEvolution = this.formatPercentage(Math.abs(evolution));
-                                    return `${symbol} ${formattedEvolution} vs rÃ©fÃ©rence`;
+                                    return `${symbol} ${formattedEvolution} vs référence`;
                                 }
                                 return '';
                             }
@@ -3835,15 +3525,15 @@ class InfographieManager {
                         },
                         afterFit: function(scale) {
                             const isRegionsChart = scale.chart.canvas.id.includes('regions');
-                            const minWidth = isRegionsChart ? 80 : 60; // RÃ©duit de 50% pour rapprocher les Ã©tiquettes
+                            const minWidth = isRegionsChart ? 80 : 60; // Réduit de 50% pour rapprocher les étiquettes
                             scale.width = Math.max(scale.width, minWidth);
                         },
                         ticks: {
                             color: colors.textPrimary, // Utiliser la variable CSS
                             font: { size: limit > 10 ? 10 : 12, weight: '500' }, // Police plus grosse et plus grasse
                             maxTicksLimit: limit > 10 ? 15 : 8,
-                            padding: 6, // RÃ©duit de 12px Ã  6px (50% de rÃ©duction)
-                            autoSkip: false, // DÃ©sactive l'auto-skip des catÃ©gories
+                            padding: 6, // Réduit de 12px à 6px (50% de réduction)
+                            autoSkip: false, // Désactive l'auto-skip des catégories
                             callback: function(value, index, values) {
                                 const label = this.getLabelForValue(value);
                                 
@@ -3866,14 +3556,14 @@ class InfographieManager {
     }
 
     /**
-     * Raccourcit intelligemment les noms de rÃ©gions pour l'affichage
+     * Raccourcit intelligemment les noms de régions pour l'affichage
      */
     shortenRegionName(regionName) {
         if (!regionName || regionName.length <= 12) return regionName;
         
         const abbreviations = {
-            'AUVERGNE-RHÃ”NE-ALPES': 'AUVERGNE-RHÃ”NE-ALPES', // Garder tel quel mais on va ajuster l'affichage
-            'BOURGOGNE-FRANCHE-COMTÃ‰': 'BOURGOGNE-F.COMTÃ‰',
+            'AUVERGNE-RHÔNE-ALPES': 'AUVERGNE-RHÔNE-ALPES', // Garder tel quel mais on va ajuster l'affichage
+            'BOURGOGNE-FRANCHE-COMTÉ': 'BOURGOGNE-F.COMTÉ',
             'CENTRE-VAL DE LOIRE': 'CENTRE-VAL LOIRE',
             'GRAND EST': 'GRAND EST',
             'HAUTS-DE-FRANCE': 'HAUTS-DE-FRANCE',
@@ -3882,7 +3572,7 @@ class InfographieManager {
             'NOUVELLE AQUITAINE': 'NOUVELLE AQUITAINE',
             'OCCITANIE': 'OCCITANIE',
             'PAYS DE LA LOIRE': 'PAYS DE LA LOIRE',
-            'PROVENCE-ALPES-CÃ”TE D\'AZUR': 'PACA',
+            'PROVENCE-ALPES-CÔTE D\'AZUR': 'PACA',
             'BRETAGNE': 'BRETAGNE',
             'CORSE': 'CORSE'
         };
@@ -3891,17 +3581,17 @@ class InfographieManager {
     }
 
     /**
-     * Divise un nom de rÃ©gion en plusieurs lignes si nÃ©cessaire
+     * Divise un nom de région en plusieurs lignes si nécessaire
      */
     wrapRegionName(regionName) {
         if (!regionName || regionName.length <= 16) return [regionName];
         
         const specialCases = {
-            'AUVERGNE-RHÃ”NE-ALPES': ['AUVERGNE', 'RHÃ”NE-ALPES'],
-            'BOURGOGNE-FRANCHE-COMTÃ‰': ['BOURGOGNE', 'FRANCHE-COMTÃ‰'],
+            'AUVERGNE-RHÔNE-ALPES': ['AUVERGNE', 'RHÔNE-ALPES'],
+            'BOURGOGNE-FRANCHE-COMTÉ': ['BOURGOGNE', 'FRANCHE-COMTÉ'],
             'CENTRE-VAL DE LOIRE': ['CENTRE', 'VAL DE LOIRE'],
             'NOUVELLE AQUITAINE': ['NOUVELLE', 'AQUITAINE'],
-            'PROVENCE-ALPES-CÃ”TE D\'AZUR': ['PROVENCE-ALPES', 'CÃ”TE D\'AZUR'],
+            'PROVENCE-ALPES-CÔTE D\'AZUR': ['PROVENCE-ALPES', 'CÔTE D\'AZUR'],
             'PAYS DE LA LOIRE': ['PAYS DE', 'LA LOIRE']
         };
         
@@ -3979,7 +3669,7 @@ class InfographieManager {
             };
         }
 
-        // Trier les donnÃ©es par valeur dÃ©croissante de l'année courante et limiter
+        // Trier les données par valeur décroissante de l'année courante et limiter
         const sortedData = data
             .filter(item => item && (item.n_nuitees > 0 || item.volume > 0 || item.n_presences > 0 || item.total_presences > 0))
             .sort((a, b) => (b.n_nuitees || b.volume || b.n_presences || b.total_presences || 0) - (a.n_nuitees || a.volume || a.n_presences || a.total_presences || 0))
@@ -4031,10 +3721,10 @@ class InfographieManager {
     }
 
     combineOriginsData(regionsData, paysData, type) {
-        // Combiner les donnÃ©es des rÃ©gions et pays en un seul tableau
+        // Combiner les données des régions et pays en un seul tableau
         const combined = [];
         
-        // Ajouter les rÃ©gions
+        // Ajouter les régions
         if (regionsData && Array.isArray(regionsData)) {
             regionsData.forEach(item => {
                 if (type === 'nuitees') {
@@ -4084,26 +3774,26 @@ class InfographieManager {
             });
         }
         
-        // Trier par valeur dÃ©croissante
+        // Trier par valeur décroissante
         combined.sort((a, b) => b.valeur - a.valeur);
         
         return combined;
     }
 
     processOriginsData(data, type) {
-        // Traiter les donnÃ©es des APIs pour les adapter aux graphiques
+        // Traiter les données des APIs pour les adapter aux graphiques
         
-        // VÃ©rifier la structure des donnÃ©es
+        // Vérifier la structure des données
         if (!data || !Array.isArray(data)) {
             // Erreur silencieuse
-            return { labels: ['Aucune donnÃ©e'], values: [0] };
+            return { labels: ['Aucune donnée'], values: [0] };
         }
 
-        // Extraire les labels et valeurs (donnÃ©es dÃ©jÃ  formatÃ©es par combineOriginsData)
+        // Extraire les labels et valeurs (données déjà formatées par combineOriginsData)
         const labels = [];
         const values = [];
 
-        // Limiter aux 8 premiÃ¨res origines pour la lisibilitÃ©
+        // Limiter aux 8 premières origines pour la lisibilité
         const limitedData = data.slice(0, 8);
         
         limitedData.forEach(item => {
@@ -4116,51 +3806,41 @@ class InfographieManager {
         return { labels, values };
     }
 
-    // RÃ©initialiser l'affichage de tous les conteneurs de graphiques
+    // Réinitialiser l'affichage de tous les conteneurs de graphiques
     resetChartContainers() {
         
         const allChartContainers = document.querySelectorAll('.chart-container');
         const allOriginsSubsections = document.querySelectorAll('.origins-subsection');
         const allIndicatorsSubsections = document.querySelectorAll('.indicators-subsection');
-        const allStaySubsections = document.querySelectorAll('.stay-subsection');
         const allOriginsHeaders = document.querySelectorAll('.origins-header');
-        const allStayHeaders = document.querySelectorAll('.stay-header');
         
-        // RÃ©afficher tous les conteneurs de graphiques
+        // Réafficher tous les conteneurs de graphiques
         allChartContainers.forEach(container => {
             container.classList.remove('is-hidden');
         });
         
-        // RÃ©afficher toutes les sections d'origines
+        // Réafficher toutes les sections d'origines
         allOriginsSubsections.forEach(section => {
             section.classList.remove('is-hidden');
         });
         
-        // RÃ©afficher toutes les sections d'indicateurs
+        // Réafficher toutes les sections d'indicateurs
         allIndicatorsSubsections.forEach(section => {
             section.classList.remove('is-hidden');
         });
         
-        // RÃ©afficher toutes les sections de durÃ©e de sÃ©jour
-        allStaySubsections.forEach(section => {
-            section.classList.remove('is-hidden');
-        });
         
-        // RÃ©afficher tous les titres des sections d'origines
+        // Réafficher tous les titres des sections d'origines
         allOriginsHeaders.forEach(header => {
             header.classList.remove('is-hidden');
         });
         
-        // RÃ©afficher tous les titres des sections de durÃ©e de sÃ©jour
-        allStayHeaders.forEach(header => {
-            header.classList.remove('is-hidden');
-        });
     }
 
-    // RÃ©organiser la grille des origines quand certains graphiques sont masquÃ©s
+    // Réorganiser la grille des origines quand certains graphiques sont masqués
     reorganizeOriginGrid(category) {
         
-        // Mapper les catÃ©gories aux vraies classes CSS
+        // Mapper les catégories aux vraies classes CSS
         const sectionClass = category === 'nuitees' ? 'tourist-section' : 'excursionist-section';
         const originsGrid = document.querySelector(`.${sectionClass} .origins-grid`);
         if (!originsGrid) {
@@ -4171,14 +3851,14 @@ class InfographieManager {
         const totalCharts = originsGrid.querySelectorAll('.chart-container').length;
         const hiddenCount = hiddenCharts.length;
 
-        // Si tous les graphiques sont masquÃ©s, masquer toute la section
+        // Si tous les graphiques sont masqués, masquer toute la section
         if (hiddenCount === totalCharts) {
             const section = originsGrid.closest('.origins-subsection');
             if (section) {
                 section.classList.add('is-hidden');
             }
         } else {
-            // Si certains graphiques sont visibles, masquer seulement le titre si tous les graphiques sont masquÃ©s
+            // Si certains graphiques sont visibles, masquer seulement le titre si tous les graphiques sont masqués
             const visibleCharts = originsGrid.querySelectorAll('.chart-container:not(.is-hidden)');
             if (visibleCharts.length === 0) {
                 const originsHeader = originsGrid.closest('.origins-subsection')?.querySelector('.origins-header');
@@ -4188,20 +3868,20 @@ class InfographieManager {
             }
         }
         
-        // Optimisation : remplacer les sÃ©lecteurs :has() en cascade par des toggles de classe
+        // Optimisation : remplacer les sélecteurs :has() en cascade par des toggles de classe
         this.optimizeGridLayout(originsGrid);
     }
 
-    // MÃ©thode optimisÃ©e pour remplacer les sÃ©lecteurs :has() en cascade
+    // Méthode optimisée pour remplacer les sélecteurs :has() en cascade
     optimizeGridLayout(grid) {
         const hiddenCharts = grid.querySelectorAll('.chart-container.is-hidden');
         const totalCharts = grid.querySelectorAll('.chart-container').length;
         const hiddenCount = hiddenCharts.length;
 
-        // Supprimer toutes les classes de layout prÃ©cÃ©dentes
+        // Supprimer toutes les classes de layout précédentes
         grid.classList.remove('layout-single', 'layout-double', 'layout-full');
 
-        // Appliquer le layout appropriÃ©
+        // Appliquer le layout approprié
         if (hiddenCount === totalCharts) {
             grid.classList.add('layout-empty');
         } else if (hiddenCount === totalCharts - 1) {
@@ -4213,41 +3893,11 @@ class InfographieManager {
         }
     }
 
-    // RÃ©organiser la grille de durÃ©e de sÃ©jour
-    reorganizeStayGrid() {
-        
-        const stayGrid = document.querySelector('.stay-subsection .origins-grid');
-        if (!stayGrid) {
-            return;
-        }
-
-        const hiddenCharts = stayGrid.querySelectorAll('.chart-container.is-hidden');
-        const totalCharts = stayGrid.querySelectorAll('.chart-container').length;
-        const hiddenCount = hiddenCharts.length;
-
-
-        // Si tous les graphiques sont masquÃ©s, masquer toute la section
-        if (hiddenCount === totalCharts) {
-            const section = stayGrid.closest('.stay-subsection');
-            if (section) {
-                section.classList.add('is-hidden');
-            }
-        }
-        
-        // VÃ©rification supplÃ©mentaire : masquer aussi le titre si aucun graphique n'est visible
-        if (hiddenCount === totalCharts) {
-            const stayHeader = stayGrid.closest('.stay-subsection')?.querySelector('.stay-header');
-            if (stayHeader) {
-                stayHeader.classList.add('is-hidden');
-            }
-        }
-        
-    }
 
     // Forcer le masquage des titres vides
     forceHideEmptyTitles() {
         
-        // VÃ©rifier toutes les sections d'origines
+        // Vérifier toutes les sections d'origines
         const originsSubsections = document.querySelectorAll('.origins-subsection');
         originsSubsections.forEach((section, index) => {
             const visibleCharts = section.querySelectorAll('.chart-container:not(.is-hidden)');
@@ -4258,18 +3908,8 @@ class InfographieManager {
             }
         });
         
-        // VÃ©rifier toutes les sections de durÃ©e de sÃ©jour
-        const staySubsections = document.querySelectorAll('.stay-subsection');
-        staySubsections.forEach((section, index) => {
-            const visibleCharts = section.querySelectorAll('.chart-container:not(.is-hidden)');
-            const stayHeader = section.querySelector('.stay-header');
-            
-            if (visibleCharts.length === 0 && stayHeader) {
-                stayHeader.classList.add('is-hidden');
-            }
-        });
         
-        // VÃ©rifier toutes les sections d'indicateurs
+        // Vérifier toutes les sections d'indicateurs
         const indicatorsSubsections = document.querySelectorAll('.indicators-subsection');
         indicatorsSubsections.forEach((section, index) => {
             const visibleIndicators = section.querySelectorAll('.indicator-card-compact');
@@ -4282,19 +3922,14 @@ class InfographieManager {
         
     }
 
-    // VÃ©rification finale de l'état des Ã©lÃ©ments
+    // Vérification finale de l'état des éléments
     logFinalState() {
         
-        // VÃ©rifier les sections d'origines
+        // Vérifier les sections d'origines
         const originsSubsections = document.querySelectorAll('.origins-subsection');
         originsSubsections.forEach((section, index) => {            
         });
         
-        // VÃ©rifier les sections de durÃ©e de sÃ©jour
-        const staySubsections = document.querySelectorAll('.stay-subsection');
-        staySubsections.forEach((section, index) => {
-            
-        });
     }
 
     showChartPlaceholder(canvas, message) {
@@ -4312,30 +3947,30 @@ class InfographieManager {
 
         try {
             downloadBtn.disabled = true;
-            downloadBtn.innerHTML = '<div class="loading-spinner"></div> <span class="btn-title">TÃ©lÃ©chargement...</span>';
+            downloadBtn.innerHTML = '<div class="loading-spinner"></div> <span class="btn-title">Téléchargement...</span>';
             
-            // Afficher l'indicateur de chargement pour le tÃ©lÃ©chargement
+            // Afficher l'indicateur de chargement pour le téléchargement
             this.showDownloadLoadingIndicator();
 
             const container = document.querySelector('.infographie-content');
             if (!container) {
-                throw new Error('Aucune infographie Ã  tÃ©lÃ©charger');
+                throw new Error('Aucune infographie à télécharger');
             }
 
-            // Ã‰tape 1: Convertir tous les graphiques Chart.js en images
+            // Étape 1: Convertir tous les graphiques Chart.js en images
             await this.convertChartsToImages();
 
-            // Ã‰tape 2: Attendre que toutes les images soient chargÃ©es
+            // Étape 2: Attendre que toutes les images soient chargées
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            // Ã‰tape 3: Activer le mode export avec les styles CSS identiques Ã  la page web
+            // Étape 3: Activer le mode export avec les styles CSS identiques à la page web
             container.classList.add('export-mode');
 
-            // Ã‰tape 4: RÃ©cupÃ©rer les couleurs CSS exactes de la page web
+            // Étape 4: Récupérer les couleurs CSS exactes de la page web
             const computedStyle = getComputedStyle(document.documentElement);
             const cardBg = computedStyle.getPropertyValue('--card-bg').trim() || this.getCSSVariable('--card-bg', '#1a1f2c');
             
-            // Ã‰tape 5: Forcer l'affichage de tous les Ã©lÃ©ments avec les styles de la page web
+            // Étape 5: Forcer l'affichage de tous les éléments avec les styles de la page web
             const allElements = container.querySelectorAll('*');
             const originalStyles = new Map();
             
@@ -4353,7 +3988,7 @@ class InfographieManager {
                     boxShadow: el.style.boxShadow
                 });
                 
-                // Appliquer les styles de la page web et Ã©liminer les Ã©lÃ©ments blancs
+                // Appliquer les styles de la page web et éliminer les éléments blancs
                 if (el.style.display === 'none') el.style.display = 'block';
                 el.style.visibility = 'visible';
                 el.style.opacity = '1';
@@ -4361,7 +3996,7 @@ class InfographieManager {
                 el.style.transition = 'none';
                 el.style.animation = 'none';
                 
-                // Ã‰liminer tous les backgrounds blancs et transparents gÃªnants
+                // Éliminer tous les backgrounds blancs et transparents gênants
                 const lightBg = this.getCSSVariable('--light-bg', '#ffffff');
                 if (el.style.backgroundColor === 'white' || 
                     el.style.backgroundColor === '#ffffff' || 
@@ -4372,29 +4007,29 @@ class InfographieManager {
                     el.style.background = 'transparent';
                 }
                 
-                // Ã‰liminer les bordures et ombres
+                // Éliminer les bordures et ombres
                 el.style.border = 'none';
                 el.style.boxShadow = 'none';
                 el.style.outline = 'none';
             });
 
-            // Ã‰tape 6: Attendre la stabilisation
+            // Étape 6: Attendre la stabilisation
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            // Ã‰tape 7: Capturer avec html2canvas - Configuration optimisÃ©e et stable
+            // Étape 7: Capturer avec html2canvas - Configuration optimisée et stable
             const canvas = await html2canvas(container, {
                 backgroundColor: cardBg,
-                scale: 2, // ✨ RÃ©solution double - Bon compromis entre qualitÃ© et stabilitÃ©
+                scale: 2, // ✨ Résolution double - Bon compromis entre qualité et stabilité
                 logging: false,
                 useCORS: true,
                 allowTaint: true,
-                foreignObjectRendering: false, // ✨ Ã‰vite les erreurs de clonage
+                foreignObjectRendering: false, // ✨ Évite les erreurs de clonage
                 removeContainer: false, // ✨ Ne pas supprimer le container original
                 imageTimeout: 10000, // ✨ Timeout plus long pour les images
                 width: 800,
                 height: container.scrollHeight,
                 ignoreElements: function(element) {
-                    // ✨ Ignorer les Ã©lÃ©ments problÃ©matiques
+                    // ✨ Ignorer les éléments problématiques
                     return element.tagName === 'IFRAME' || 
                            element.classList.contains('loading-spinner') ||
                            element.style.display === 'none';
@@ -4410,7 +4045,7 @@ class InfographieManager {
                             clonedContainer.style.overflow = 'visible';
                         }
                         
-                        // Nettoyer seulement les Ã©lÃ©ments essentiels
+                        // Nettoyer seulement les éléments essentiels
                         const problematicElements = clonedDoc.querySelectorAll('iframe, .loading-spinner, .is-hidden');
                         problematicElements.forEach(el => {
                             if (el.parentNode) {
@@ -4420,12 +4055,12 @@ class InfographieManager {
                         
                     } catch (cloneError) {
                         // Erreur silencieuse
-                        // Ne pas faire Ã©chouer la capture pour des erreurs de clonage mineures
+                        // Ne pas faire échouer la capture pour des erreurs de clonage mineures
                     }
                 }
             });
 
-            // Ã‰tape 8: Restaurer les styles originaux
+            // Étape 8: Restaurer les styles originaux
             allElements.forEach((el) => {
                 const original = originalStyles.get(el);
                 if (original) {
@@ -4442,13 +4077,13 @@ class InfographieManager {
                 }
             });
 
-            // Ã‰tape 9: DÃ©sactiver le mode export
+            // Étape 9: Désactiver le mode export
             container.classList.remove('export-mode');
 
-            // Ã‰tape 10: Restaurer les graphiques Chart.js
+            // Étape 10: Restaurer les graphiques Chart.js
             await this.restoreChartsFromImages();
 
-            // TÃ©lÃ©charger l'image avec les dimensions correctes
+            // Télécharger l'image avec les dimensions correctes
             const link = document.createElement('a');
             link.download = `infographie_${this.currentData.filters.zone}_${this.currentData.filters.period}_${this.currentData.filters.year}.png`;
             link.href = canvas.toDataURL('image/png', 1.0);
@@ -4459,9 +4094,9 @@ class InfographieManager {
 
         } catch (error) {
             // Erreur silencieuse
-            this.showError('Erreur lors du tÃ©lÃ©chargement de l\'infographie');
+            this.showError('Erreur lors du téléchargement de l\'infographie');
         } finally {
-            // Masquer l'indicateur de chargement pour le tÃ©lÃ©chargement
+            // Masquer l'indicateur de chargement pour le téléchargement
             this.hideDownloadLoadingIndicator();
             
             downloadBtn.disabled = false;
@@ -4470,7 +4105,7 @@ class InfographieManager {
                     <i class="fa-solid fa-download"></i>
                 </div>
                 <div class="btn-content">
-                    <span class="btn-title">TÃ©lÃ©charger</span>
+                    <span class="btn-title">Télécharger</span>
                     <span class="btn-subtitle">Image HD</span>
                 </div>
             `;
@@ -4478,16 +4113,16 @@ class InfographieManager {
     }
 
     async convertChartsToImages() {
-        // RÃ©cupÃ©rer tous les canvas Chart.js
+        // Récupérer tous les canvas Chart.js
         const canvases = document.querySelectorAll('.infographie-content canvas');
         this.chartImages = new Map();
 
         for (const canvas of canvases) {
             try {
-                // Convertir le canvas en image HAUTE RÃ‰SOLUTION
+                // Convertir le canvas en image HAUTE RÉSOLUTION
                 const imageDataUrl = canvas.toDataURL('image/png', 1.0);
                 
-                // CrÃ©er un Ã©lÃ©ment img avec les mÃªmes dimensions
+                // Créer un élément img avec les mêmes dimensions
                 const img = document.createElement('img');
                 img.src = imageDataUrl;
                 img.style.width = '100%';
@@ -4519,7 +4154,7 @@ class InfographieManager {
         if (this.chartImages) {
             this.chartImages.forEach((data, canvas) => {
                 try {
-                    // Remettre le canvas Ã  sa place originale
+                    // Remettre le canvas à sa place originale
                     if (data.imageElement && data.imageElement.parentElement) {
                         if (data.nextSibling) {
                             data.imageElement.parentElement.insertBefore(canvas, data.nextSibling);
@@ -4556,7 +4191,7 @@ class InfographieManager {
                 let progress = 0;
                 const interval = setInterval(() => {
                     progress += Math.random() * 15;
-                    if (progress > 90) progress = 90; // Ne pas aller Ã  100% avant la fin
+                    if (progress > 90) progress = 90; // Ne pas aller à 100% avant la fin
                     progressBar.style.width = progress + '%';
                 }, 200);
                 
@@ -4566,7 +4201,7 @@ class InfographieManager {
         }
     }
 
-    // Mettre Ã  jour le texte de l'indicateur de chargement
+    // Mettre à jour le texte de l'indicateur de chargement
     updateLoadingText(text) {
         const loadingText = document.querySelector('.infographie-loading-text');
         if (loadingText) {
@@ -4590,43 +4225,43 @@ class InfographieManager {
             this.loadingProgressInterval = null;
         }
         
-        // Masquer aprÃ¨s un court dÃ©lai pour montrer la progression complète
+        // Masquer après un court délai pour montrer la progression complète
         setTimeout(() => {
             if (loadingElement) {
                 loadingElement.classList.remove('active');
             }
             
-            // RÃ©initialiser la barre de progression
+            // Réinitialiser la barre de progression
             if (progressBar) {
                 progressBar.style.width = '0%';
             }
         }, 300);
     }
 
-    // Afficher l'indicateur de chargement pour le tÃ©lÃ©chargement
+    // Afficher l'indicateur de chargement pour le téléchargement
     showDownloadLoadingIndicator() {
         const loadingElement = document.getElementById('infographie-loading');
         const loadingText = loadingElement?.querySelector('.infographie-loading-text');
         const loadingSubtext = loadingElement?.querySelector('.infographie-loading-subtext');
         
         if (loadingElement) {
-            // Changer les textes pour le tÃ©lÃ©chargement
-            if (loadingText) loadingText.textContent = 'PrÃ©paration du tÃ©lÃ©chargement...';
-            if (loadingSubtext) loadingSubtext.textContent = 'Conversion des graphiques et gÃ©nÃ©ration de l\'image';
+            // Changer les textes pour le téléchargement
+            if (loadingText) loadingText.textContent = 'Préparation du téléchargement...';
+            if (loadingSubtext) loadingSubtext.textContent = 'Conversion des graphiques et génération de l\'image';
             
             loadingElement.classList.add('active');
         }
     }
 
-    // Masquer l'indicateur de chargement pour le tÃ©lÃ©chargement
+    // Masquer l'indicateur de chargement pour le téléchargement
     hideDownloadLoadingIndicator() {
         const loadingElement = document.getElementById('infographie-loading');
         const loadingText = loadingElement?.querySelector('.infographie-loading-text');
         const loadingSubtext = loadingElement?.querySelector('.infographie-loading-subtext');
         
-        // Restaurer les textes par dÃ©faut
-        if (loadingText) loadingText.textContent = 'GÃ©nÃ©ration de l\'infographie...';
-        if (loadingSubtext) loadingSubtext.textContent = 'Chargement des donnÃ©es et crÃ©ation des graphiques';
+        // Restaurer les textes par défaut
+        if (loadingText) loadingText.textContent = 'Génération de l\'infographie...';
+        if (loadingSubtext) loadingSubtext.textContent = 'Chargement des données et création des graphiques';
         
         // Masquer l'indicateur
         if (loadingElement) {
@@ -4635,12 +4270,12 @@ class InfographieManager {
     }
 
     showError(message) {
-        // Afficher un message d'erreur (Ã  adapter selon votre systÃ¨me de notifications)
+        // Afficher un message d'erreur (à adapter selon votre système de notifications)
         // Erreur silencieuse
         // alert(message);
     }
 
-    // Nouvelle mÃ©thode pour dÃ©truire tous les graphiques
+    // Nouvelle méthode pour détruire tous les graphiques
     destroyAllCharts() {
         Object.keys(this.chartInstances).forEach(chartKey => {
             if (this.chartInstances[chartKey]) {
@@ -4655,7 +4290,7 @@ class InfographieManager {
         this.chartInstances = {};
     }
 
-    // MÃ©thode pour lire les couleurs depuis les variables CSS
+    // Méthode pour lire les couleurs depuis les variables CSS
     getCSSVariable(variableName, fallback = '#ffffff') {
         try {
             const value = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
@@ -4665,7 +4300,7 @@ class InfographieManager {
         }
     }
 
-    // MÃ©thode pour obtenir les couleurs du thÃ¨me
+    // Méthode pour obtenir les couleurs du thème
     getThemeColors() {
         return {
             primary: this.getCSSVariable('--primary-color', '#00f2ea'),
@@ -4680,12 +4315,12 @@ class InfographieManager {
         };
     }
 
-    // Utilitaire pour crÃ©er des couleurs RGBA avec alpha
+    // Utilitaire pour créer des couleurs RGBA avec alpha
     rgba(r, g, b, a) {
         return `rgba(${r}, ${g}, ${b}, ${a})`;
     }
 
-    // MÃ©thode pour extraire les composants RGB d'une couleur hex
+    // Méthode pour extraire les composants RGB d'une couleur hex
     hexToRgb(hex) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {
@@ -4695,14 +4330,14 @@ class InfographieManager {
         } : null;
     }
 
-    // MÃ©thode pour crÃ©er une couleur avec alpha Ã  partir d'une couleur hex
+    // Méthode pour créer une couleur avec alpha à partir d'une couleur hex
     hexToRgba(hex, alpha) {
         const rgb = this.hexToRgb(hex);
         if (!rgb) return hex;
         return this.rgba(rgb.r, rgb.g, rgb.b, alpha);
     }
     
-    // MÃ©thode pour vÃ©rifier si l'infographie est prÃªte Ã  Ãªtre partagÃ©e
+    // Méthode pour vérifier si l'infographie est prête à être partagée
     isInfographicReady() {
         const shareBtn = document.getElementById('btn-partager-infographie');
         const infographicContainer = document.querySelector('.infographie-container');
@@ -4711,284 +4346,14 @@ class InfographieManager {
                infographicContainer && infographicContainer.children.length > 0;
     }
 
-    // Nouveau: graphique de mobilitÃ© interne pour l'infographie
-    generateMobilityDestinationsChart() {
-        window.fvLog('[Infographie] GÃ©nÃ©ration du graphique mobility destinations');
-        window.fvLog('[Infographie] currentData:', this.currentData);
 
-        try {
-            const canvas = document.getElementById('infographie-mobility-destinations');
-            if (!canvas) {
-                console.warn('Canvas infographie-mobility-destinations non trouvÃ©');
-                return;
-            }
-
-            // RÃ©cupÃ©rer les donnÃ©es des destinations depuis les donnÃ©es dÃ©jÃ  chargÃ©es
-            const destinationsData = this.currentData?.mobilityDestinations;
-            window.fvLog('[Infographie] DonnÃ©es mobilityDestinations:', destinationsData);
-
-            if (!destinationsData || destinationsData.length === 0) {
-                // Afficher un message d'erreur dans le canvas
-                console.warn('[Infographie] Aucune donnÃ©e de mobilitÃ© interne disponible');
-                this.showChartError(canvas, 'Aucune donnÃ©e de mobilitÃ© interne disponible');
-                return;
-            }
-
-            window.fvLog('[Infographie] GÃ©nÃ©ration du graphique avec', destinationsData.length, 'destinations');
-            this.renderMobilityDestinationsChart(canvas, destinationsData);
-
-        } catch (error) {
-            console.error('Erreur dans generateMobilityDestinationsChart:', error);
-            // Afficher un message d'erreur dans le canvas
-            const canvas = document.getElementById('infographie-mobility-destinations');
-            if (canvas) {
-                this.showChartError(canvas, 'Erreur lors du chargement des donnÃ©es de mobilitÃ© interne');
-            }
-        }
-    }
-
-    renderMobilityDestinationsChart(canvas, destinationsData) {
-        if (!destinationsData || destinationsData.length === 0) {
-            this.showChartError(canvas, 'Aucune donnÃ©e de mobilitÃ© interne disponible');
-            return;
-        }
-
-        // RÃ©cupÃ©rer les couleurs du thÃ¨me
-        const colors = this.getThemeColors();
-
-        // Utiliser la mÃªme couleur que les excursionnistes
-        const baseColor = '#667eea'; // Couleur des excursionnistes
-
-        // DÃ©truire le graphique existant s'il existe
-        const chartKey = 'mobilityDestinationsChart';
-        if (this.chartInstances[chartKey]) {
-            this.chartInstances[chartKey].destroy();
-        }
-
-        // Traiter les donnÃ©es comme les autres graphiques d'origines
-        const currentYear = this.currentData?.filters?.year || new Date().getFullYear();
-        const previousYear = currentYear - 1;
-
-        // PrÃ©parer les donnÃ©es avec comparaison N vs N-1
-        const labels = destinationsData.map(item => item.nom_commune);
-        const currentValues = destinationsData.map(item => item.total_visiteurs || 0);
-        const previousValues = destinationsData.map(item => item.total_visiteurs_n1 || 0);
-
-        // CrÃ©er le graphique en barres horizontales avec comparaison
-        this.chartInstances[chartKey] = new Chart(canvas, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: (() => {
-                    const datasets = [{
-                        label: `${currentYear}`,
-                        data: currentValues,
-                        backgroundColor: baseColor,
-                        borderColor: baseColor,
-                        borderWidth: 1,
-                        borderRadius: 4,
-                        borderSkipped: false
-                    }];
-
-                    // N'ajouter le dataset N-1 que s'il y a au moins une valeur non nulle
-                    if (!previousValues.every(v => v === 0)) {
-                        datasets.push({
-                            label: `${previousYear}`,
-                            data: previousValues,
-                            backgroundColor: this.hexToRgba(baseColor, 0.6), // Version transparente
-                            borderColor: this.hexToRgba(baseColor, 0.8),
-                            borderWidth: 1,
-                            borderRadius: 4,
-                            borderSkipped: false
-                        });
-                    }
-
-                    return datasets;
-                })()
-            },
-            plugins: [
-                {
-                    id: 'barEndValues',
-                    afterDatasetsDraw: (chart) => {
-                        const {ctx, chartArea, scales: {x, y}} = chart;
-                        const ds = chart.data.datasets[0];
-                        if (!ds) return;
-
-                        // Capture une rÃ©fÃ©rence sÃ»re Ã  la fonction de formatage
-                        const fmt = this.formatNumber.bind(this);
-
-                        ctx.save();
-                        ctx.fillStyle = colors.textPrimary; // Utiliser la variable CSS
-                        ctx.font = 'bold 10px -apple-system, BlinkMacSystemFont, sans-serif';
-                        ctx.textAlign = 'left';
-                        ctx.textBaseline = 'middle';
-                        ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
-                        ctx.shadowBlur = 2;
-                        ctx.shadowOffsetX = 1;
-                        ctx.shadowOffsetY = 1;
-
-                        ds.data.forEach((v, i) => {
-                            if (!v) return;
-                            const yPix = y.getPixelForValue(i);
-                            const xPix = x.getPixelForValue(v) + 4; // RÃ©duit de 8px Ã  4px
-                            // Utiliser l'espace de padding dÃ©fini dans layout.padding.right
-                            const maxX = chartArea.right + 20; // RÃ©duit de 40px Ã  20px
-                            const xClamped = Math.min(xPix, maxX);
-                            ctx.fillText(fmt(v), xClamped, yPix);
-                        });
-                        ctx.restore();
-                    }
-                }
-            ],
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                indexAxis: 'y', // Barres horizontales
-                layout: {
-                    padding: {
-                        top: 10,
-                        bottom: 10,
-                        left: 'auto',
-                        right: 6 // RÃ©duit de 10px Ã  6px pour rapprocher les chiffres
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            color: colors.textPrimary, // Utiliser la variable CSS
-                            font: { size: 11, weight: '600' }, // Police plus grosse et plus grasse
-                            padding: 8,
-                            usePointStyle: false,
-                            boxWidth: 6,
-                            boxHeight: 6,
-                            generateLabels: function(chart) {
-                                const datasets = chart.data.datasets;
-                                if (datasets.length >= 2) {
-                                    return [
-                                        {
-                                            text: `${currentYear}`,
-                                            fillStyle: datasets[0].backgroundColor,
-                                            strokeStyle: datasets[0].borderColor,
-                                            lineWidth: 1,
-                                            datasetIndex: 0
-                                        },
-                                        {
-                                            text: `${previousYear}`,
-                                            fillStyle: datasets[1].backgroundColor,
-                                            strokeStyle: datasets[1].borderColor,
-                                            lineWidth: 1,
-                                            datasetIndex: 1
-                                        }
-                                    ];
-                                } else {
-                                    return [
-                                        {
-                                            text: `${currentYear}`,
-                                            fillStyle: datasets[0].backgroundColor,
-                                            strokeStyle: datasets[0].borderColor,
-                                            lineWidth: 1,
-                                            datasetIndex: 0
-                                        }
-                                    ];
-                                }
-                            }
-                        }
-                    },
-                    tooltip: {
-                        enabled: true,
-                        backgroundColor: 'rgba(15, 18, 26, 0.9)',
-                        titleColor: '#a35fff',
-                        titleFont: { weight: 'bold', size: 14 },
-                        bodyColor: '#f0f5ff',
-                        borderColor: 'rgba(0, 242, 234, 0.5)',
-                        borderWidth: 1,
-                        padding: 12,
-                        displayColors: true,
-                        callbacks: {
-                            title: (ctx) => ctx[0]?.label || '',
-                            label: (ctx) => {
-                                const rawItem = destinationsData[ctx.dataIndex];
-                                if (!rawItem) return `Visiteurs: ${ctx.parsed.x}`;
-
-                                const lines = [`${ctx.dataset.label}: ${this.formatNumber(ctx.parsed.x)}`];
-
-                                if (rawItem.total_visiteurs_n1 > 0 && ctx.datasetIndex === 0) {
-                                    if (rawItem.evolution_pct !== null) {
-                                        const sign = rawItem.evolution_pct > 0 ? '+' : '';
-                                        lines.push(`Ã‰volution: ${sign}${rawItem.evolution_pct}%`);
-                                    }
-                                }
-                                return lines;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: {
-                            color: '#a0a8b8',
-                            font: { size: 10 },
-                            callback: function(value) {
-                                return value.toLocaleString('fr-FR');
-                            }
-                        }
-                    },
-                    y: {
-                        grid: { display: false },
-                        ticks: {
-                            autoSkip: false,
-                            maxTicksLimit: 10,
-                            color: '#f0f5ff',
-                            font: { size: 11 }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Ajouter l'indicateur d'unitÃ©
-        const chartContainer = canvas.closest('.chart-container');
-        if (chartContainer) {
-            const chartHeader = chartContainer.querySelector('.chart-header');
-            if (chartHeader) {
-                // Supprimer l'ancien indicateur d'unitÃ© s'il existe
-                const existingUnitIndicator = chartContainer.querySelector('.chart-unit-indicator');
-                if (existingUnitIndicator) {
-                    existingUnitIndicator.remove();
-                }
-
-                // CrÃ©er le nouvel indicateur d'unitÃ©
-                const unitIndicator = document.createElement('div');
-                unitIndicator.className = 'chart-unit-indicator';
-                unitIndicator.textContent = 'visiteurs';
-                unitIndicator.style.cssText = `
-                    position: absolute;
-                    top: 10px;
-                    right: 15px;
-                    background: ${baseColor};
-                    color: white;
-                    padding: 2px 8px;
-                    border-radius: 3px;
-                    font-size: 10px;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                    z-index: 10;
-                `;
-                chartHeader.appendChild(unitIndicator);
-            }
-        }
-    }
 }
 
 // Initialiser l'infographie manager au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
     const infographieManager = new InfographieManager();
     
-    // Ajouter la fonctionnalitÃ© de partage
+    // Ajouter la fonctionnalité de partage
     setupShareInfographic(infographieManager);
 });
 
@@ -5005,13 +4370,13 @@ function setupShareInfographic(infographieManager) {
 
 // Fonction pour partager une infographie
 function shareInfographic(infographieManager) {
-    // VÃ©rifier que l'infographie est prÃªte Ã  Ãªtre partagÃ©e
+    // Vérifier que l'infographie est prête à être partagée
     if (!infographieManager.isInfographicReady()) {
-        alert('Veuillez d\'abord gÃ©nÃ©rer une infographie avant de la partager.');
+        alert('Veuillez d\'abord générer une infographie avant de la partager.');
         return;
     }
     
-    // RÃ©cupÃ©rer les paramÃ¨tres actuels
+    // Récupérer les paramètres actuels
     const currentParams = {
         year: document.getElementById('exc-year-select')?.value,
         period: document.getElementById('exc-period-select')?.value,
@@ -5019,10 +4384,10 @@ function shareInfographic(infographieManager) {
         customRange: window.infographieCustomDateRange
     };
     
-    // GÃ©nÃ©rer un ID unique pour cette infographie
+    // Générer un ID unique pour cette infographie
     const uniqueId = generateUniqueId(currentParams);
     
-    // Construire l'URL avec les paramÃ¨tres
+    // Construire l'URL avec les paramètres
     const params = new URLSearchParams({
         action: 'share',
         year: currentParams.year || '',
@@ -5037,39 +4402,39 @@ function shareInfographic(infographieManager) {
         params.set('fin', currentParams.customRange.end);
     }
     
-    // Capturer et sauvegarder une prÃ©visualisation de l'infographie
+    // Capturer et sauvegarder une prévisualisation de l'infographie
     captureAndSavePreview(uniqueId).then(previewId => {
         if (previewId) {
             params.append('preview_id', previewId);
         }
         
-        // Rediriger vers la page de sÃ©lection d'espace
-        window.location.href = `/fluxvision_fin/shared-spaces/select?${params.toString()}`;
+        // Rediriger vers la page de sélection d'espace
+        window.location.href = (window.CantalDestinationConfig ? window.CantalDestinationConfig.url('/shared-spaces/select') : '/shared-spaces/select') + `?${params.toString()}`;
     }).catch(error => {
-        console.error('Erreur lors de la capture de prÃ©visualisation:', error);
-        // Rediriger sans prÃ©visualisation en cas d'erreur
-        window.location.href = `/fluxvision_fin/shared-spaces/select?${params.toString()}`;
+        console.error('Erreur lors de la capture de prévisualisation:', error);
+        // Rediriger sans prévisualisation en cas d'erreur
+        window.location.href = (window.CantalDestinationConfig ? window.CantalDestinationConfig.url('/shared-spaces/select') : '/shared-spaces/select') + `?${params.toString()}`;
     });
 }
 
 /**
- * Capturer et sauvegarder une prÃ©visualisation de l'infographie
+ * Capturer et sauvegarder une prévisualisation de l'infographie
  */
 async function captureAndSavePreview(uniqueId) {
     try {
-        // Charger html2canvas si pas dÃ©jÃ  fait
+        // Charger html2canvas si pas déjà fait
         if (typeof html2canvas === 'undefined') {
             await loadHtml2Canvas();
         }
         
         const infographicContainer = document.querySelector('.infographie-container');
         if (!infographicContainer) {
-            throw new Error('Container infographie non trouvÃ©');
+            throw new Error('Container infographie non trouvé');
         }
         
         // Capturer l'infographie
         const canvas = await html2canvas(infographicContainer, {
-            scale: 0.5, // RÃ©duire la qualitÃ© pour la prÃ©visualisation
+            scale: 0.5, // Réduire la qualité pour la prévisualisation
             useCORS: true,
             allowTaint: true,
             backgroundColor: '#ffffff'
@@ -5078,7 +4443,7 @@ async function captureAndSavePreview(uniqueId) {
         const previewDataUrl = canvas.toDataURL('image/png', 0.8);
         
         // Sauvegarder via l'API
-        const response = await fetch('/fluxvision_fin/api/infographie/preview.php', {
+        const response = await fetch((window.CantalDestinationConfig ? window.CantalDestinationConfig.url('/api/infographie/preview.php') : '/api/infographie/preview.php'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -5101,29 +4466,29 @@ async function captureAndSavePreview(uniqueId) {
             throw new Error(result.error || 'Erreur lors de la sauvegarde');
         }
     } catch (error) {
-        console.error('Erreur capture et sauvegarde prÃ©visualisation:', error);
+        console.error('Erreur capture et sauvegarde prévisualisation:', error);
         return null;
     }
 }
 
 /**
- * Capturer une prÃ©visualisation de l'infographie (ancienne version)
+ * Capturer une prévisualisation de l'infographie (ancienne version)
  */
 async function captureInfographicPreview() {
     try {
-        // Charger html2canvas si pas dÃ©jÃ  fait
+        // Charger html2canvas si pas déjà fait
         if (typeof html2canvas === 'undefined') {
             await loadHtml2Canvas();
         }
         
         const infographicContainer = document.querySelector('.infographie-container');
         if (!infographicContainer) {
-            throw new Error('Container infographie non trouvÃ©');
+            throw new Error('Container infographie non trouvé');
         }
         
         // Capturer l'infographie
         const canvas = await html2canvas(infographicContainer, {
-            scale: 0.5, // RÃ©duire la qualitÃ© pour la prÃ©visualisation
+            scale: 0.5, // Réduire la qualité pour la prévisualisation
             useCORS: true,
             allowTaint: true,
             backgroundColor: '#ffffff'
@@ -5131,7 +4496,7 @@ async function captureInfographicPreview() {
         
         return canvas.toDataURL('image/png', 0.8);
     } catch (error) {
-        console.error('Erreur capture prÃ©visualisation:', error);
+        console.error('Erreur capture prévisualisation:', error);
         return null;
     }
 }
@@ -5156,7 +4521,7 @@ function loadHtml2Canvas() {
 }
 
 /**
- * GÃ©nÃ©rer un ID unique pour l'infographie
+ * Générer un ID unique pour l'infographie
  */
 function generateUniqueId(params) {
     const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -5170,7 +4535,7 @@ function generateUniqueId(params) {
 }
 
 /**
- * RÃ©cupÃ©rer le token CSRF depuis la page
+ * Récupérer le token CSRF depuis la page
  */
 function getCSRFToken() {
     const csrfInput = document.querySelector('input[name="csrf_token"]');

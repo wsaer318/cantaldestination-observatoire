@@ -143,7 +143,7 @@ class Auth {
                 ]);
                 exit;
             } else {
-                header('Location: /fluxvision_fin/login');
+                header('Location: ' . url('/login'));
                 exit;
             }
         }
@@ -151,7 +151,7 @@ class Auth {
     
     public static function redirectIfAuthenticated() {
         if (self::isAuthenticated()) {
-            header('Location: /fluxvision_fin/');
+            header('Location: ' . url('/'));
             exit;
         }
     }
@@ -429,7 +429,7 @@ class Auth {
                 ]);
                 exit;
             } else {
-                header('Location: /fluxvision_fin/');
+                header('Location: ' . url('/'));
                 exit;
             }
         }
