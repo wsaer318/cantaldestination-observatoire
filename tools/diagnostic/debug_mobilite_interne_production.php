@@ -14,7 +14,7 @@ echo "🎯 Simulation de l'appel API problématique:\n";
 echo "URL: /api/infographie/infographie_communes_excursion.php?annee=$annee&periode=$periode&zone=" . urlencode($zone) . "&limit=10\n\n";
 
 // Charger les dépendances comme l'API
-require_once __DIR__ . '/../../api/infographie/periodes_manager_db.php';
+require_once __DIR__ . '/../../api/periodes_manager_db.php';
 require_once __DIR__ . '/../../classes/ZoneMapper.php';
 
 // Mapper la zone comme l'API le fait
@@ -96,3 +96,5 @@ echo "GROUP BY YEAR(f.date) ORDER BY annee DESC;\n\n";
 echo "💡 Si cette requête montre des données pour 2024 mais pas la requête principale,\n";
 echo "   le problème est dans les filtres (TOURISTE, non LOCAL, id_commune > 0)\n";
 echo "\n=== Fin du diagnostic ===\n";
+
+

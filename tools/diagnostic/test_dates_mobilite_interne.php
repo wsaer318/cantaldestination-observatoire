@@ -16,7 +16,7 @@ echo "  - Période: $periode\n";
 echo "  - Zone: $zone\n\n";
 
 // Charger les dépendances
-require_once __DIR__ . '/../../api/infographie/periodes_manager_db.php';
+require_once __DIR__ . '/../../api/periodes_manager_db.php';
 
 // Calculer les dates comme dans l'API
 $dateRanges = PeriodesManagerDB::calculateDateRanges($annee, $periode);
@@ -124,3 +124,5 @@ if ($current_data['count'] > 0 && $prev_data['count'] == 0) {
 }
 
 echo "\n=== Fin du diagnostic ===\n";
+
+

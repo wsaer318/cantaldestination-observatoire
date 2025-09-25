@@ -13,7 +13,7 @@ echo "==============================================\n\n";
 // Inclure les fichiers nécessaires
 require_once 'database.php';
 require_once 'classes/ZoneMapper.php';
-require_once 'api/infographie/periodes_manager_db.php';
+require_once 'api/periodes_manager_db.php';
 
 /**
  * Fonction pour tester l'API via HTTP (avec serveur local)
@@ -406,3 +406,4 @@ function generateBrowserTest() {
     echo "</script>\n";
 }
 ?>
+

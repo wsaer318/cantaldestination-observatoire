@@ -7,7 +7,7 @@ echo "🔍 VÉRIFICATION DES DATES POUR 2025 vs 2024\n";
 echo "===========================================\n\n";
 
 require_once 'database.php';
-require_once 'api/infographie/periodes_manager_db.php';
+require_once 'api/periodes_manager_db.php';
 
 // Dates pour 2025
 $dates2025 = PeriodesManagerDB::calculateDateRanges(2025, 'vacances_ete');
@@ -87,3 +87,4 @@ foreach ($periodes as $periode) {
     echo "  {$periode['annee']} - {$periode['nom_periode']}: {$periode['date_debut']} → {$periode['date_fin']}\n";
 }
 ?>
+

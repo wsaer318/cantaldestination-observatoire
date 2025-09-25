@@ -87,6 +87,11 @@ window.url = function(path) {
     return CantalDestinationConfig.url(path);
 };
 
+// Fonction globale getApiUrl pour tous les appels API
+window.getApiUrl = function(endpoint) {
+    return CantalDestinationConfig.apiUrl(endpoint);
+};
+
 // Configuration des périodes - Système Hybride
 const PeriodConfig = {
     // Périodes disponibles
@@ -135,10 +140,11 @@ const DashboardConfig = {
     }
 };
 
-// Configuration des espaces partagés
+// Configuration des espaces partag�s
+const GlobalEnv = window.CANTALDESTINATION_ENV || {};
 const SharedSpacesConfig = {
-    baseUrl: window.location.origin + CantalDestinationConfig.basePath,
-    csrfToken: window.CANTALDESTINATION_ENV.csrfToken || null,
+    baseUrl: window.location.origin + (GlobalEnv.basePath || CantalDestinationConfig.basePath),
+    csrfToken: GlobalEnv.csrfToken || null,
 
     // Initialisation
     init: function() {

@@ -52,7 +52,7 @@ try {
     
     // Vérifier le cache d'abord
     $cachedData = $cacheManager->get('infographie_departements', $cacheParams);
-    if ($cachedData !== null) {
+if ($cachedData !== null) {
         header('Content-Type: application/json');
         header('X-Cache-Status: HIT');
         header('X-Cache-Category: infographie_departements');
@@ -205,7 +205,7 @@ try {
     
     // Mettre en cache le résultat avec le gestionnaire unifié
     $cacheManager->set('infographie_departements', $cacheParams, $result);
-    
+
     header('Content-Type: application/json');
     header('X-Cache-Status: MISS');
     header('X-Cache-Category: infographie_departements');
@@ -281,3 +281,5 @@ function calculateTotal($pdo, $dateRanges, $dimensionIds, $zoneIds = null) {
     return (int)($stmt->fetch()['total'] ?? 0);
 }
 ?> 
+
+

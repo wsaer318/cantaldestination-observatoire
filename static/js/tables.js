@@ -25,7 +25,7 @@ async function loadFilters() {
     
     try {
         // Utiliser la même API que tdb_comparaison
-        const response = await fetch(window.getApiUrl('filters_mysql.php'));
+        const response = await fetch(window.getApiUrl('filters/filters_mysql.php'));
         const filtersData = await response.json();
         
         
@@ -63,7 +63,7 @@ function loadPeriodsFromAPI(apiPeriods) {
     const periodSelect = document.getElementById('period-select');
     
     if (periodSelect && apiPeriods && apiPeriods.length > 0) {
-        // Utiliser directement les données de l'API filters_mysql.php
+        // Utiliser directement les données de l'API filters/filters_mysql.php
         // qui contient déjà les périodes avec leurs codes et labels corrects
         
         // Grouper par code_periode pour éviter les doublons
@@ -229,13 +229,13 @@ function applyFilters() {
     clearAllTables();
     
     // Charger bloc A (données principales) avec l'API fonctionnelle
-    fetch(window.getApiUrl(`bloc_a.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}`))
+    fetch(window.getApiUrl(`legacy/blocks/bloc_a.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}`))
         .then(response => response.ok ? response.json() : null)
         .then(dataN => {
             if (dataN && dataN.bloc_a) {
                 // Charger N-1 pour les comparaisons
                 const yearN1 = parseInt(yearN) - 1;
-                return fetch(window.getApiUrl(`bloc_a.php?annee=${yearN1}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}`))
+                return fetch(window.getApiUrl(`legacy/blocks/bloc_a.php?annee=${yearN1}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}`))
                     .then(response => response.ok ? response.json() : null)
                     .then(dataN1 => {
                         updateMainTable(dataN.bloc_a, dataN1 ? dataN1.bloc_a : null);
@@ -263,7 +263,7 @@ function applyFilters() {
 function loadDetailedData(yearN, periodSlug, territorySlug) {
     
     // D1 - Départements (même API que tdb_comparaison)
-    fetch(window.getApiUrl(`bloc_d1_cached.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}&limit=15`))
+    fetch(window.getApiUrl(`legacy/blocks/bloc_d1_cached.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}&limit=15`))
         .then(resp => resp.ok ? resp.json() : null)
         .then(dataD1 => {
             if (dataD1 && Array.isArray(dataD1)) {
@@ -273,7 +273,7 @@ function loadDetailedData(yearN, periodSlug, territorySlug) {
         .catch(error => console.error('Erreur D1:', error));
         
     // D2 - Régions (même API que tdb_comparaison)
-    fetch(window.getApiUrl(`bloc_d2_simple.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}&limit=5`))
+    fetch(window.getApiUrl(`legacy/blocks/bloc_d2_simple.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}&limit=5`))
         .then(resp => resp.ok ? resp.json() : null)
         .then(dataD2 => {
             if (dataD2 && Array.isArray(dataD2)) {
@@ -283,7 +283,7 @@ function loadDetailedData(yearN, periodSlug, territorySlug) {
         .catch(error => console.error('Erreur D2:', error));
         
     // D3 - Pays
-    fetch(window.getApiUrl(`bloc_d3_simple.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}&limit=5`))
+    fetch(window.getApiUrl(`legacy/blocks/bloc_d3_simple.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}&limit=5`))
         .then(resp => resp.ok ? resp.json() : null)
         .then(dataD3 => {
             if (dataD3 && Array.isArray(dataD3)) {
@@ -293,7 +293,7 @@ function loadDetailedData(yearN, periodSlug, territorySlug) {
         .catch(error => console.error('Erreur D3:', error));
         
     // D5 - CSP (utiliser l'API working qui fonctionne)
-    fetch(window.getApiUrl(`bloc_a_working.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}`))
+    fetch(window.getApiUrl(`legacy/blocks/bloc_a_working.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}`))
         .then(resp => resp.ok ? resp.json() : null)
         .then(data => {
             if (data && data.bloc_d5) {
@@ -303,7 +303,7 @@ function loadDetailedData(yearN, periodSlug, territorySlug) {
         .catch(error => console.error('Erreur D5:', error));
         
     // D6 - Âge (utiliser l'API working qui fonctionne)
-    fetch(window.getApiUrl(`bloc_a_working.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}`))
+    fetch(window.getApiUrl(`legacy/blocks/bloc_a_working.php?annee=${yearN}&periode=${encodeURIComponent(periodSlug)}&zone=${encodeURIComponent(territorySlug)}`))
         .then(resp => resp.ok ? resp.json() : null)
         .then(data => {
             if (data && data.bloc_d6) {

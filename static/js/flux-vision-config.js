@@ -22,14 +22,14 @@ if (typeof CantalDestinationDynamicConfig === 'undefined') {
         }
 
         try {
-            const response = await fetch('api/filters_mysql.php');
+            const response = await fetch('api/filters/filters_mysql.php');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
             const result = await response.json();
             
-            // L'API filters_mysql.php retourne directement les données
+            // L'API filters/filters_mysql.php retourne directement les données
             if (result && result.annees && result.periodes && result.zones) {
                 // Adapter la structure des données
                 this.data = {

@@ -1,20 +1,33 @@
-ï»¿# Repository Guidelines
+# Repository Guidelines
 
 ## Project Structure & Module Organization
-Serve the PHP portal from the repository root; routed pages live in `templates/` and shared helpers in `includes/`. Domain logic sits in `classes/`, REST endpoints in `api/` grouped by feature (infographie, database, shared-spaces). Assets live in `static/`, datasets in `data/`, docs in `docs/`, and automation notes in `docs/operations.md`. CLI tooling resides in `tools/` (import, migration, diagnostic, etl, maintenance, saisons, dev), and long-running jobs write checkpoints to `logs/` and `etl_checkpoint.json`.
+- Serve the PHP portal from the repository root; routed pages sit in `templates/`, shared helpers in `includes/`, and domain services in `classes/`.
+- REST endpoints live under `api/` grouped by feature (for example `api/infographie/`), while CLI tooling is organized in `tools/`.
+- Front-end assets stay in `static/`, datasets in `data/`, and operational documentation in `docs/` with automation notes in `docs/operations.md`.
+- Long-running jobs record checkpoints in `logs/` and `etl_checkpoint.json`; keep these paths writable during ETL runs.
 
 ## Build, Test & Development Commands
-Serve via Apache or `php -S localhost:8000 -t .` for smoke checks. Run `npm install`, then `npm run start` to rebuild `saisons_data.php`. Bundle assets with `python tools/build_front_assets.py`. Import CSVs through `php tools.php import update_temp_tables`, validate migrations via `php tools.php migration migrate_temp_to_main --test`, and trigger lean ETL with `python tools/etl/populate_facts_optimized.py`. Finish with `php tools.php diagnostic check_status` to confirm integrity.
+- `php -S localhost:8000 -t .` — smoke-test the portal without Apache.
+- `npm install && npm run start` — refresh generated resources such as `templates/saisons_data.php`.
+- `python tools/build_front_assets.py` — rebuild bundled JS/CSS under `static/`.
+- `php tools.php import update_temp_tables` — load CSVs into staging tables before migrations.
+- `php tools.php migration migrate_temp_to_main --test` — dry-run database migrations, then follow with `php tools.php diagnostic check_status`.
 
 ## Coding Style & Naming Conventions
-Follow PSR-12: four-space indentation, braces on the next line, one class per file named in PascalCase (for example `classes/TempTablesManager.php`). Methods stay camelCase, configuration keys snake_case. Keep templates PHP-light, keep `static/js/` modules ES6, and pick descriptive names like `mobility_trends.js`. Run `php -l path/to/file.php` on touched files, respect `.gitignore`, and keep `.env` out of commits.
+- PHP follows PSR-12: four-space indents, braces on the next line, one class per file named in PascalCase (e.g. `classes/TempTablesManager.php`).
+- Methods remain camelCase, configuration keys snake_case; keep templates PHP-light and `static/js/` modules ES6.
+- Run `php -l path/to/file.php` before committing touched PHP files.
 
 ## Testing Guidelines
-Automated suites are light, so lean on operational checks. Use `php tools.php dev simple_test` to validate database connectivity, `php tools.php diagnostic check_zones` to verify mappings, and selective ETL dry runs such as `python tools/etl/populate_facts_full_production.py --dry-run` when available. New scripts should expose a `--test` or `--dry-run` flag aligned with current tooling. Capture manual QA steps in `docs/operations.md`.
+- Use `php tools.php dev simple_test` to verify database connectivity and `php tools.php diagnostic check_zones` for mapping integrity.
+- Prefer ETL dry-runs such as `python tools/etl/populate_facts_full_production.py --dry-run` when validating data changes.
+- Document manual QA and repeatable checks in `docs/operations.md` after new scripts or migrations.
 
 ## Commit & Pull Request Guidelines
-History shows compact summaries with a short prefix and colon (for example `Initial commit:` or `Mise a jour:`), so keep the first line under 60 characters and mention the impacted area (`migration:`, `api:`). Use the body for context, data sources, and follow-ups. Pull requests should link tickets, list CLI commands run (import, migration, diagnostics), and attach screenshots for UI changes. Flag security-sensitive edits and confirm secrets stay out of the diff.
+- Commit subjects stay under 60 characters with a scoped prefix like `api:` or `migration:` followed by a short action (e.g. `api: secure infographie routes`).
+- Pull requests should link tickets, list CLI checks executed, and include screenshots for UI updates; flag security-sensitive edits and confirm secrets remain out of the diff.
 
 ## Security & Configuration Tips
-Keep `.env` aligned with `config/database.php` so environment detection stays correct, and never commit credentials. Run `php tools.php maintenance backup_critical` before destructive actions, then purge `cache/` and `temp/` after heavy migrations. Audit API tokens and archive ETL outputs in `logs/`. Prefer `signed_url('/api/...', [...])` so `SecureUrl` can validate tokens. Leverage `CantalDestinationCacheManager` (file cache + memory layer) to avoid cache stampedes.
-
+- Keep `.env` aligned with `config/database.php`; never commit credentials or API tokens.
+- Run `php tools.php maintenance backup_critical` before destructive changes, then purge `cache/` and `temp/` when migrations conclude.
+- Prefer `signed_url('/api/...', [...])` so `SecureUrl` validates tokens and leverage `CantalDestinationCacheManager` to prevent cache stampedes.

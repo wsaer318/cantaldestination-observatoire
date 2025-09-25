@@ -22,7 +22,7 @@ class FiltersLoader {
         window.fvLog('[FiltersLoader] loadFilters:start');
         try {
             // Charger les filtres depuis l'API MySQL
-            const response = await fetch(window.getApiUrl('filters_mysql.php'));
+            const response = await fetch(window.getApiUrl('filters/filters_mysql.php'));
             const filtersData = await response.json();
             window.fvLog('[FiltersLoader] loadFilters:ok', {
                 annees: (filtersData?.annees || []).length,

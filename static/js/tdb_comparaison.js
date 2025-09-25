@@ -36,7 +36,7 @@ class CantalDestinationDynamicConfig {
         if (this.isLoaded) return this.data;
         
         try {
-            const response = await fetch(window.getApiUrl('filters_mysql.php'));
+            const response = await fetch(window.getApiUrl('filters/filters_mysql.php'));
             this.data = await response.json();
             this.isLoaded = true;
             return this.data;
@@ -605,11 +605,11 @@ class FiltersLoader {
         const periodSelect = document.getElementById('exc-period-select');
 
         if (periodSelect) {
-            fetch('api/filters_mysql.php')
+            fetch('api/filters/filters_mysql.php')
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.periodes) {
-                        // Les périodes sont déjà au bon format depuis filters_mysql.php
+                        // Les périodes sont déjà au bon format depuis filters/filters_mysql.php
                         // Supprimer les doublons basés sur la valeur
                         const periods = data.periodes.filter((period, index, arr) => 
                     arr.findIndex(p => p.value === period.value) === index
@@ -651,11 +651,11 @@ class FiltersLoader {
         const periodSelect = document.getElementById('exc-period-select');
         
         if (periodSelect) {
-            fetch('api/filters_mysql.php')
+            fetch('api/filters/filters_mysql.php')
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.periodes) {
-                        // Les périodes sont déjà au bon format depuis filters_mysql.php
+                        // Les périodes sont déjà au bon format depuis filters/filters_mysql.php
                         // Supprimer les doublons basés sur la valeur
                         const periods = data.periodes.filter((period, index, arr) => 
                             arr.findIndex(p => p.value === period.value) === index
@@ -832,7 +832,7 @@ window.TDBComparaisonAPI_Namespace = window.TDBComparaisonAPI_Namespace || {};
 
 class TDBComparaisonAPI {
     constructor() {
-        this.apiBaseUrl = window.getApiUrl('bloc_a.php');
+        this.apiBaseUrl = window.getApiUrl('legacy/blocks/bloc_a.php');
         this.currentData = null;
         // Instance du graphique Durée de séjour (combiné) pour pouvoir le détruire lors des mises à jour
         this.stayDistributionChart = null;
@@ -1526,7 +1526,7 @@ class TDBComparaisonAPI {
             if (compareYearSelectD?.value) params.set('compare_annee', compareYearSelectD.value);
             if (debut) params.set('debut', debut);
             if (fin) params.set('fin', fin);
-            const url = `${baseUrl}api/bloc_d1_cached.php?${params.toString()}`;
+            const url = `${baseUrl}api/legacy/blocks/bloc_d1_cached.php?${params.toString()}`;
             
             const response = await fetch(url);
             const data = await response.json();
@@ -1666,7 +1666,7 @@ class TDBComparaisonAPI {
             if (compareYearSelect?.value) params.set('compare_annee', compareYearSelect.value);
             if (debut) params.set('debut', debut);
             if (fin) params.set('fin', fin);
-            const url = `${baseUrl}api/communes_excursion.php?${params.toString()}`;
+            const url = `${baseUrl}api/analytics/communes_excursion.php?${params.toString()}`;
             
             const response = await fetch(url);
             const data = await response.json();
@@ -1809,7 +1809,7 @@ class TDBComparaisonAPI {
             if (compareYearSelectR?.value) params.set('compare_annee', compareYearSelectR.value);
             if (debut) params.set('debut', debut);
             if (fin) params.set('fin', fin);
-            const url = `${baseUrl}api/bloc_d2_simple.php?${params.toString()}`;
+            const url = `${baseUrl}api/legacy/blocks/bloc_d2_simple.php?${params.toString()}`;
             
             const response = await fetch(url);
             const data = await response.json();
@@ -1950,7 +1950,7 @@ class TDBComparaisonAPI {
             if (compareYearSelectP?.value) params.set('compare_annee', compareYearSelectP.value);
             if (debut) params.set('debut', debut);
             if (fin) params.set('fin', fin);
-            const url = `${baseUrl}api/bloc_d3_simple.php?${params.toString()}`;
+            const url = `${baseUrl}api/legacy/blocks/bloc_d3_simple.php?${params.toString()}`;
             
             const response = await fetch(url);
             const data = await response.json();
@@ -2167,7 +2167,7 @@ class TDBComparaisonAPI {
         const loadDbPresets = async (year) => {
             try {
                 // Endpoint qui renvoie { code: { nom, debut, fin } }
-                const apiUrl = window.getApiUrl('get_periodes.php') + `?action=year&annee=${year}`;
+                const apiUrl = window.getApiUrl('filters/get_periodes.php') + `?action=year&annee=${year}`;
                 const res = await fetch(apiUrl, { credentials: 'same-origin' });
                 const json = await res.json();
                 
@@ -2911,7 +2911,7 @@ class TDBComparaisonAPI {
             const params = new URLSearchParams({ annee, periode, zone, limit: '15' });
             if (debut) params.set('debut', debut);
             if (fin) params.set('fin', fin);
-            const response = await fetch(`${baseUrl}api/bloc_d1_exc_cached.php?${params.toString()}`);
+            const response = await fetch(`${baseUrl}api/legacy/blocks/bloc_d1_exc_cached.php?${params.toString()}`);
             const data = await response.json();
 
             if (data.error) {
@@ -2950,7 +2950,7 @@ class TDBComparaisonAPI {
             const params = new URLSearchParams({ annee, periode, zone, limit: '5' });
             if (debut) params.set('debut', debut);
             if (fin) params.set('fin', fin);
-            const response = await fetch(`${baseUrl}api/bloc_d2_exc_cached.php?${params.toString()}`);
+            const response = await fetch(`${baseUrl}api/legacy/blocks/bloc_d2_exc_cached.php?${params.toString()}`);
             const data = await response.json();
 
             if (data.error) {
@@ -2989,7 +2989,7 @@ class TDBComparaisonAPI {
             const params = new URLSearchParams({ annee, periode, zone, limit: '5' });
             if (debut) params.set('debut', debut);
             if (fin) params.set('fin', fin);
-            const response = await fetch(`${baseUrl}api/bloc_d3_exc_cached.php?${params.toString()}`);
+            const response = await fetch(`${baseUrl}api/legacy/blocks/bloc_d3_exc_cached.php?${params.toString()}`);
             const data = await response.json();
 
             if (data.error) {
@@ -3382,7 +3382,7 @@ class TDBComparaisonAPI {
 
 class AdvancedComparison {
     constructor() {
-        this.apiBaseUrl = window.getApiUrl('comparison.php');
+        this.apiBaseUrl = window.getApiUrl('analytics/comparison.php');
         this.currentComparisonData = null;
         this.isComparing = false;
         

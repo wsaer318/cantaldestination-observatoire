@@ -50,9 +50,9 @@ class SmartCalendar {
         // Priorité 2: Fallback vers l'API si les données serveur ne sont pas disponibles
         window.fvLog('🔄 Fallback vers l\'API...');
         const urls = [
-            `${this.baseUrl}/api/calendar_periods.php`,
-            './api/calendar_periods.php',
-            'api/calendar_periods.php'
+            `${this.baseUrl}/api/filters/calendar_periods.php`,
+            './api/filters/calendar_periods.php',
+            'api/filters/calendar_periods.php'
         ];
         
         let lastError = null;

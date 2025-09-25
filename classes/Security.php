@@ -103,7 +103,7 @@ class Security {
                "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; " .
                "img-src 'self' data: https:; " .
                "media-src 'self' data:; " .
-               "connect-src 'self' https://geo.api.gouv.fr https://raw.githubusercontent.com; " .
+               "connect-src 'self' https://geo.api.gouv.fr https://raw.githubusercontent.com https://cdn.jsdelivr.net; " .
                "object-src 'none'; " .
                "base-uri 'self'; " .
                "form-action 'self'";
@@ -493,4 +493,5 @@ class SecurityException extends Exception {
         ], 'ERROR');
     }
 } 
+
 

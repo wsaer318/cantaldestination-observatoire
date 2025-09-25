@@ -29,12 +29,12 @@ try {
             $formatted = ['periode' => []];
             
             // Récupérer toutes les années disponibles
-            $anneesData = $db->query("
+            $anneesData = $pdo->query("
                 SELECT DISTINCT YEAR(date) as annee 
                 FROM dim_dates 
                 ORDER BY annee DESC
             ");
-            $anneesDisponibles = array_column($anneesData, 'annee');
+            $anneesDisponibles = array_column($anneesData->fetchAll(), 'annee');
             
             // Ajouter la période "Année complète" pour toutes les années
             $formatted['periode']['Année complète'] = [];

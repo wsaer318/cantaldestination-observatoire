@@ -7,7 +7,7 @@ window.TDBComparaisonAPI_Namespace = window.TDBComparaisonAPI_Namespace || {};
 
 class TDBComparaisonAPI {
     constructor() {
-        this.apiBaseUrl = window.getApiUrl('bloc_a.php');
+        this.apiBaseUrl = window.getApiUrl('legacy/blocks/bloc_a.php');
         this.currentData = null;
         this.init();
     }

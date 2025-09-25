@@ -1,4 +1,4 @@
-// Auto-generated on 2025-09-24T09:33:26+00:00 -- Do not edit manually
+// Auto-generated on 2025-09-25T05:57:46+00:00 -- Do not edit manually
 // ---- begin static/js/utils.js ----
 
 // Fonctions utilitaires partagées entre les fichiers JavaScript
@@ -368,6 +368,11 @@ window.url = function(path) {
     return CantalDestinationConfig.url(path);
 };
 
+// Fonction globale getApiUrl pour tous les appels API
+window.getApiUrl = function(endpoint) {
+    return CantalDestinationConfig.apiUrl(endpoint);
+};
+
 // Configuration des périodes - Système Hybride
 const PeriodConfig = {
     // Périodes disponibles
@@ -416,10 +421,11 @@ const DashboardConfig = {
     }
 };
 
-// Configuration des espaces partagés
+// Configuration des espaces partag�s
+const GlobalEnv = window.CANTALDESTINATION_ENV || {};
 const SharedSpacesConfig = {
-    baseUrl: window.location.origin + CantalDestinationConfig.basePath,
-    csrfToken: window.CANTALDESTINATION_ENV.csrfToken || null,
+    baseUrl: window.location.origin + (GlobalEnv.basePath || CantalDestinationConfig.basePath),
+    csrfToken: GlobalEnv.csrfToken || null,
 
     // Initialisation
     init: function() {
@@ -479,14 +485,14 @@ if (typeof CantalDestinationDynamicConfig === 'undefined') {
         }
 
         try {
-            const response = await fetch('api/filters_mysql.php');
+            const response = await fetch('api/filters/filters_mysql.php');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
             const result = await response.json();
             
-            // L'API filters_mysql.php retourne directement les données
+            // L'API filters/filters_mysql.php retourne directement les données
             if (result && result.annees && result.periodes && result.zones) {
                 // Adapter la structure des données
                 this.data = {
@@ -643,7 +649,7 @@ class FiltersLoader {
         window.fvLog('[FiltersLoader] loadFilters:start');
         try {
             // Charger les filtres depuis l'API MySQL
-            const response = await fetch(window.getApiUrl('filters_mysql.php'));
+            const response = await fetch(window.getApiUrl('filters/filters_mysql.php'));
             const filtersData = await response.json();
             window.fvLog('[FiltersLoader] loadFilters:ok', {
                 annees: (filtersData?.annees || []).length,
@@ -1245,8 +1251,8 @@ class InfographieManager {
                     }
                     
                     const base = (typeof window.getApiUrl === 'function')
-                        ? window.getApiUrl('get_periodes.php')
-                        : 'api/get_periodes.php';
+                        ? window.getApiUrl('filters/get_periodes.php')
+                        : 'api/filters/get_periodes.php';
                     const url = `${base}?action=year&annee=${encodeURIComponent(year)}`;
                     const res = await fetch(url, { credentials: 'same-origin' });
                     const json = await res.json();
@@ -1652,8 +1658,8 @@ class InfographieManager {
                             // Pour les autres périodes prédéfinies, récupérer les dates depuis l'API
                             try {
                                 const base = (typeof window.getApiUrl === 'function')
-                                    ? window.getApiUrl('get_periodes.php')
-                                    : 'api/get_periodes.php';
+                                    ? window.getApiUrl('filters/get_periodes.php')
+                                    : 'api/filters/get_periodes.php';
                                 const url = `${base}?action=year&annee=${encodeURIComponent(annee)}`;
                                 const res = await fetch(url, { credentials: 'same-origin' });
                                 const json = await res.json();
@@ -1714,8 +1720,8 @@ class InfographieManager {
                         // Pour les autres périodes prédéfinies, récupérer les dates depuis l'API
                         try {
                             const base = (typeof window.getApiUrl === 'function')
-                                ? window.getApiUrl('get_periodes.php')
-                                : 'api/get_periodes.php';
+                                ? window.getApiUrl('filters/get_periodes.php')
+                                : 'api/filters/get_periodes.php';
                             const url = `${base}?action=year&annee=${encodeURIComponent(annee)}`;
                             const res = await fetch(url, { credentials: 'same-origin' });
                             const json = await res.json();

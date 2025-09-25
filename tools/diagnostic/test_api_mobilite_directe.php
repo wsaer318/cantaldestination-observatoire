@@ -27,7 +27,7 @@ echo "  - Limit: $limit\n\n";
 
 // Charger les classes nécessaires
 require_once __DIR__ . '/../../classes/ZoneMapper.php';
-require_once __DIR__ . '/../../api/infographie/periodes_manager_db.php';
+require_once __DIR__ . '/../../api/periodes_manager_db.php';
 require_once __DIR__ . '/../../config/database.php';
 
 // Test du mapping avec simulation production
@@ -157,3 +157,5 @@ if ($currentData['total_records'] > 0 && $prevData['total_records'] == 0) {
 }
 
 echo "\n=== Fin du test ===\n";
+
+

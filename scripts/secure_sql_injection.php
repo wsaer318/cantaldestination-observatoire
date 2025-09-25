@@ -9,15 +9,15 @@ echo "=" . str_repeat("=", 60) . "\n\n";
 
 // Liste des APIs à sécuriser
 $apisToSecure = [
-    'api/bloc_d3.php',
-    'api/bloc_d5.php', 
-    'api/bloc_d6.php',
-    'api/bloc_d7.php',
-    'api/bloc_d1_exc.php',
-    'api/bloc_d2_exc.php',
-    'api/bloc_d3_exc.php',
-    'api/bloc_d5_exc.php',
-    'api/bloc_d6_exc.php'
+    'api/legacy/blocks/bloc_d3.php',
+    'api/legacy/blocks/bloc_d5.php', 
+    'api/legacy/blocks/bloc_d6.php',
+    'api/legacy/blocks/bloc_d7.php',
+    'api/legacy/blocks/bloc_d1_exc.php',
+    'api/legacy/blocks/bloc_d2_exc.php',
+    'api/legacy/blocks/bloc_d3_exc.php',
+    'api/legacy/blocks/bloc_d5_exc.php',
+    'api/legacy/blocks/bloc_d6_exc.php'
 ];
 
 $securedCount = 0;

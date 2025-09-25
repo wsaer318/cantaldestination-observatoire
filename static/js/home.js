@@ -50,7 +50,7 @@ class CantalDestinationDynamicConfig {
         if (this.isLoaded) return this.data;
         
         try {
-            const response = await fetch(window.getApiUrl('filters_mysql.php'));
+            const response = await fetch(window.getApiUrl('filters/filters_mysql.php'));
             this.data = await response.json();
             this.isLoaded = true;
             return this.data;
@@ -82,7 +82,7 @@ class CantalDestinationDynamicConfig {
     async getCurrentPeriodSmart() {
         // ✅ UTILISER LE SYSTÈME EXISTANT : PeriodMapper via API
         try {
-            const response = await fetch(`${CantalDestinationConfig.basePath}/api/current_period_info.php`);
+            const response = await fetch(`${CantalDestinationConfig.basePath}/api/analytics/current_period_info.php`);
             const data = await response.json();
             
             if (data.status === 'success' && data.resolved_period) {

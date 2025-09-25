@@ -432,8 +432,8 @@ class InfographieManager {
                     }
                     
                     const base = (typeof window.getApiUrl === 'function')
-                        ? window.getApiUrl('get_periodes.php')
-                        : 'api/get_periodes.php';
+                        ? window.getApiUrl('filters/get_periodes.php')
+                        : 'api/filters/get_periodes.php';
                     const url = `${base}?action=year&annee=${encodeURIComponent(year)}`;
                     const res = await fetch(url, { credentials: 'same-origin' });
                     const json = await res.json();
@@ -839,8 +839,8 @@ class InfographieManager {
                             // Pour les autres périodes prédéfinies, récupérer les dates depuis l'API
                             try {
                                 const base = (typeof window.getApiUrl === 'function')
-                                    ? window.getApiUrl('get_periodes.php')
-                                    : 'api/get_periodes.php';
+                                    ? window.getApiUrl('filters/get_periodes.php')
+                                    : 'api/filters/get_periodes.php';
                                 const url = `${base}?action=year&annee=${encodeURIComponent(annee)}`;
                                 const res = await fetch(url, { credentials: 'same-origin' });
                                 const json = await res.json();
@@ -901,8 +901,8 @@ class InfographieManager {
                         // Pour les autres périodes prédéfinies, récupérer les dates depuis l'API
                         try {
                             const base = (typeof window.getApiUrl === 'function')
-                                ? window.getApiUrl('get_periodes.php')
-                                : 'api/get_periodes.php';
+                                ? window.getApiUrl('filters/get_periodes.php')
+                                : 'api/filters/get_periodes.php';
                             const url = `${base}?action=year&annee=${encodeURIComponent(annee)}`;
                             const res = await fetch(url, { credentials: 'same-origin' });
                             const json = await res.json();
